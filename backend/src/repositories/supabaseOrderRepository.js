@@ -129,7 +129,7 @@ export class SupabaseOrderRepository {
           if (!authUserId) {
             const { data: newAuth } = await client.auth.admin.createUser({
               email,
-              password: 'password123',
+              password: `${uuidv4()}!Xq9`,
               email_confirm: true,
               user_metadata: { name: order.studentName },
             });
@@ -142,6 +142,7 @@ export class SupabaseOrderRepository {
               name: order.studentName || 'Student',
               email,
               role: 'student',
+              status: 'active',
               phone: order.studentPhone || '',
             });
             validProfileId = authUserId;

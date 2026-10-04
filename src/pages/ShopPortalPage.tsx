@@ -32,20 +32,25 @@ export const ShopPortalPage: React.FC<ShopPortalPageProps> = ({ onNavigate, onOp
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [loginMessage, setLoginMessage] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!pin) {
+      setLoginMessage('Please enter your operator PIN or password');
+      return;
+    }
     setIsLoggingIn(true);
-    setTimeout(async () => {
-      setIsLoggingIn(false);
-      setLoginMessage('Operator terminal authenticated. Live queue dashboard loads after login.');
-      try {
-        const staffEmail = `${shopId.toLowerCase()}@campus.edu`;
-        await login(staffEmail, pin || 'demo1234', 'staff');
-      } catch {}
+    try {
+      const staffEmail = shopId.includes('@') ? shopId.toLowerCase().trim() : `${shopId.toLowerCase().trim()}@campus.edu`;
+      await login(staffEmail, pin);
+      setLoginMessage('Operator terminal authenticated. Launching live queue dashboard...');
       setTimeout(() => {
         onNavigate('/staff');
-      }, 800);
-    }, 1000);
+      }, 500);
+    } catch (err: any) {
+      setLoginMessage(err?.message || 'Invalid operator credentials');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -53,7 +58,7 @@ export const ShopPortalPage: React.FC<ShopPortalPageProps> = ({ onNavigate, onOp
     setLoginMessage('Connecting to Google OAuth for Stationery Operator...');
     try {
       localStorage.setItem('xeroxflow_post_auth_redirect', '/staff');
-      await signInWithGoogle('staff');
+      await signInWithGoogle();
     } catch (err: any) {
       setIsGoogleLoading(false);
       setLoginMessage(err?.message || 'Google authentication failed');

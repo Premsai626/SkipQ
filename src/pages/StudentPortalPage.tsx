@@ -30,20 +30,25 @@ export const StudentPortalPage: React.FC<StudentPortalPageProps> = ({ onNavigate
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [loginMessage, setLoginMessage] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!password) {
+      setLoginMessage('Please enter your password');
+      return;
+    }
     setIsLoggingIn(true);
-    setTimeout(async () => {
-      setIsLoggingIn(false);
-      setLoginMessage(`Welcome back! Authenticated as student ${rollNo}. Loading dashboard...`);
-      try {
-        const email = rollNo ? `${rollNo.toLowerCase()}@campus.edu` : 'prem.sai@campus.edu';
-        await login(email, password || 'demo1234', 'student');
-      } catch {}
+    try {
+      const email = rollNo.includes('@') ? rollNo.toLowerCase().trim() : `${rollNo.toLowerCase().trim()}@campus.edu`;
+      await login(email, password);
+      setLoginMessage(`Welcome back! Loading student dashboard...`);
       setTimeout(() => {
         onNavigate('/student');
-      }, 800);
-    }, 1000);
+      }, 500);
+    } catch (err: any) {
+      setLoginMessage(err?.message || 'Invalid email or password');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -51,7 +56,7 @@ export const StudentPortalPage: React.FC<StudentPortalPageProps> = ({ onNavigate
     setLoginMessage('Connecting to Google OAuth via Supabase...');
     try {
       localStorage.setItem('xeroxflow_post_auth_redirect', '/student');
-      await signInWithGoogle('student');
+      await signInWithGoogle();
     } catch (err: any) {
       setIsGoogleLoading(false);
       setLoginMessage(err?.message || 'Google authentication failed');
@@ -62,7 +67,7 @@ export const StudentPortalPage: React.FC<StudentPortalPageProps> = ({ onNavigate
     {
       icon: Upload,
       title: 'Universal Document Ingestion',
-      badge: 'PDF, DOCX, PPTX',
+      badge: 'PDF, JPG, PNG',
       description: 'Upload lab manuals, assignments, or CAD sheets with custom per-page color, duplex, and paper stock settings.'
     },
     {

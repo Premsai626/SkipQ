@@ -13,11 +13,23 @@ export const config = {
   port: parseInt(process.env.PORT || '5001', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
   jwtSecret: process.env.JWT_SECRET || 'xerox_flow_production_jwt_secret_key_2026',
-  jwtExpiresIn: '7d',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '2h',
   
+  // Administrative Bootstrap Secret
+  adminBootstrapKey: process.env.ADMIN_BOOTSTRAP_KEY || 'skipq_admin_bootstrap_secret_2026',
+
+  // CORS Allowed Origins
+  allowedOrigins: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:5001',
+    'http://127.0.0.1:5001',
+    process.env.FRONTEND_URL,
+  ].filter(Boolean),
+
   // Storage & Database Drivers
-  databaseDriver: process.env.DATABASE_DRIVER || (process.env.SUPABASE_URL ? 'supabase' : 'local'), // 'supabase' | 'local' | 'dynamodb'
-  storageDriver: process.env.STORAGE_DRIVER || (process.env.SUPABASE_URL ? 'supabase' : 'local'),   // 'supabase' | 'local' | 's3'
+  databaseDriver: process.env.DATABASE_DRIVER || (process.env.SUPABASE_URL ? 'supabase' : 'local'),
+  storageDriver: process.env.STORAGE_DRIVER || (process.env.SUPABASE_URL ? 'supabase' : 'local'),
 
   // Supabase Configuration
   supabaseUrl: (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, ''),
@@ -39,4 +51,5 @@ export const config = {
     'image/jpg',
     'image/png'
   ],
+  allowedExtensions: ['.pdf', '.jpg', '.jpeg', '.png'],
 };

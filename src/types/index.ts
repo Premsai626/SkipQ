@@ -75,7 +75,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'staff';
+  role: 'student' | 'staff' | 'admin';
+  status?: 'active' | 'deactivated';
   department?: string;
   collegeId?: string;
   phone?: string;

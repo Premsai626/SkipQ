@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, config.uploadDir);
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase();
     const sanitizedBase = path
       .basename(file.originalname, ext)
       .replace(/[^a-zA-Z0-9_-]/g, '_')
@@ -27,12 +27,25 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+
+  // Validate extension
+  if (!config.allowedExtensions.includes(ext)) {
+    return cb(
+      new Error(
+        `Invalid file extension '${ext}'. Allowed file types are: ${config.allowedExtensions.join(', ')}`
+      ),
+      false
+    );
+  }
+
+  // Validate MIME type
   if (config.allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(
       new Error(
-        `Invalid file type: ${file.mimetype}. Only PDF, JPG, and PNG documents are allowed.`
+        `Invalid file type '${file.mimetype}'. Only PDF, JPG, and PNG documents are allowed.`
       ),
       false
     );
@@ -47,14 +60,18 @@ export const uploadMiddleware = multer({
 
 export class StorageService {
   /**
-   * Save uploaded file record (uploads to Supabase Storage if configured)
+   * Save uploaded file record.
+   * If Supabase Storage is configured, uploads to private bucket and generates signed URLs.
    */
-  static async processUploadedFile(file) {
-    // Default to local uploads endpoint
-    let fileUrl = `/uploads/${file.filename}`;
+  static async processUploadedFile(file, userId) {
+    // Default to secure authenticated local endpoint
+    let fileUrl = `/api/v1/documents/file/${file.filename}`;
 
     // Upload to Supabase Storage bucket if configured
-    if (isSupabaseConfigured() && (config.storageDriver === 'supabase' || !config.storageDriver || config.storageDriver === 'local')) {
+    if (
+      isSupabaseConfigured() &&
+      (config.storageDriver === 'supabase' || !config.storageDriver || config.storageDriver === 'local')
+    ) {
       try {
         const client = getSupabaseClient();
         if (client) {
@@ -69,13 +86,13 @@ export class StorageService {
             });
 
           if (!error && data) {
-            const { data: publicData } = client.storage
+            // Secure signed URL with 1-hour expiration (Private Bucket)
+            const { data: signedData, error: signError } = await client.storage
               .from(config.supabaseBucket)
-              .getPublicUrl(storagePath);
+              .createSignedUrl(storagePath, 3600);
 
-            if (publicData?.publicUrl) {
-              fileUrl = publicData.publicUrl;
-              console.log(`[Storage] Uploaded document to Supabase Storage: ${fileUrl}`);
+            if (!signError && signedData?.signedUrl) {
+              fileUrl = signedData.signedUrl;
             }
           } else if (error) {
             console.warn('[Storage] Supabase storage upload notice (using local file fallback):', error.message);
@@ -86,7 +103,7 @@ export class StorageService {
       }
     }
 
-    // Estimate page count for PDFs roughly if no parser
+    // Estimate page count for PDFs
     let estimatedPages = 1;
     if (file.mimetype === 'application/pdf') {
       estimatedPages = Math.max(1, Math.min(50, Math.ceil(file.size / 200000)));
@@ -100,18 +117,22 @@ export class StorageService {
       type: file.mimetype,
       pages: estimatedPages,
       url: fileUrl,
+      ownerId: userId,
       uploadedAt: new Date().toISOString(),
     };
   }
 
   /**
-   * Get S3 Presigned URL for direct secure browser uploads in production
+   * Get S3 Presigned URL for direct secure browser uploads in production AWS
    */
   static async getPresignedUploadUrl(filename, mimeType) {
     if (config.storageDriver !== 's3') {
       return null;
     }
-    // S3 PutObjectCommand presigner logic for AWS deployment
+    const ext = path.extname(filename).toLowerCase();
+    if (!config.allowedExtensions.includes(ext) || !config.allowedMimeTypes.includes(mimeType)) {
+      throw new Error(`File type '${mimeType}' or extension '${ext}' not allowed`);
+    }
     return {
       uploadUrl: `https://${config.s3Bucket}.s3.${config.awsRegion}.amazonaws.com/uploads/${uuidv4()}_${filename}`,
       key: `uploads/${uuidv4()}_${filename}`,

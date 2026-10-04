@@ -9,15 +9,11 @@ import {
   Lock,
   Mail,
   User,
-  Building,
   KeyRound,
   CheckCircle2,
   ArrowRight,
   ShieldCheck,
-  Smartphone,
-  Sparkles,
-  MapPin,
-  FileCheck
+  Info,
 } from 'lucide-react';
 
 export type UserRole = 'student' | 'staff';
@@ -65,30 +61,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [role, setRole] = useState<UserRole>(defaultRole);
   const [mode, setMode] = useState<AuthMode>(defaultMode);
 
-  // Student Form State
-  const [studentRollNo, setStudentRollNo] = useState('21R11A6642');
+  // Student Form State (Clean - Zero hardcoded demo defaults)
+  const [studentRollNo, setStudentRollNo] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
   const [studentName, setStudentName] = useState('');
   const [studentDept, setStudentDept] = useState('CSE (AIML)');
   const [studentPassword, setStudentPassword] = useState('');
-  const [studentConfirmPassword, setStudentConfirmPassword] = useState('');
 
-  // Staff Form State
-  const [staffShopId, setStaffShopId] = useState('MLRIT-XEROX-01');
-  const [staffOperatorName, setStaffOperatorName] = useState('');
-  const [staffShopName, setStaffShopName] = useState('Central Library Xerox & Stationary');
-  const [staffLocation, setStaffLocation] = useState('Main Block Ground Floor');
-  const [staffPin, setStaffPin] = useState('');
-  const [staffPhone, setStaffPhone] = useState('');
+  // Staff Form State (Sign In Only)
+  const [staffIdentifier, setStaffIdentifier] = useState('');
+  const [staffPassword, setStaffPassword] = useState('');
 
   // Auth Context
   const { login, register, signInWithGoogle } = useAuth();
 
-  // Synchronize role and mode when modal opens or defaults change
+  // Synchronize role and mode when modal opens
   React.useEffect(() => {
     if (isOpen) {
       setRole(defaultRole);
-      setMode(defaultMode);
+      // Staff cannot sign up through public interface
+      setMode(defaultRole === 'staff' ? 'signin' : defaultMode);
       setSuccessMessage(null);
     }
   }, [isOpen, defaultRole, defaultMode]);
@@ -106,20 +98,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       if (role === 'student') {
-        const studentIdentifier = studentEmail || (studentRollNo ? `${studentRollNo.toLowerCase()}@campus.edu` : 'student@campus.edu');
+        const studentIdentifier = studentEmail.trim() || (studentRollNo ? `${studentRollNo.toLowerCase().trim()}@campus.edu` : '');
+        if (!studentIdentifier) {
+          throw new Error('Please enter your email or roll number');
+        }
+        if (!studentPassword) {
+          throw new Error('Password is required');
+        }
+
         if (mode === 'signin') {
-          await login(studentIdentifier, studentPassword || 'demo1234', 'student');
-          setSuccessMessage(`Authenticated as Student ${studentRollNo}. Connecting to your Student Dashboard...`);
+          await login(studentIdentifier, studentPassword);
+          setSuccessMessage(`Authenticated successfully. Connecting to your Student Dashboard...`);
         } else {
+          if (!studentName.trim()) throw new Error('Please enter your full name');
+          if (studentPassword.length < 6) throw new Error('Password must be at least 6 characters');
+
           await register({
-            name: studentName || studentRollNo,
+            name: studentName.trim(),
             email: studentIdentifier,
-            password: studentPassword || 'demo1234',
-            role: 'student',
+            password: studentPassword,
             department: studentDept,
-            collegeId: studentRollNo,
+            collegeId: studentRollNo.trim(),
           });
-          setSuccessMessage(`Account created for ${studentName || studentRollNo} (${studentDept})! Redirecting to Dashboard...`);
+          setSuccessMessage(`Account created for ${studentName}! Redirecting to Dashboard...`);
         }
 
         setTimeout(() => {
@@ -128,26 +129,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           onClose();
         }, 800);
       } else {
-        const staffEmail = `${staffShopId.toLowerCase()}@campus.edu`;
-        if (mode === 'signin') {
-          await login(staffEmail, staffPin || 'demo1234', 'staff');
-          setSuccessMessage(`Terminal ${staffShopId} authenticated. Launching Operator Dashboard...`);
-        } else {
-          await register({
-            name: staffShopName,
-            email: staffEmail,
-            password: staffPin || 'demo1234',
-            role: 'staff',
-            department: staffLocation,
-            collegeId: staffShopId,
-            phone: staffPhone,
-          });
-          setSuccessMessage(`Stationery Terminal registered for ${staffShopName}. Connecting to Operator Portal...`);
+        // Staff Authentication (Sign In Only)
+        const email = staffIdentifier.includes('@')
+          ? staffIdentifier.toLowerCase().trim()
+          : `${staffIdentifier.toLowerCase().trim()}@campus.edu`;
+
+        if (!email || !staffPassword) {
+          throw new Error('Please enter both your staff email/terminal ID and password');
         }
+
+        await login(email, staffPassword);
+        setSuccessMessage(`Stationery staff authenticated. Launching Operator Dashboard...`);
 
         setTimeout(() => {
           setIsLoading(false);
-          if (onStaffSuccess) onStaffSuccess({ shopId: staffShopId, name: staffShopName });
+          if (onStaffSuccess) onStaffSuccess({ shopId: staffIdentifier, name: staffIdentifier });
           onClose();
         }, 800);
       }
@@ -160,11 +156,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   // Handle Google SSO
   const handleGoogleAuth = async () => {
     setIsGoogleLoading(true);
-    setSuccessMessage(`Connecting to Google OAuth as ${role === 'staff' ? 'Stationery Staff' : 'Student'}...`);
+    setSuccessMessage(`Connecting to Google OAuth...`);
 
     try {
       localStorage.setItem('xeroxflow_post_auth_redirect', role === 'staff' ? '/staff' : '/student');
-      await signInWithGoogle(role);
+      await signInWithGoogle();
     } catch (err: any) {
       setIsGoogleLoading(false);
       setSuccessMessage(null);
@@ -186,7 +182,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className="fixed inset-0 bg-black/60 backdrop-blur-md"
           />
 
-          {/* Glassmorphic Slide-Over / Modal Box */}
+          {/* Glassmorphic Modal Box */}
           <motion.div
             initial={{ opacity: 0, scale: 0.94, y: 25 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -198,7 +194,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#CCFF00]/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#00F0FF]/15 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
 
-            {/* Modal Header: Title, Subtitle, Close Button */}
+            {/* Modal Header */}
             <div className="relative flex items-center justify-between pb-4 border-b border-white/20 mb-5">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-2xl bg-[#CCFF00] text-black flex items-center justify-center font-black shadow-md">
@@ -206,7 +202,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
                 <div>
                   <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-white drop-shadow-sm flex items-center gap-2">
-                    {mode === 'signin' ? 'Sign In to SkipQ' : 'Create an Account'}
+                    {role === 'staff'
+                      ? 'Operator Terminal Sign In'
+                      : mode === 'signin'
+                      ? 'Sign In to SkipQ'
+                      : 'Create Student Account'}
                   </h3>
                   <p className="text-[11px] sm:text-xs text-white/80 font-medium">
                     {role === 'student' ? 'Student Campus Access Gateway' : 'Stationery & Xerox Operator Terminal'}
@@ -244,6 +244,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="button"
                 onClick={() => {
                   setRole('staff');
+                  setMode('signin'); // Staff is sign-in only
                   setSuccessMessage(null);
                 }}
                 className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
@@ -257,39 +258,49 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             </div>
 
-            {/* Top Selector 2: Mode Switcher (Sign In vs Sign Up) */}
-            <div className="flex items-center justify-between px-1 mb-5">
-              <div className="inline-flex rounded-xl bg-white/15 p-1 border border-white/20 text-xs font-bold w-full">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signin');
-                    setSuccessMessage(null);
-                  }}
-                  className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
-                    mode === 'signin'
-                      ? 'bg-white text-black shadow-sm font-black'
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  Existing Member (Sign In)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signup');
-                    setSuccessMessage(null);
-                  }}
-                  className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
-                    mode === 'signup'
-                      ? 'bg-white text-black shadow-sm font-black'
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  New Member (Sign Up)
-                </button>
+            {/* Top Selector 2: Mode Switcher (Student Only: Sign In vs Sign Up) */}
+            {role === 'student' ? (
+              <div className="flex items-center justify-between px-1 mb-5">
+                <div className="inline-flex rounded-xl bg-white/15 p-1 border border-white/20 text-xs font-bold w-full">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('signin');
+                      setSuccessMessage(null);
+                    }}
+                    className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
+                      mode === 'signin'
+                        ? 'bg-white text-black shadow-sm font-black'
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
+                    Existing Member (Sign In)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('signup');
+                      setSuccessMessage(null);
+                    }}
+                    className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
+                      mode === 'signup'
+                        ? 'bg-white text-black shadow-sm font-black'
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
+                    New Member (Sign Up)
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              /* Informative Banner for Staff */
+              <div className="p-3 mb-4 rounded-xl bg-blue-950/40 border border-white/20 text-white/90 text-xs flex items-center gap-2.5">
+                <Info className="w-4 h-4 text-[#CCFF00] flex-shrink-0" />
+                <span className="leading-snug">
+                  Staff accounts are provisioned by Campus Administration. Enter your provisioned credentials below.
+                </span>
+              </div>
+            )}
 
             {/* Google Authentication SSO Button */}
             <div className="mb-4">
@@ -304,11 +315,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 ) : (
                   <GoogleIcon className="w-4 h-4 flex-shrink-0" />
                 )}
-                <span>
-                  {mode === 'signin'
-                    ? `Continue with Google as ${role === 'student' ? 'Student' : 'Stationery Staff'}`
-                    : `Sign up with Google as ${role === 'student' ? 'Student' : 'Stationery Staff'}`}
-                </span>
+                <span>Continue with Google</span>
               </button>
             </div>
 
@@ -316,7 +323,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px flex-1 bg-white/25"></div>
               <span className="text-[10px] uppercase font-bold text-white/70 tracking-wider">
-                Or continue with {role === 'student' ? 'Roll Number' : 'Terminal ID'}
+                Or continue with {role === 'student' ? 'Credentials' : 'Terminal Account'}
               </span>
               <div className="h-px flex-1 bg-white/25"></div>
             </div>
@@ -340,14 +347,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <>
                   <div>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                      Student Roll / Hall Ticket Number
+                      Student Email or Roll Number
                     </label>
                     <div className="relative">
                       <input
                         type="text"
                         value={studentRollNo}
-                        onChange={(e) => setStudentRollNo(e.target.value.toUpperCase())}
-                        placeholder="e.g. 21R11A6642"
+                        onChange={(e) => setStudentRollNo(e.target.value)}
+                        placeholder="e.g. 21R11A6642 or student@campus.edu"
                         className="w-full pl-3.5 pr-9 py-2.5 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
@@ -356,14 +363,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block">
-                        Password / PIN
-                      </label>
-                      <a href="#forgot" onClick={(e) => { e.preventDefault(); alert("Password reset link sent to your registered @mlrit.ac.in email."); }} className="text-[10px] text-[#CCFF00] hover:underline font-semibold">
-                        Forgot PIN?
-                      </a>
-                    </div>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                      Password
+                    </label>
                     <div className="relative">
                       <input
                         type="password"
@@ -391,7 +393,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         type="text"
                         value={studentName}
                         onChange={(e) => setStudentName(e.target.value)}
-                        placeholder="e.g. Prem Sai"
+                        placeholder="Full name"
                         className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
@@ -404,7 +406,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         type="text"
                         value={studentRollNo}
                         onChange={(e) => setStudentRollNo(e.target.value.toUpperCase())}
-                        placeholder="21R11A6642"
+                        placeholder="College Roll No."
                         className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
@@ -440,7 +442,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         type="email"
                         value={studentEmail}
                         onChange={(e) => setStudentEmail(e.target.value)}
-                        placeholder="rollno@mlrit.ac.in"
+                        placeholder="yourname@campus.edu"
                         className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
@@ -449,7 +451,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                      Set Portal Password
+                      Set Password
                     </label>
                     <input
                       type="password"
@@ -463,19 +465,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
 
-              {/* STAFF SIGN IN */}
-              {role === 'staff' && mode === 'signin' && (
+              {/* STAFF SIGN IN (Sign In Only) */}
+              {role === 'staff' && (
                 <>
                   <div>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                      Shop / Terminal Identifier
+                      Staff Email or Terminal Identifier
                     </label>
                     <div className="relative">
                       <input
                         type="text"
-                        value={staffShopId}
-                        onChange={(e) => setStaffShopId(e.target.value)}
-                        placeholder="e.g. MLRIT-XEROX-01"
+                        value={staffIdentifier}
+                        onChange={(e) => setStaffIdentifier(e.target.value)}
+                        placeholder="e.g. staff.desk@campus.edu or MLRIT-XEROX-01"
                         className="w-full pl-3.5 pr-9 py-2.5 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
@@ -484,102 +486,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block">
-                        Operator Security PIN
-                      </label>
-                      <a href="#operator-help" onClick={(e) => { e.preventDefault(); alert("Contact MLRIT IT Admin for terminal PIN reset."); }} className="text-[10px] text-[#CCFF00] hover:underline font-semibold">
-                        Terminal Support?
-                      </a>
-                    </div>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                      Operator Security Password / PIN
+                    </label>
                     <div className="relative">
                       <input
                         type="password"
-                        value={staffPin}
-                        onChange={(e) => setStaffPin(e.target.value)}
-                        placeholder="Enter 4 or 6 digit PIN"
+                        value={staffPassword}
+                        onChange={(e) => setStaffPassword(e.target.value)}
+                        placeholder="Enter password or PIN"
                         className="w-full pl-3.5 pr-9 py-2.5 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
                         required
                       />
                       <KeyRound className="w-4 h-4 text-white/50 absolute right-3 top-3 pointer-events-none" />
                     </div>
-                  </div>
-                </>
-              )}
-
-              {/* STAFF SIGN UP */}
-              {role === 'staff' && mode === 'signup' && (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                        Stationery / Shop Name
-                      </label>
-                      <input
-                        type="text"
-                        value={staffShopName}
-                        onChange={(e) => setStaffShopName(e.target.value)}
-                        placeholder="Central Library Xerox"
-                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                        Terminal ID
-                      </label>
-                      <input
-                        type="text"
-                        value={staffShopId}
-                        onChange={(e) => setStaffShopId(e.target.value)}
-                        placeholder="MLRIT-XEROX-02"
-                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                        Campus Location / Block
-                      </label>
-                      <input
-                        type="text"
-                        value={staffLocation}
-                        onChange={(e) => setStaffLocation(e.target.value)}
-                        placeholder="Academic Block Ground Floor"
-                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                        Operator Contact Number
-                      </label>
-                      <input
-                        type="tel"
-                        value={staffPhone}
-                        onChange={(e) => setStaffPhone(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
-                      Set Terminal Operator PIN
-                    </label>
-                    <input
-                      type="password"
-                      value={staffPin}
-                      onChange={(e) => setStaffPin(e.target.value)}
-                      placeholder="Enter security PIN"
-                      className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
-                      required
-                    />
                   </div>
                 </>
               )}
@@ -598,9 +518,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 ) : (
                   <>
                     <span>
-                      {mode === 'signin'
-                        ? role === 'student' ? 'Access Student Dashboard' : 'Launch Operator Terminal'
-                        : role === 'student' ? 'Create Student Account' : 'Register Operator Terminal'}
+                      {role === 'staff'
+                        ? 'Launch Operator Terminal'
+                        : mode === 'signin'
+                        ? 'Access Student Dashboard'
+                        : 'Create Student Account'}
                     </span>
                     <ArrowRight className="w-4 h-4" />
                   </>
@@ -612,7 +534,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-[10px] text-white/75">
               <div className="flex items-center gap-1.5 font-medium">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#CCFF00]" />
-                <span>MLRIT Institutional Security • AWS 2026</span>
+                <span>MLRIT Institutional Security • 2026</span>
               </div>
               <span className="font-semibold text-white/90">
                 {role === 'student' ? 'Student Hub' : 'Stationery Hub'}

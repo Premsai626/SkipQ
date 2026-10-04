@@ -2,17 +2,17 @@
 
 > **Skip the queue. Upload. Order. Track. Collect.**
 
-**SkipQ** is a production-ready, full-stack digital Xerox and stationery ordering platform designed for college campus students and Xerox shop operators. It completely eliminates physical waiting queues by digitizing document uploads, print configurations, real-time authoritative pricing, finite-state queue management, and counter OTP verification.
+**SkipQ** is a production-grade digital Xerox and stationery ordering platform designed for college campus students and Xerox shop operators. It digitizes document uploads, print configurations, real-time authoritative pricing, finite-state queue management, and counter OTP verification.
 
 ---
 
 ## 🌟 Key Features
 
 ### 🎓 Student Experience
-- **Multi-Step Order Wizard**: Drag-and-drop document upload (PDF, JPG, PNG, DOCX) with page count detection.
+- **Multi-Step Order Wizard**: Drag-and-drop document upload (PDF, JPG, PNG) with file validation and page count detection.
 - **Granular Print Configuration**: Laser Print vs Photocopy, Black & White vs Full Color, A4 vs A3 paper, Single vs Duplex eco printing, custom copy count, and finishing services (Stapling, Spiral Binding, Thermal Lamination).
 - **Authoritative Real-Time Pricing**: Itemized price calculations (base rate, color surcharges, duplex discount, finishing, GST) calculated and synchronized server-side.
-- **Simulated Payment Gateway**: Instant UPI QR code, Campus Card, or Cash at Counter.
+- **Simulated Payment Gateway**: Demonstration payment workflows (simulated instant UPI QR code, Campus Card, or Cash at Counter). Note: This is an educational simulation, not real banking processing.
 - **Live Queue Tracking**: Track order status across a 6-stage lifecycle (`PENDING` → `ACCEPTED` → `PAYMENT_VERIFIED` → `PRINTING` → `READY_FOR_PICKUP` → `COLLECTED`) with live queue position and 4-digit pickup OTP.
 
 ### 🏢 Staff Operational Command Hub
@@ -25,21 +25,38 @@
 
 ---
 
+## 🛡️ Security & Role Architecture
+
+SkipQ enforces strict application security standards:
+
+### Role & Account Status Model
+- **Roles**: Exactly three roles: `student`, `staff`, `admin`. Role indicates authorization level, not status.
+- **Status**: Separate account lifecycle status (`active` | `deactivated`).
+- **Student Registration**: Normal registration always assigns `role = 'student'` and `status = 'active'`. Clients cannot supply or self-promote their role.
+- **Staff Provisioning**: Staff accounts cannot be registered publicly. They are provisioned exclusively by authenticated administrators via `POST /api/v1/admin/staff`.
+- **Staff Deprovisioning**: Admins deprovision staff via `PATCH /api/v1/admin/staff/:userId/deactivate`. Deprovisioned staff retain their account and order history, but their role becomes `student`, immediately revoking staff operational capabilities.
+- **Server-Side Authoritative Checks**: Protected operations verify the user's current role and status directly against the database on each request, preventing old JWTs from retaining revoked privileges.
+- **Password Security**: Passwords are encrypted with `bcryptjs`. Generic 401 messages prevent user enumeration.
+- **Data Isolation**: Students can strictly view and cancel only their own orders and documents.
+- **Zero Demo Credentials**: The platform contains no hardcoded demo credentials. Users register through standard authentication, and test accounts are provisioned programmatically.
+
+---
+
 ## 🏗️ Technical Architecture
 
 ### Frontend
-- **Framework**: React 18 with TypeScript & Vite
+- **Framework**: React with TypeScript & Vite
 - **Styling**: Tailwind CSS with custom responsive UI components
-- **State Management**: Context API (`AuthContext`, `OrderContext`) with 5-second polling synchronization
-- **Routing**: React Router DOM (v7) with role-guarded routes
+- **State Management**: Context API (`AuthContext`, `OrderContext`)
+- **Routing**: React Router DOM with role-guarded routes
 
 ### Backend
 - **Runtime**: Node.js & Express
 - **Validation**: Strict schema validation using Zod
 - **Authentication**: Stateless JWT Bearer tokens with `bcryptjs` password hashing
-- **File Storage**: Multi-part uploads via `multer` with MIME validation and 50MB limits; extensible AWS S3 presigned URL support
-- **Data Repositories**: Dual-driver architecture (`LocalOrderRepository` in-memory store for local development + `DynamoDBOrderRepository` adapter for AWS)
-- **Containerization**: Multi-stage `Dockerfile` and `docker-compose.yml` serving both Express REST API and static React SPA bundle on a single port
+- **Security Headers & Protection**: `helmet` security headers, strict CORS origin controls, and IP rate limiting on authentication routes
+- **File Storage**: Multi-part uploads via `multer` restricted to `.pdf`, `.png`, `.jpg`, and `.jpeg` (up to 50MB); authenticated document access preventing unauthorized downloads; extensible AWS S3 presigned URL support
+- **Data Repositories**: Dual-driver architecture (`LocalOrderRepository` + `UserRepository` in-memory store for local development, and Supabase PostgreSQL / Storage adapter for cloud deployment)
 
 ---
 
@@ -52,7 +69,7 @@
 ### Local Development Setup
 
 ```bash
-# 1. Clone repository & install root dependencies
+# 1. Install root frontend dependencies
 npm install
 
 # 2. Install backend dependencies
@@ -61,72 +78,24 @@ cd backend && npm install && cd ..
 # 3. Build the frontend production bundle
 npm run build
 
-# 4. Start the backend server (serves both API & React SPA on port 5001)
+# 4. Start the backend server (serves API & SPA on port 5001)
 npm run start:backend
+
+# 5. (Optional) Run the Vite dev server with Hot Module Replacement on port 3000
+npm run dev
 ```
 
-Navigate to **`http://localhost:5001`** in your browser.
+Navigate to **`http://localhost:3000`** (dev server) or **`http://localhost:5001`** (production bundle).
 
 ---
 
 ## 🧪 Automated Testing
 
-The backend includes a comprehensive 15-step end-to-end integration test suite verifying health, authentication, file processing, authoritative pricing, order creation, token retrieval, cash verification, state machine rules, rejection reasons, live queue position, and analytics:
+SkipQ includes an automated, programmatic test suite that creates isolated test accounts dynamically and verifies all security rules, role boundaries, staff provisioning/deprovisioning, and order state machines:
 
 ```bash
 node backend/test-api.js
 ```
-
-**Test Results:**
-```text
-✅ PASS: Root Health Check
-✅ PASS: Student Authentication & JWT issuance
-✅ PASS: Staff Authentication
-✅ PASS: Real Document Upload & Server File Processing
-✅ PASS: Authoritative Pricing Engine Calculation
-✅ PASS: Order Creation with Human Token (XR-1045) and OTP (9054)
-✅ PASS: Retrieve Order by Human Token
-✅ PASS: Staff Counter Cash Verification & Status to ACCEPTED
-✅ PASS: Advance Order to PRINTING on Xerox machine
-✅ PASS: Mark Order READY_FOR_PICKUP at collection desk
-✅ PASS: State Machine Transition Guard (Rejects illegal rollback to PENDING)
-✅ PASS: Finalize Order as COLLECTED
-✅ PASS: Rejection Flow with Mandatory Operator Reason
-✅ PASS: Live Queue API Returns Active Queue (5 active jobs)
-✅ PASS: Operational Analytics API (86 completed, ₹3589 revenue)
-
-=========================================
-TEST SUMMARY: 15 PASSED, 0 FAILED
-=========================================
-```
-
----
-
-## 🐳 Docker Deployment
-
-To build and run the full-stack application in a production Docker container:
-
-```bash
-docker-compose up --build -d
-```
-
-The application will be accessible at `http://localhost:80`.
-
-To stop the container:
-```bash
-docker-compose down
-```
-
----
-
-## 🛡️ Default Demo Credentials
-
-For testing and grading:
-
-| Role | Email | Password |
-|---|---|---|
-| **Student** | `student@campus.edu` | `student123` |
-| **Staff** | `staff@campus.edu` | `staff123` |
 
 ---
 

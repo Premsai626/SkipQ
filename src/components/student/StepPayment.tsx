@@ -32,7 +32,7 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
-  const [upiId, setUpiId] = useState('student@okcampus');
+  const [upiId, setUpiId] = useState('');
   const [simulateFailure, setSimulateFailure] = useState(false);
 
   const handlePay = async () => {

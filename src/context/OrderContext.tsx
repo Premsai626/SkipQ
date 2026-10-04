@@ -66,9 +66,15 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const ordersData = await ordersApi.getAll();
       setOrders(ordersData);
 
-      // Load analytics metrics for staff or general load indicator
-      const metricsData = await analyticsApi.getMetrics();
-      setMetrics(metricsData);
+      // Load analytics metrics only for staff or admin roles
+      if (role === 'staff' || role === 'admin') {
+        try {
+          const metricsData = await analyticsApi.getMetrics();
+          setMetrics(metricsData);
+        } catch (mErr) {
+          console.warn('Analytics fetch error:', mErr);
+        }
+      }
 
       // Load notifications
       const notifsData = await notificationsApi.getAll();

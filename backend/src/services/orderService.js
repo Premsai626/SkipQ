@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { getOrderRepository } from '../repositories/orderRepository.js';
 import { PricingService } from './pricingService.js';
 import { SupabaseNotificationRepository } from '../repositories/supabaseNotificationRepository.js';
@@ -24,7 +23,7 @@ export class OrderService {
   }
 
   async createOrder({ documents, config, paymentMethod, student, pickupCounter }) {
-    // 1. Authoritative price recalculation
+    // 1. Authoritative price calculation
     const pricing = PricingService.calculate(documents, config);
 
     // 2. Generate human-readable Token (e.g. XR-1001)
@@ -41,20 +40,18 @@ export class OrderService {
     const orderId = `XF-2026-${String(maxNum + 1).padStart(5, '0')}`;
     const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-    // 3. Status based on payment method
-    // If Cash at counter, initial status is PENDING with payment PENDING
-    // If simulated UPI/Card, status is PAYMENT_VERIFIED
-    const isDigitalPaid = paymentMethod === 'UPI' || paymentMethod === 'CARD';
-    const status = isDigitalPaid ? 'PAYMENT_VERIFIED' : 'PENDING';
-    const paymentStatus = isDigitalPaid ? 'VERIFIED' : 'PENDING';
+    // 3. Initial Status is ALWAYS PENDING upon order placement
+    // Payment status is PENDING until verified by staff / operator
+    const status = 'PENDING';
+    const paymentStatus = 'PENDING';
 
     const newOrder = {
       id: orderId,
       token,
-      studentId: student?.id || 'usr_student_1',
-      studentName: student?.name || 'Prem Sai',
-      studentEmail: student?.email || 'prem.sai@campus.edu',
-      studentPhone: student?.phone || '+91 98765 43210',
+      studentId: student?.id || student?.sub,
+      studentName: student?.name || 'Student',
+      studentEmail: student?.email,
+      studentPhone: student?.phone || '',
       documents,
       config,
       pricing,
@@ -71,13 +68,13 @@ export class OrderService {
 
     const saved = await this.repository.create(newOrder);
 
-    // Create notification
+    // Create notification for student
     await this.createNotification({
       orderId: saved.id,
       token: saved.token,
       studentId: saved.studentId,
       title: 'Order Placed Successfully',
-      message: `Token ${saved.token} confirmed. Total amount: ₹${saved.pricing.total}.`,
+      message: `Token ${saved.token} confirmed. Total amount: ₹${saved.pricing.total}. Awaiting shop confirmation.`,
       type: 'success',
     });
 
@@ -95,15 +92,19 @@ export class OrderService {
   async updateStatus(idOrToken, newStatus, rejectionReason) {
     const order = await this.repository.findById(idOrToken);
     if (!order) {
-      throw new Error(`Order ${idOrToken} not found`);
+      const err = new Error(`Order '${idOrToken}' not found`);
+      err.statusCode = 404;
+      throw err;
     }
 
-    // Validate transition
+    // Validate state machine transition
     const allowed = VALID_TRANSITIONS[order.status] || [];
     if (!allowed.includes(newStatus)) {
-      throw new Error(
+      const err = new Error(
         `Invalid status transition: Cannot change order from '${order.status}' to '${newStatus}'`
       );
+      err.statusCode = 400;
+      throw err;
     }
 
     const updateData = {
@@ -153,23 +154,50 @@ export class OrderService {
   async verifyPayment(idOrToken) {
     const order = await this.repository.findById(idOrToken);
     if (!order) {
-      throw new Error(`Order ${idOrToken} not found`);
+      const err = new Error(`Order '${idOrToken}' not found`);
+      err.statusCode = 404;
+      throw err;
     }
 
-    return this.repository.update(order.id, {
+    // Verify payment and transition to ACCEPTED if PENDING
+    const nextStatus = order.status === 'PENDING' ? 'ACCEPTED' : order.status;
+
+    const updated = await this.repository.update(order.id, {
       paymentStatus: 'VERIFIED',
-      status: order.status === 'PENDING' ? 'ACCEPTED' : order.status,
+      status: nextStatus,
     });
+
+    await this.createNotification({
+      orderId: order.id,
+      token: order.token,
+      studentId: order.studentId,
+      title: 'Payment Verified',
+      message: `Payment for order ${order.token} has been verified by the desk operator.`,
+      type: 'success',
+    });
+
+    return updated;
   }
 
-  async cancelOrder(idOrToken, studentId) {
+  async cancelOrder(idOrToken, userId, userRole) {
     const order = await this.repository.findById(idOrToken);
     if (!order) {
-      throw new Error(`Order ${idOrToken} not found`);
+      const err = new Error(`Order '${idOrToken}' not found`);
+      err.statusCode = 404;
+      throw err;
+    }
+
+    // If student is cancelling, verify ownership
+    if (userRole === 'student' && order.studentId !== userId) {
+      const err = new Error('Access denied: You can only cancel your own orders');
+      err.statusCode = 403;
+      throw err;
     }
 
     if (order.status !== 'PENDING') {
-      throw new Error('Only orders in PENDING status can be cancelled.');
+      const err = new Error('Only orders in PENDING status can be cancelled.');
+      err.statusCode = 400;
+      throw err;
     }
 
     return this.updateStatus(order.id, 'CANCELLED');

@@ -38,6 +38,9 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   const json = await response.json();
 
   if (!response.ok) {
+    if (response.status === 401) {
+      removeAuthToken();
+    }
     const errorMsg = json.message || `Request failed with status ${response.status}`;
     throw new Error(errorMsg);
   }
@@ -47,14 +50,14 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
 // 1. Auth API
 export const authApi = {
-  login: async (email: string, password: string, role: 'student' | 'staff' = 'student') => {
+  login: async (email: string, password: string) => {
     return request<{ user: User; token: string }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password, role }),
+      body: JSON.stringify({ email, password }),
     });
   },
 
-  register: async (userData: { name: string; email: string; password: string; role: 'student' | 'staff'; department?: string; collegeId?: string; phone?: string }) => {
+  register: async (userData: { name: string; email: string; password: string; department?: string; collegeId?: string; phone?: string }) => {
     return request<{ user: User; token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -66,10 +69,9 @@ export const authApi = {
   },
 
   syncGoogleUser: async (data: {
-    id: string;
     email: string;
-    name: string;
-    role?: 'student' | 'staff';
+    name?: string;
+    supabaseToken?: string;
     avatar?: string;
     department?: string;
     collegeId?: string;
@@ -79,6 +81,45 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify(data),
     });
+  },
+
+  bootstrapAdmin: async (data: {
+    bootstrapKey: string;
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    return request<{ user: User; token: string }>('/auth/admin/bootstrap', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// 1b. Admin API (Staff Provisioning & Management)
+export const adminApi = {
+  provisionStaff: async (data: {
+    name: string;
+    email: string;
+    department?: string;
+    collegeId?: string;
+    phone?: string;
+    password?: string;
+  }) => {
+    return request<User>('/admin/staff', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  deprovisionStaff: async (userId: string) => {
+    return request<User>(`/admin/staff/${userId}/deactivate`, {
+      method: 'PATCH',
+    });
+  },
+
+  listStaff: async () => {
+    return request<User[]>('/admin/staff');
   },
 };
 

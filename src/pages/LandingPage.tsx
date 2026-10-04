@@ -47,24 +47,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, initialAut
   };
 
   // Student Authentication Callback
-  const handleStudentAuthSuccess = async (data: { rollNo: string; email?: string }) => {
-    try {
-      const email = data.email || (data.rollNo ? `${data.rollNo.toLowerCase()}@campus.edu` : 'prem.sai@campus.edu');
-      await login(email, 'demo1234', 'student');
-    } catch {
-      await login('prem.sai@campus.edu', 'demo1234', 'student');
-    }
+  const handleStudentAuthSuccess = () => {
     setIsAuthModalOpen(false);
     onNavigate('/student');
   };
 
   // Staff Authentication Callback
-  const handleStaffAuthSuccess = async (_data: { shopId: string; name?: string }) => {
-    try {
-      await login('desk.library@campus.edu', 'demo1234', 'staff');
-    } catch {
-      await login('operator@xerox.campus.edu', 'demo1234', 'staff');
-    }
+  const handleStaffAuthSuccess = () => {
     setIsAuthModalOpen(false);
     onNavigate('/staff');
   };

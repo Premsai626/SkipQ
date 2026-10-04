@@ -5,12 +5,19 @@ import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;
-  role: 'student' | 'staff';
+  role: 'student' | 'staff' | 'admin';
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string, role?: 'student' | 'staff') => Promise<void>;
-  register: (userData: { name: string; email: string; password: string; role?: 'student' | 'staff'; department?: string; collegeId?: string; phone?: string }) => Promise<void>;
-  signInWithGoogle: (role?: 'student' | 'staff') => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (userData: {
+    name: string;
+    email: string;
+    password: string;
+    department?: string;
+    collegeId?: string;
+    phone?: string;
+  }) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -36,12 +43,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [user]);
 
   // Synchronize Supabase session user with our backend database/profiles
-  const syncSessionUser = useCallback(async (sessionUser: any) => {
+  const syncSessionUser = useCallback(async (session: any) => {
+    const sessionUser = session?.user;
     if (!sessionUser || !sessionUser.email) return;
+
     try {
       setIsLoading(true);
-      const rawRole = localStorage.getItem('xeroxflow_pending_role');
-      const pendingRole = rawRole === 'staff' || rawRole === 'student' ? rawRole : undefined;
       const name =
         sessionUser.user_metadata?.full_name ||
         sessionUser.user_metadata?.name ||
@@ -49,18 +56,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         'User';
       const avatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || '';
 
+      // Pass Supabase access token so backend cryptographically validates the session
       const res = await authApi.syncGoogleUser({
-        id: sessionUser.id,
         email: sessionUser.email,
         name,
-        role: pendingRole,
+        supabaseToken: session.access_token,
         avatar,
       });
 
       if (res?.token && res?.user) {
         setAuthToken(res.token);
         setUser(res.user);
-        localStorage.removeItem('xeroxflow_pending_role');
       }
     } catch (err) {
       console.error('Failed to sync Google user with backend:', err);
@@ -76,7 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
-          await syncSessionUser(session.user);
+          await syncSessionUser(session);
           return;
         }
       } catch (err) {
@@ -101,7 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Listen for OAuth redirects and auth events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
-        await syncSessionUser(session.user);
+        await syncSessionUser(session);
       } else if (event === 'SIGNED_OUT') {
         removeAuthToken();
         setUser(null);
@@ -113,10 +119,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [syncSessionUser]);
 
-  const login = async (email: string, password: string, role: 'student' | 'staff' = 'student') => {
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await authApi.login(email, password, role);
+      const res = await authApi.login(email, password);
       setAuthToken(res.token);
       setUser(res.user);
     } finally {
@@ -124,13 +130,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (userData: { name: string; email: string; password: string; role?: 'student' | 'staff'; department?: string; collegeId?: string; phone?: string }) => {
+  const register = async (userData: {
+    name: string;
+    email: string;
+    password: string;
+    department?: string;
+    collegeId?: string;
+    phone?: string;
+  }) => {
     setIsLoading(true);
     try {
-      const res = await authApi.register({
-        ...userData,
-        role: userData.role || 'student',
-      });
+      const res = await authApi.register(userData);
       setAuthToken(res.token);
       setUser(res.user);
     } finally {
@@ -138,11 +148,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signInWithGoogle = async (role: 'student' | 'staff' = 'student') => {
+  const signInWithGoogle = async () => {
     setIsLoading(true);
     try {
-      localStorage.setItem('xeroxflow_pending_role', role);
-
       const redirectUrl = window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -171,7 +179,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await supabase.auth.signOut();
     } catch {}
     removeAuthToken();
-    localStorage.removeItem('xeroxflow_pending_role');
     localStorage.removeItem('xeroxflow_post_auth_redirect');
     localStorage.removeItem('xeroxflow_user_profile');
     setUser(null);
