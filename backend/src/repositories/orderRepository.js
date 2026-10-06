@@ -42,7 +42,8 @@ export class LocalOrderRepository {
         (o) =>
           o.token.toLowerCase().includes(q) ||
           o.studentName.toLowerCase().includes(q) ||
-          o.documents.some((d) => d.name.toLowerCase().includes(q))
+          o.documents?.some((d) => d.name.toLowerCase().includes(q)) ||
+          o.items?.some((i) => i.name.toLowerCase().includes(q))
       );
     }
 
@@ -131,52 +132,6 @@ export class LocalOrderRepository {
   }
 }
 
-/**
- * DynamoDB Order Repository Adapter
- * Matches single-table design for AWS DynamoDB production deployment
- */
-export class DynamoDBOrderRepository {
-  constructor() {
-    // Lazy initialized AWS DynamoDB Document Client when driver is enabled
-    this.tableName = config.dynamoDbTable;
-  }
-
-  async create(order) {
-    // PutItemCommand implementation for AWS DynamoDB
-    // Falls back gracefully if running in local mode without AWS credentials
-    return order;
-  }
-
-  async findById(id) {
-    // GetItemCommand implementation
-    return null;
-  }
-
-  async findMany(filters) {
-    return { orders: [], total: 0, limit: 50, offset: 0 };
-  }
-
-  async update(id, fields) {
-    return null;
-  }
-
-  async getQueue() {
-    return [];
-  }
-
-  async getMetrics() {
-    return {
-      pendingCount: 0,
-      printingCount: 0,
-      readyCount: 0,
-      completedTodayCount: 0,
-      todayRevenue: 0,
-      avgWaitMinutes: 12,
-      colorPercentage: 30,
-    };
-  }
-}
-
 // Singleton repository instance based on environment configuration
 let instance = null;
 
@@ -190,8 +145,6 @@ export function getOrderRepository() {
         console.warn('[Database] Failed to initialize SupabaseOrderRepository, falling back to LocalOrderRepository:', err.message);
         instance = new LocalOrderRepository();
       }
-    } else if (config.databaseDriver === 'dynamodb') {
-      instance = new DynamoDBOrderRepository();
     } else {
       console.log('[Database] Using Local In-Memory Order Repository');
       instance = new LocalOrderRepository();

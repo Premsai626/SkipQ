@@ -40,59 +40,59 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Printing & Binding Requirements</h2>
-        <p className="text-sm text-slate-500 mt-1">
+        <h2 className="text-xl font-black text-white tracking-tight">Printing & Binding Requirements</h2>
+        <p className="text-sm text-white/50 mt-1">
           Select your paper size, color preferences, and finishing options.
         </p>
       </div>
 
       {/* 1. Service Type */}
       <div className="space-y-3">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
           1. Service Type
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => updateField('service', 'PRINT')}
-            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 ${
+            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 cursor-pointer ${
               config.service === 'PRINT'
-                ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 shadow-sm'
-                : 'border-slate-200 bg-white hover:border-slate-300'
+                ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/10'
+                : 'border-white/10 bg-white/5 hover:border-white/20'
             }`}
           >
             <div
               className={`p-2.5 rounded-xl ${
-                config.service === 'PRINT' ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'
+                config.service === 'PRINT' ? 'bg-[#CCFF00] text-black' : 'bg-white/10 text-white/60'
               }`}
             >
               <Printer className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-900">Laser Print</p>
-              <p className="text-xs text-slate-500 mt-0.5">High-definition digital print from file</p>
+              <p className="text-sm font-bold text-white">Laser Print</p>
+              <p className="text-xs text-white/40 mt-0.5">High-definition digital print from file</p>
             </div>
           </button>
 
           <button
             type="button"
             onClick={() => updateField('service', 'XEROX')}
-            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 ${
+            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 cursor-pointer ${
               config.service === 'XEROX'
-                ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 shadow-sm'
-                : 'border-slate-200 bg-white hover:border-slate-300'
+                ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/10'
+                : 'border-white/10 bg-white/5 hover:border-white/20'
             }`}
           >
             <div
               className={`p-2.5 rounded-xl ${
-                config.service === 'XEROX' ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'
+                config.service === 'XEROX' ? 'bg-[#CCFF00] text-black' : 'bg-white/10 text-white/60'
               }`}
             >
               <Copy className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-900">Standard Xerox</p>
-              <p className="text-xs text-slate-500 mt-0.5">Fast economical photocopy reproduction</p>
+              <p className="text-sm font-bold text-white">Standard Xerox</p>
+              <p className="text-xs text-white/40 mt-0.5">Fast economical photocopy reproduction</p>
             </div>
           </button>
         </div>
@@ -102,71 +102,71 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Color Mode */}
         <div className="space-y-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
             2. Color Output
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => updateField('color', 'BW')}
-              className={`p-3.5 rounded-2xl border text-center transition-all ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 config.color === 'BW'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <p className="text-sm font-bold">B&W (Monochrome)</p>
-              <p className="text-xs text-slate-500 font-normal mt-0.5">Standard ₹2/page</p>
+              <p className="text-xs text-white/40 font-normal mt-0.5">Standard ₹2/page</p>
             </button>
 
             <button
               type="button"
               onClick={() => updateField('color', 'COLOR')}
-              className={`p-3.5 rounded-2xl border text-center transition-all ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 config.color === 'COLOR'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-center gap-1">
-                <Palette className="w-3.5 h-3.5 text-indigo-600" />
+                <Palette className="w-3.5 h-3.5 text-[#00F0FF]" />
                 <p className="text-sm font-bold">Full Color</p>
               </div>
-              <p className="text-xs text-slate-500 font-normal mt-0.5">+₹6 surcharge</p>
+              <p className="text-xs text-white/40 font-normal mt-0.5">+₹6 surcharge</p>
             </button>
           </div>
         </div>
 
         {/* Paper Size */}
         <div className="space-y-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
             3. Paper Size
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => updateField('paperSize', 'A4')}
-              className={`p-3.5 rounded-2xl border text-center transition-all ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 config.paperSize === 'A4'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <p className="text-sm font-bold">A4 Standard</p>
-              <p className="text-xs text-slate-500 font-normal mt-0.5">210 × 297 mm</p>
+              <p className="text-xs text-white/40 font-normal mt-0.5">210 × 297 mm</p>
             </button>
 
             <button
               type="button"
               onClick={() => updateField('paperSize', 'A3')}
-              className={`p-3.5 rounded-2xl border text-center transition-all ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 config.paperSize === 'A3'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <p className="text-sm font-bold">A3 Poster / Large</p>
-              <p className="text-xs text-slate-500 font-normal mt-0.5">297 × 420 mm (+₹5)</p>
+              <p className="text-xs text-white/40 font-normal mt-0.5">297 × 420 mm (+₹5)</p>
             </button>
           </div>
         </div>
@@ -176,57 +176,57 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Sides */}
         <div className="space-y-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
             4. Print Sides
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => updateField('sides', 'SINGLE')}
-              className={`p-3.5 rounded-2xl border text-center transition-all ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 config.sides === 'SINGLE'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <p className="text-sm font-bold">Single-Sided</p>
-              <p className="text-xs text-slate-500 font-normal mt-0.5">1 page per sheet</p>
+              <p className="text-xs text-white/40 font-normal mt-0.5">1 page per sheet</p>
             </button>
 
             <button
               type="button"
               onClick={() => updateField('sides', 'DOUBLE')}
-              className={`p-3.5 rounded-2xl border text-center transition-all relative ${
+              className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer relative ${
                 config.sides === 'DOUBLE'
-                  ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 font-bold text-brand-900'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 font-bold text-white'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-white/20'
               }`}
             >
               <p className="text-sm font-bold">Double-Sided (Duplex)</p>
-              <p className="text-xs text-emerald-600 font-semibold mt-0.5">Eco Paper Saver</p>
+              <p className="text-xs text-emerald-400 font-semibold mt-0.5">Eco Paper Saver</p>
             </button>
           </div>
         </div>
 
         {/* Copies Counter */}
         <div className="space-y-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
             5. Number of Copies
           </label>
-          <div className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-2xl">
+          <div className="flex items-center justify-between p-2.5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl">
             <button
               type="button"
               onClick={() => handleCopyChange(-1)}
               disabled={config.copies <= 1}
-              className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Decrease copies"
             >
               <Minus className="w-4 h-4" />
             </button>
 
             <div className="text-center">
-              <span className="text-lg font-extrabold text-slate-900">{config.copies}</span>
-              <span className="text-xs text-slate-500 ml-1 font-medium">
+              <span className="text-lg font-black text-white font-mono">{config.copies}</span>
+              <span className="text-xs text-white/50 ml-1 font-medium">
                 {config.copies === 1 ? 'set' : 'sets'}
               </span>
             </div>
@@ -235,7 +235,7 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
               type="button"
               onClick={() => handleCopyChange(1)}
               disabled={config.copies >= 50}
-              className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Increase copies"
             >
               <Plus className="w-4 h-4" />
@@ -246,7 +246,7 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
 
       {/* 4. Optional Finishing & Binding */}
       <div className="space-y-3">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
           6. Binding & Finishing (Optional)
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -263,30 +263,30 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => updateField('finishing', item.id as FinishingOption)}
-                className={`p-3.5 rounded-2xl border text-left transition-all ${
+                className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-brand-600 bg-brand-50/50 ring-2 ring-brand-100 shadow-xs'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-[#00F0FF] bg-[#00F0FF]/10 ring-2 ring-[#00F0FF]/20 shadow-lg shadow-[#00F0FF]/10'
+                    : 'border-white/10 bg-white/5 hover:border-white/20'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <Icon
                     className={`w-4 h-4 ${
-                      isSelected ? 'text-brand-600' : 'text-slate-400'
+                      isSelected ? 'text-[#00F0FF]' : 'text-white/40'
                     }`}
                   />
                   <span
-                    className={`text-[11px] font-bold px-1.5 py-0.5 rounded ${
+                    className={`text-[11px] font-bold px-1.5 py-0.5 rounded font-mono ${
                       isSelected
-                        ? 'bg-brand-600 text-white'
-                        : 'bg-slate-100 text-slate-600'
+                        ? 'bg-[#00F0FF] text-black'
+                        : 'bg-white/10 text-white/60'
                     }`}
                   >
                     {item.price}
                   </span>
                 </div>
-                <p className="text-xs font-bold text-slate-900">{item.label}</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">{item.desc}</p>
+                <p className="text-xs font-bold text-white">{item.label}</p>
+                <p className="text-[10px] text-white/40 mt-0.5">{item.desc}</p>
               </button>
             );
           })}
@@ -295,7 +295,7 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
 
       {/* 5. Custom Instructions */}
       <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <label className="text-xs font-black uppercase tracking-wider text-[#CCFF00] font-mono">
           7. Notes for Xerox Operator (Optional)
         </label>
         <textarea
@@ -303,12 +303,12 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
           value={config.instructions || ''}
           onChange={(e) => updateField('instructions', e.target.value)}
           placeholder="e.g. Please print page 3-12 only, or use blue front cover for spiral binding..."
-          className="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+          className="w-full px-4 py-3 rounded-2xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#CCFF00]/40 focus:border-[#CCFF00]"
         />
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+      <div className="flex items-center justify-between pt-4 border-t border-white/10">
         <Button
           type="button"
           variant="outline"

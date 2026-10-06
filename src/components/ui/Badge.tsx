@@ -41,24 +41,24 @@ export const Badge: React.FC<BadgeProps> = ({
   }
 
   // Generic variant badges
-  let variantStyle = 'bg-slate-100 text-slate-700 border-slate-200';
-  let dotStyle = 'bg-slate-400';
+  let variantStyle = 'bg-white/5 text-white/70 border-white/10';
+  let dotStyle = 'bg-white/40';
 
   if (variant === 'success') {
-    variantStyle = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-    dotStyle = 'bg-emerald-500';
+    variantStyle = 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+    dotStyle = 'bg-emerald-400';
   } else if (variant === 'warning') {
-    variantStyle = 'bg-amber-50 text-amber-800 border-amber-200';
-    dotStyle = 'bg-amber-500';
+    variantStyle = 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+    dotStyle = 'bg-amber-400';
   } else if (variant === 'error') {
-    variantStyle = 'bg-rose-50 text-rose-800 border-rose-200';
-    dotStyle = 'bg-rose-500';
+    variantStyle = 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+    dotStyle = 'bg-rose-400';
   } else if (variant === 'info') {
-    variantStyle = 'bg-brand-50 text-brand-700 border-brand-200';
-    dotStyle = 'bg-brand-500';
+    variantStyle = 'bg-[#00F0FF]/15 text-[#00F0FF] border-[#00F0FF]/30';
+    dotStyle = 'bg-[#00F0FF]';
   } else if (variant === 'live') {
-    variantStyle = 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30 font-semibold';
-    dotStyle = 'bg-emerald-500 live-indicator-dot';
+    variantStyle = 'bg-[#CCFF00]/15 text-[#CCFF00] border-[#CCFF00]/40 font-bold';
+    dotStyle = 'bg-[#CCFF00] live-indicator-dot';
   }
 
   const sizeClasses =

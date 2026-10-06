@@ -62,6 +62,7 @@ export class PricingService {
       duplexAdjustment,
       copies,
       finishingCost,
+      subtotal: total,
       total,
       estimatedMinutes,
     };
@@ -83,3 +84,8 @@ export class PricingService {
 }
 
 export const pricingService = PricingService;
+
+export const calculatePrice = (
+  documents: DocumentItem[],
+  config: PrintConfiguration
+): PriceBreakdown => PricingService.calculatePreview(documents, config);

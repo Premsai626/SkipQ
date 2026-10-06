@@ -34,75 +34,75 @@ export const StaffAnalyticsPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       <div>
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+        <h1 className="text-2xl font-black text-white tracking-tight">
           Operational Analytics & Insights
         </h1>
-        <p className="text-sm text-slate-500 mt-0.5">
+        <p className="text-sm text-white/50 mt-0.5">
           Real-time equipment utilization, turn-around times, and campus print volume.
         </p>
       </div>
 
       {/* Top 4 Analytics Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-card">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-5 shadow-2xl backdrop-blur-2xl">
+          <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider font-mono">
             Total Orders Fulfilled
           </span>
-          <p className="text-3xl font-black text-slate-900 mt-1">
+          <p className="text-3xl font-black text-white mt-1 font-mono">
             {metrics.completedTodayCount}
           </p>
-          <div className="flex items-center gap-1 text-emerald-600 text-xs font-bold mt-1">
+          <div className="flex items-center gap-1 text-emerald-400 text-xs font-bold mt-1">
             <TrendingUp className="w-3.5 h-3.5" />
             <span>+18% from last Friday</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-card">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-5 shadow-2xl backdrop-blur-2xl">
+          <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider font-mono">
             Avg Turnaround Time
           </span>
-          <p className="text-3xl font-black text-slate-900 mt-1">
+          <p className="text-3xl font-black text-white mt-1 font-mono">
             {metrics.avgWaitMinutes}m
           </p>
-          <div className="flex items-center gap-1 text-emerald-600 text-xs font-bold mt-1">
+          <div className="flex items-center gap-1 text-emerald-400 text-xs font-bold mt-1">
             <Clock className="w-3.5 h-3.5" />
             <span>Target &lt; 15 mins met</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-card">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-5 shadow-2xl backdrop-blur-2xl">
+          <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider font-mono">
             Today's Campus Revenue
           </span>
-          <p className="text-3xl font-black text-slate-900 mt-1">
+          <p className="text-3xl font-black text-[#CCFF00] mt-1 font-mono">
             {formatCurrency(metrics.todayRevenue)}
           </p>
-          <p className="text-xs text-slate-400 mt-1">Digital UPI: 78% • Cash: 22%</p>
+          <p className="text-xs text-white/40 mt-1 font-mono">Digital UPI: 78% • Cash: 22%</p>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-card">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-5 shadow-2xl backdrop-blur-2xl">
+          <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider font-mono">
             Top Service Type
           </span>
-          <p className="text-base font-black text-slate-900 mt-2 leading-tight">
+          <p className="text-base font-black text-white mt-2 leading-tight">
             Spiral Binding & Duplex Print
           </p>
-          <span className="text-[11px] font-bold text-brand-600 mt-1 block">
+          <span className="text-[11px] font-bold text-[#00F0FF] mt-1 block">
             42% of all exam submissions
           </span>
         </div>
       </div>
 
       {/* Hourly Orders Graph */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-card space-y-4">
+      <div className="glass-card-dark border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-2xl space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Today's Hourly Print Volume</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-base font-bold text-white">Today's Hourly Print Volume</h3>
+            <p className="text-xs text-white/50">
               Orders placed across campus hours (Peak rush at 10:00 AM submission deadline)
             </p>
           </div>
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-700">
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#CCFF00]/10 text-[#CCFF00] border border-[#CCFF00]/20 font-mono">
             Peak: 28 orders/hr
           </span>
         </div>
@@ -116,18 +116,18 @@ export const StaffAnalyticsPage: React.FC = () => {
 
               return (
                 <div key={idx} className="flex-1 flex flex-col items-center gap-2 group">
-                  <span className="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] font-bold text-white/60 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
                     {d.count}
                   </span>
                   <div
                     className={`w-full max-w-[40px] rounded-t-xl transition-all duration-300 ${
                       isPeak
-                        ? 'bg-brand-600 shadow-md shadow-brand-500/30'
-                        : 'bg-indigo-100 hover:bg-indigo-200'
+                        ? 'bg-[#CCFF00] shadow-lg shadow-[#CCFF00]/30'
+                        : 'bg-white/10 hover:bg-[#00F0FF]/40'
                     }`}
                     style={{ height: `${heightPercent}%` }}
                   />
-                  <span className="text-[11px] font-medium text-slate-400 mt-1 whitespace-nowrap">
+                  <span className="text-[11px] font-medium text-white/40 mt-1 whitespace-nowrap font-mono">
                     {d.hour}
                   </span>
                 </div>
@@ -140,64 +140,64 @@ export const StaffAnalyticsPage: React.FC = () => {
       {/* Breakdown Grid: Color vs BW & Finishing Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Color vs BW */}
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-card space-y-4">
-          <h3 className="text-sm font-bold text-slate-900">Color vs Monochrome Split</h3>
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-2xl space-y-4">
+          <h3 className="text-sm font-bold text-white">Color vs Monochrome Split</h3>
 
           <div className="space-y-3">
             <div>
               <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-slate-700">B&W Monochrome (Economical)</span>
-                <span className="text-slate-900">65% (1,480 pages)</span>
+                <span className="text-white/70">B&W Monochrome (Economical)</span>
+                <span className="text-white font-mono">65% (1,480 pages)</span>
               </div>
-              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-slate-800 rounded-full" style={{ width: '65%' }} />
+              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-full bg-white/70 rounded-full" style={{ width: '65%' }} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-indigo-600">Full Color Pigment Print</span>
-                <span className="text-indigo-700">35% (790 pages)</span>
+                <span className="text-[#00F0FF]">Full Color Pigment Print</span>
+                <span className="text-[#00F0FF] font-mono">35% (790 pages)</span>
               </div>
-              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-brand-600 rounded-full" style={{ width: '35%' }} />
+              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-full bg-[#00F0FF] rounded-full shadow-xs" style={{ width: '35%' }} />
               </div>
             </div>
           </div>
         </div>
 
         {/* Finishing Breakdown */}
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-card space-y-4">
-          <h3 className="text-sm font-bold text-slate-900">Binding & Finishing Services</h3>
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-2xl space-y-4">
+          <h3 className="text-sm font-bold text-white">Binding & Finishing Services</h3>
 
           <div className="space-y-3">
             <div>
               <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-slate-700">Spiral Binding with Clear Cover</span>
-                <span className="text-slate-900">42% (58 sets)</span>
+                <span className="text-white/70">Spiral Binding with Clear Cover</span>
+                <span className="text-white font-mono">42% (58 sets)</span>
               </div>
-              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-indigo-500 rounded-full" style={{ width: '42%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-slate-700">Corner & Side Staple</span>
-                <span className="text-slate-900">38% (52 sets)</span>
-              </div>
-              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-sky-500 rounded-full" style={{ width: '38%' }} />
+              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-full bg-[#CCFF00] rounded-full shadow-xs" style={{ width: '42%' }} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-slate-700">Thermal Pouch Lamination</span>
-                <span className="text-slate-900">20% (28 sheets)</span>
+                <span className="text-white/70">Corner & Side Staple</span>
+                <span className="text-white font-mono">38% (52 sets)</span>
               </div>
-              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500 rounded-full" style={{ width: '20%' }} />
+              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-full bg-[#00F0FF] rounded-full shadow-xs" style={{ width: '38%' }} />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-xs font-bold mb-1">
+                <span className="text-white/70">Thermal Pouch Lamination</span>
+                <span className="text-white font-mono">20% (28 sheets)</span>
+              </div>
+              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-full bg-emerald-400 rounded-full shadow-xs" style={{ width: '20%' }} />
               </div>
             </div>
           </div>

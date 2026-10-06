@@ -46,6 +46,8 @@ export function calculatePrice(
     (baseCost + colorSurcharge + paperSurcharge - duplexAdjustment + finishingCost)
   );
 
+  const estimatedMinutes = Math.max(5, Math.ceil(totalSheets * 0.5));
+
   return {
     totalSheets,
     baseCost,
@@ -54,6 +56,8 @@ export function calculatePrice(
     duplexAdjustment,
     copies: config.copies,
     finishingCost,
+    subtotal: total,
     total,
+    estimatedMinutes,
   };
 }

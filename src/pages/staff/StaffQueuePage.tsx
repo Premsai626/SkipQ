@@ -54,29 +54,29 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
       <div
         key={order.id}
         onClick={() => setSelectedOrder(order)}
-        className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-card hover:shadow-floating hover:border-brand-200 transition-all cursor-pointer space-y-3"
+        className="glass-card-dark border border-white/10 rounded-2xl p-4 shadow-xl hover:border-white/20 transition-all cursor-pointer space-y-3 backdrop-blur-xl"
       >
         <div className="flex items-center justify-between">
-          <span className="font-mono text-base font-black text-slate-900">
+          <span className="font-mono text-base font-black text-white">
             {order.token}
           </span>
           <Badge status={order.status} size="sm" />
         </div>
 
-        <div className="text-xs text-slate-600 space-y-1">
-          <p className="font-bold text-slate-900">{order.studentName}</p>
-          <p className="text-slate-500 truncate">
+        <div className="text-xs text-white/70 space-y-1">
+          <p className="font-bold text-white">{order.studentName}</p>
+          <p className="text-white/40 truncate">
             {order.documents[0]?.name || 'Document'} • {totalPages} pgs ({order.config.copies}x)
           </p>
-          <div className="flex items-center gap-2 text-[11px] text-slate-400">
+          <div className="flex items-center gap-2 text-[11px] text-white/40">
             <span>{order.config.color} • {order.config.paperSize}</span>
             <span>•</span>
             <span>{order.config.finishing}</span>
           </div>
         </div>
 
-        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-          <span className="font-extrabold text-xs text-slate-900">
+        <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+          <span className="font-black font-mono text-xs text-[#CCFF00]">
             {formatCurrency(order.pricing.total)}
           </span>
 
@@ -85,7 +85,7 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
               e.stopPropagation();
               handleAdvance(order);
             }}
-            className={`px-3 py-1.5 rounded-xl text-white font-bold text-xs shadow-xs transition-colors flex items-center gap-1 ${actionColor}`}
+            className={`px-3 py-1.5 rounded-xl text-black font-bold text-xs shadow-sm transition-colors flex items-center gap-1 cursor-pointer ${actionColor}`}
           >
             <span>{nextActionLabel}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -101,10 +101,10 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Live Queue Control Board</h1>
+            <h1 className="text-2xl font-black text-white tracking-tight">Live Queue Control Board</h1>
             <Badge variant="live" label="LIVE" size="sm" />
           </div>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-sm text-white/50 mt-0.5">
             1-click operational lane advancement for counter staff & operators.
           </p>
         </div>
@@ -113,7 +113,7 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
           <Button
             size="sm"
             onClick={simulateQueueStep}
-            leftIcon={<Zap className="w-4 h-4 text-amber-400" />}
+            leftIcon={<Zap className="w-4 h-4 text-black" />}
           >
             Simulate 1-Step Advance
           </Button>
@@ -123,26 +123,26 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
       {/* 3 Operational Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
         {/* Column 1: Incoming & Queue Prep */}
-        <div className="bg-slate-50/80 border border-slate-200 rounded-3xl p-4 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+        <div className="glass-card-dark border border-white/10 rounded-3xl p-4 sm:p-5 space-y-4 shadow-xl backdrop-blur-2xl">
+          <div className="flex items-center justify-between pb-2 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-amber-500" />
-              <h3 className="font-bold text-sm text-slate-900">1. Queue Line (Pending)</h3>
+              <Clock className="w-4 h-4 text-amber-400" />
+              <h3 className="font-bold text-sm text-white">1. Queue Line (Pending)</h3>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-xs font-bold">
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold font-mono">
               {pendingOrders.length}
             </span>
           </div>
 
           <div className="space-y-3 min-h-[300px]">
             {pendingOrders.length === 0 ? (
-              <p className="text-center py-12 text-xs text-slate-400">Queue line is clear</p>
+              <p className="text-center py-12 text-xs text-white/40">Queue line is clear</p>
             ) : (
               pendingOrders.map((ord) =>
                 renderQueueCard(
                   ord,
                   ord.status === 'PENDING' ? 'Accept' : ord.paymentStatus !== 'VERIFIED' ? 'Verify Cash' : 'Print',
-                  'bg-brand-600 hover:bg-brand-700'
+                  'bg-[#CCFF00] hover:bg-[#b8e600]'
                 )
               )
             )}
@@ -150,46 +150,46 @@ export const StaffQueuePage: React.FC<StaffQueuePageProps> = ({ onNavigate }) =>
         </div>
 
         {/* Column 2: Currently Printing */}
-        <div className="bg-sky-50/50 border border-sky-200 rounded-3xl p-4 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-sky-200">
+        <div className="glass-card-dark border border-[#00F0FF]/30 bg-[#00F0FF]/5 rounded-3xl p-4 sm:p-5 space-y-4 shadow-xl backdrop-blur-2xl">
+          <div className="flex items-center justify-between pb-2 border-b border-[#00F0FF]/20">
             <div className="flex items-center gap-2">
-              <Printer className="w-4 h-4 text-sky-600" />
-              <h3 className="font-bold text-sm text-slate-900">2. Printing Now</h3>
+              <Printer className="w-4 h-4 text-[#00F0FF]" />
+              <h3 className="font-bold text-sm text-white">2. Printing Now</h3>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-sky-200 text-sky-800 text-xs font-bold animate-pulse">
+            <span className="px-2 py-0.5 rounded-full bg-[#00F0FF]/20 text-[#00F0FF] border border-[#00F0FF]/30 text-xs font-bold font-mono animate-pulse">
               {printingOrders.length} active
             </span>
           </div>
 
           <div className="space-y-3 min-h-[300px]">
             {printingOrders.length === 0 ? (
-              <p className="text-center py-12 text-xs text-slate-400">No active print jobs</p>
+              <p className="text-center py-12 text-xs text-white/40">No active print jobs</p>
             ) : (
               printingOrders.map((ord) =>
-                renderQueueCard(ord, 'Mark Ready', 'bg-emerald-600 hover:bg-emerald-700')
+                renderQueueCard(ord, 'Mark Ready', 'bg-emerald-400 hover:bg-emerald-500 text-black')
               )
             )}
           </div>
         </div>
 
         {/* Column 3: Ready at Counter */}
-        <div className="bg-emerald-50/50 border border-emerald-200 rounded-3xl p-4 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-emerald-200">
+        <div className="glass-card-dark border border-[#CCFF00]/30 bg-[#CCFF00]/5 rounded-3xl p-4 sm:p-5 space-y-4 shadow-xl backdrop-blur-2xl">
+          <div className="flex items-center justify-between pb-2 border-b border-[#CCFF00]/20">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <h3 className="font-bold text-sm text-slate-900">3. Ready for Pickup</h3>
+              <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />
+              <h3 className="font-bold text-sm text-white">3. Ready for Pickup</h3>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-800 text-xs font-bold">
+            <span className="px-2 py-0.5 rounded-full bg-[#CCFF00]/20 text-[#CCFF00] border border-[#CCFF00]/30 text-xs font-bold font-mono">
               {readyOrders.length}
             </span>
           </div>
 
           <div className="space-y-3 min-h-[300px]">
             {readyOrders.length === 0 ? (
-              <p className="text-center py-12 text-xs text-slate-400">No orders awaiting collection</p>
+              <p className="text-center py-12 text-xs text-white/40">No orders awaiting collection</p>
             ) : (
               readyOrders.map((ord) =>
-                renderQueueCard(ord, 'Collected', 'bg-slate-900 hover:bg-black')
+                renderQueueCard(ord, 'Collected', 'bg-white/20 hover:bg-white/30 text-white')
               )
             )}
           </div>

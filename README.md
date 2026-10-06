@@ -55,7 +55,7 @@ SkipQ enforces strict application security standards:
 - **Validation**: Strict schema validation using Zod
 - **Authentication**: Stateless JWT Bearer tokens with `bcryptjs` password hashing
 - **Security Headers & Protection**: `helmet` security headers, strict CORS origin controls, and IP rate limiting on authentication routes
-- **File Storage**: Multi-part uploads via `multer` restricted to `.pdf`, `.png`, `.jpg`, and `.jpeg` (up to 50MB); authenticated document access preventing unauthorized downloads; extensible AWS S3 presigned URL support
+- **File Storage**: Multi-part uploads via `multer` restricted to `.pdf`, `.png`, `.jpg`, and `.jpeg` (up to 50MB); authenticated document access preventing unauthorized downloads; Supabase Storage integration
 - **Data Repositories**: Dual-driver architecture (`LocalOrderRepository` + `UserRepository` in-memory store for local development, and Supabase PostgreSQL / Storage adapter for cloud deployment)
 
 ---

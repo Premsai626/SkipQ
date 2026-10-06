@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, FileText, Image as ImageIcon, Trash2, CheckCircle2, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
+import { UploadCloud, FileText, Image as ImageIcon, Trash2, CheckCircle2, AlertCircle, Loader2, FileCode, Presentation } from 'lucide-react';
 import { DocumentItem } from '../../types';
 import { formatBytes } from '../../utils/formatting';
 import { Button } from '../ui/Button';
@@ -81,12 +81,42 @@ export const StepUpload: React.FC<StepUploadProps> = ({ documents, onChange, onN
 
   const totalPages = documents.reduce((sum, d) => sum + d.pages, 0);
 
+  const getDocIcon = (doc: DocumentItem) => {
+    const name = (doc.name || doc.filename || '').toLowerCase();
+    if (name.endsWith('.pdf')) {
+      return (
+        <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/20">
+          <FileText className="w-5 h-5" />
+        </div>
+      );
+    }
+    if (name.endsWith('.docx') || name.endsWith('.doc')) {
+      return (
+        <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/20">
+          <FileCode className="w-5 h-5" />
+        </div>
+      );
+    }
+    if (name.endsWith('.pptx') || name.endsWith('.ppt')) {
+      return (
+        <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
+          <Presentation className="w-5 h-5" />
+        </div>
+      );
+    }
+    return (
+      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/20">
+        <ImageIcon className="w-5 h-5" />
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Upload Your Documents</h2>
-        <p className="text-sm text-slate-500 mt-1">
-          Upload PDF lecture notes, lab manuals, assignments, or image scans to print.
+        <h2 className="text-xl font-black text-white tracking-tight">Upload Your Documents</h2>
+        <p className="text-sm text-white/50 mt-1 font-normal">
+          Upload PDF lecture notes, lab manuals, DOCX reports, PPTX presentations, or image scans to print.
         </p>
       </div>
 
@@ -98,53 +128,53 @@ export const StepUpload: React.FC<StepUploadProps> = ({ documents, onChange, onN
         onClick={() => !isUploading && fileInputRef.current?.click()}
         className={`relative border-2 border-dashed rounded-3xl p-8 sm:p-12 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center group ${
           isDragging
-            ? 'border-brand-500 bg-brand-50/60 scale-[1.01]'
-            : 'border-slate-300 hover:border-brand-400 bg-slate-50/50 hover:bg-brand-50/20'
+            ? 'border-[#CCFF00] bg-[#CCFF00]/10 scale-[1.01]'
+            : 'border-white/15 hover:border-[#CCFF00]/40 bg-white/5 hover:bg-white/[0.08]'
         } ${isUploading ? 'opacity-75 cursor-wait' : ''}`}
       >
         <input
           ref={fileInputRef}
           type="file"
           multiple
-          accept=".pdf,.png,.jpg,.jpeg"
+          accept=".pdf,.docx,.doc,.pptx,.ppt,.png,.jpg,.jpeg"
           onChange={handleFileInput}
           className="hidden"
           disabled={isUploading}
         />
 
-        <div className="w-16 h-16 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-100 transition-all duration-200 shadow-xs">
+        <div className="w-16 h-16 rounded-2xl bg-[#CCFF00]/10 text-[#CCFF00] border border-[#CCFF00]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#CCFF00]/20 transition-all duration-200 shadow-xs">
           {isUploading ? (
-            <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#CCFF00]" />
           ) : (
             <UploadCloud className="w-8 h-8" />
           )}
         </div>
 
-        <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-1">
+        <h3 className="text-base sm:text-lg font-bold text-white mb-1">
           {isUploading ? (
-            'Uploading documents to campus server...'
+            'Uploading & encrypting documents...'
           ) : (
             <>
               Drag & drop files here, or{' '}
-              <span className="text-brand-600 underline underline-offset-2">browse</span>
+              <span className="text-[#CCFF00] underline underline-offset-2">browse files</span>
             </>
           )}
         </h3>
-        <p className="text-xs sm:text-sm text-slate-500 max-w-sm">
-          Supports <span className="font-semibold text-slate-700">PDF, JPG, PNG</span> up to 50MB. Secure backend processing.
+        <p className="text-xs sm:text-sm text-white/50 max-w-sm font-normal">
+          Supports <span className="font-semibold text-white/80">PDF, DOCX, PPTX, JPG, PNG</span> up to 50MB. Secure backend processing.
         </p>
       </div>
 
       {/* Error Banner */}
       {uploadError && (
-        <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center justify-between">
+        <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>{uploadError}</span>
           </div>
           <button
             onClick={() => setUploadError(null)}
-            className="text-rose-500 hover:text-rose-700 font-bold ml-2"
+            className="text-rose-400 hover:text-rose-300 font-bold ml-2 cursor-pointer"
           >
             Dismiss
           </button>
@@ -155,40 +185,33 @@ export const StepUpload: React.FC<StepUploadProps> = ({ documents, onChange, onN
       {documents.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-slate-800">
+            <h4 className="text-sm font-bold text-white">
               Uploaded Documents ({documents.length})
             </h4>
-            <span className="text-xs font-semibold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-bold text-[#CCFF00] bg-[#CCFF00]/10 border border-[#CCFF00]/20 px-3 py-1 rounded-full font-mono">
               Total {totalPages} page{totalPages !== 1 ? 's' : ''} to print
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {documents.map((doc) => {
-              const isPdf = doc.type.includes('pdf') || doc.name.endsWith('.pdf');
               return (
                 <div
                   key={doc.id}
-                  className="flex items-center justify-between p-3.5 bg-white border border-slate-200/80 rounded-2xl shadow-xs hover:border-slate-300 transition-colors"
+                  className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-white/20 transition-all backdrop-blur-xl"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                        isPdf ? 'bg-rose-50 text-rose-600' : 'bg-blue-50 text-blue-600'
-                      }`}
-                    >
-                      {isPdf ? <FileText className="w-5 h-5" /> : <ImageIcon className="w-5 h-5" />}
-                    </div>
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    {getDocIcon(doc)}
 
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-slate-800 truncate">
+                      <p className="text-sm font-bold text-white truncate">
                         {doc.name}
                       </p>
-                      <p className="text-xs text-slate-500">
-                        {formatBytes(doc.size)} • {doc.type.split('/')[1]?.toUpperCase() || 'DOCUMENT'}
+                      <p className="text-xs text-white/40 mt-0.5">
+                        {formatBytes(doc.size)} • {doc.type ? doc.type.split('/')[1]?.toUpperCase() : 'DOCUMENT'}
                         {doc.url && (
-                          <span className="text-emerald-600 font-medium ml-2">
-                            • Server Verified
+                          <span className="text-emerald-400 font-semibold ml-2">
+                            • Upload Stored
                           </span>
                         )}
                       </p>
@@ -197,22 +220,22 @@ export const StepUpload: React.FC<StepUploadProps> = ({ documents, onChange, onN
 
                   <div className="flex items-center gap-3 shrink-0 ml-4">
                     {/* Page counter */}
-                    <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl">
-                      <span className="text-xs text-slate-500 font-medium">Pages:</span>
+                    <div className="flex items-center gap-1.5 bg-black/40 border border-white/10 px-3 py-1 rounded-xl">
+                      <span className="text-xs text-white/40 font-medium">Pages:</span>
                       <input
                         type="number"
                         min="1"
                         max="500"
                         value={doc.pages}
                         onChange={(e) => updatePages(doc.id, parseInt(e.target.value, 10))}
-                        className="w-12 text-center text-xs font-bold text-slate-800 bg-transparent focus:outline-none focus:ring-1 focus:ring-brand-500 rounded"
+                        className="w-12 text-center text-xs font-bold text-white font-mono bg-transparent focus:outline-none focus:ring-1 focus:ring-[#CCFF00] rounded"
                       />
                     </div>
 
                     <button
                       type="button"
                       onClick={() => removeDocument(doc.id)}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                      className="p-2 text-white/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors cursor-pointer"
                       title="Remove file"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -226,7 +249,7 @@ export const StepUpload: React.FC<StepUploadProps> = ({ documents, onChange, onN
       )}
 
       {/* Navigation CTA */}
-      <div className="flex items-center justify-end pt-4 border-t border-slate-200">
+      <div className="flex items-center justify-end pt-4 border-t border-white/10">
         <Button
           onClick={onNext}
           disabled={documents.length === 0 || isUploading}

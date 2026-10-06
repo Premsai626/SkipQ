@@ -72,7 +72,6 @@ export class UserRepository {
             .maybeSingle();
 
           if (!error && data) {
-            // Merge Supabase profile with in-memory status/passwordHash
             const merged = {
               id: data.id,
               name: data.name,
@@ -82,6 +81,9 @@ export class UserRepository {
               department: data.department || inMemoryUser?.department || '',
               collegeId: data.college_id || inMemoryUser?.collegeId || '',
               phone: data.phone || inMemoryUser?.phone || '',
+              institution: data.institution || inMemoryUser?.institution || 'Campus',
+              yearOfStudy: data.year_of_study || inMemoryUser?.yearOfStudy || '',
+              profilePhoto: data.profile_photo || inMemoryUser?.profilePhoto || '',
               passwordHash: inMemoryUser?.passwordHash || data.password_hash || null,
               createdAt: data.created_at || inMemoryUser?.createdAt,
               updatedAt: data.updated_at || inMemoryUser?.updatedAt,
@@ -125,6 +127,9 @@ export class UserRepository {
               department: data.department || inMemoryUser?.department || '',
               collegeId: data.college_id || inMemoryUser?.collegeId || '',
               phone: data.phone || inMemoryUser?.phone || '',
+              institution: data.institution || inMemoryUser?.institution || 'Campus',
+              yearOfStudy: data.year_of_study || inMemoryUser?.yearOfStudy || '',
+              profilePhoto: data.profile_photo || inMemoryUser?.profilePhoto || '',
               passwordHash: inMemoryUser?.passwordHash || data.password_hash || null,
               createdAt: data.created_at || inMemoryUser?.createdAt,
               updatedAt: data.updated_at || inMemoryUser?.updatedAt,
@@ -152,7 +157,12 @@ export class UserRepository {
     department = '',
     collegeId = '',
     phone = '',
+    institution = 'Campus',
+    yearOfStudy = '',
+    profilePhoto = '',
   }) {
+    // Only student and staff allowed
+    const validRole = role === 'staff' ? 'staff' : 'student';
     const normalizedEmail = email.toLowerCase().trim();
     let finalId = id || uuidv4();
     const finalHash = passwordHash || (password ? await this.hashPassword(password) : null);
@@ -172,7 +182,7 @@ export class UserRepository {
                 email: normalizedEmail,
                 password: password,
                 email_confirm: true,
-                user_metadata: { name: name.trim(), role },
+                user_metadata: { name: name.trim(), role: validRole },
               });
               if (newAuth?.user) {
                 finalId = newAuth.user.id;
@@ -182,12 +192,11 @@ export class UserRepository {
             console.warn('[UserRepository] Supabase auth provision notice:', authErr.message);
           }
 
-          // Try upserting to profiles table (with fallback if schema lacks status column)
           const basePayload = {
             id: finalId,
             name: name.trim(),
             email: normalizedEmail,
-            role,
+            role: validRole,
             department: department || '',
             college_id: collegeId || '',
             phone: phone || '',
@@ -202,7 +211,6 @@ export class UserRepository {
 
           const { error: fullError } = await client.from('profiles').upsert([fullPayload]);
           if (fullError) {
-            // Retry with base payload if custom columns not in remote schema yet
             await client.from('profiles').upsert([basePayload]);
           }
         }
@@ -216,11 +224,14 @@ export class UserRepository {
       name: name.trim(),
       email: normalizedEmail,
       passwordHash: finalHash,
-      role: role,
+      role: validRole,
       status: status,
       department: department || '',
       collegeId: collegeId || '',
       phone: phone || '',
+      institution: institution || 'Campus',
+      yearOfStudy: yearOfStudy || '',
+      profilePhoto: profilePhoto || '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -253,12 +264,10 @@ export class UserRepository {
             updated_at: updated.updatedAt,
           };
           if (fields.name !== undefined) updatePayload.name = fields.name;
-          if (fields.role !== undefined) updatePayload.role = fields.role;
           if (fields.department !== undefined) updatePayload.department = fields.department;
           if (fields.collegeId !== undefined) updatePayload.college_id = fields.collegeId;
           if (fields.phone !== undefined) updatePayload.phone = fields.phone;
 
-          // Attempt update with status if available
           const fullUpdate = {
             ...updatePayload,
             ...(fields.status !== undefined ? { status: fields.status } : {}),
@@ -267,7 +276,6 @@ export class UserRepository {
 
           const { error } = await client.from('profiles').update(fullUpdate).eq('id', id);
           if (error) {
-            // Fallback to base payload
             await client.from('profiles').update(updatePayload).eq('id', id);
           }
         }
@@ -277,54 +285,6 @@ export class UserRepository {
     }
 
     return { ...updated };
-  }
-
-  async listStaff() {
-    const staffMap = new Map();
-
-    // 1. Fetch from Supabase
-    if (isSupabaseConfigured()) {
-      try {
-        const client = getSupabaseClient();
-        if (client) {
-          const { data } = await client
-            .from('profiles')
-            .select('*')
-            .eq('role', 'staff');
-          if (data) {
-            data.forEach((d) => {
-              staffMap.set(d.id, {
-                id: d.id,
-                name: d.name,
-                email: d.email,
-                role: d.role,
-                status: d.status || 'active',
-                department: d.department,
-                collegeId: d.college_id,
-                phone: d.phone,
-                createdAt: d.created_at,
-                updatedAt: d.updated_at,
-              });
-            });
-          }
-        }
-      } catch (err) {
-        console.warn('[UserRepository] Supabase listStaff notice:', err.message);
-      }
-    }
-
-    // 2. Overlay with in-memory authoritative records
-    for (const u of this.users.values()) {
-      if (u.role === 'staff') {
-        const { passwordHash, ...safe } = u;
-        staffMap.set(u.id, safe);
-      } else if (staffMap.has(u.id)) {
-        // If demoted in-memory to student, remove from staff list!
-        staffMap.delete(u.id);
-      }
-    }
-
-    return Array.from(staffMap.values());
   }
 }
 

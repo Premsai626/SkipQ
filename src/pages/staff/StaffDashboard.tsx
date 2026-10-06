@@ -25,7 +25,11 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
 
   // Active incoming and processing orders
   const activeOrders = orders.filter(
-    (o) => o.status === 'PENDING' || o.status === 'ACCEPTED' || o.status === 'PRINTING' || o.status === 'READY_FOR_PICKUP'
+    (o) =>
+      o.status === 'PENDING' ||
+      o.status === 'ACCEPTED' ||
+      o.status === 'PRINTING' ||
+      o.status === 'READY_FOR_PICKUP'
   );
 
   return (
@@ -33,32 +37,33 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-extrabold uppercase tracking-wider">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-white text-[10px] font-black uppercase tracking-wider">
               STAFF COMMAND HUB
             </span>
             <Badge variant="live" label="DESK ONLINE" size="sm" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
-            Library Ground Floor • Counter #2
+          <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            Library Ground Floor • Counter #1
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-white/50 mt-1 font-medium">
             Operational dashboard for high-speed print fulfillment, queue throttling, and student collections.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onNavigate('/staff/queue')}
-            leftIcon={<Layers className="w-4 h-4" />}
+            leftIcon={<Layers className="w-4 h-4 text-[#00F0FF]" />}
           >
             Live Queue Board
           </Button>
 
           <Button
             size="sm"
+            variant="primary"
             onClick={() => onNavigate('/staff/orders')}
             rightIcon={<ArrowRight className="w-4 h-4" />}
           >
@@ -67,61 +72,64 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
         </div>
       </div>
 
-      {/* 5 Core KPI Metric Cards (Specification 25) */}
+      {/* 5 Core KPI Metric Cards */}
       <StatsOverview metrics={metrics} />
 
       {/* Desk Operational Load Bar */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-card space-y-4">
+      <div className="glass-card-dark rounded-3xl p-6 sm:p-7 border border-white/10 space-y-4 shadow-xl backdrop-blur-2xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Current Campus Desk Load</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <span>Current Campus Desk Load</span>
+              <span className="w-2 h-2 rounded-full bg-[#CCFF00] live-indicator-dot" />
+            </h3>
+            <p className="text-xs text-white/50 mt-0.5">
               Optimal throughput: 4 Laser printers connected • Paper tray levels at 85%
             </p>
           </div>
-          <span className="text-xs font-bold text-brand-600 bg-brand-50 px-3 py-1 rounded-full">
+          <span className="text-xs font-bold text-[#CCFF00] bg-[#CCFF00]/10 border border-[#CCFF00]/30 px-3 py-1 rounded-full">
             Capacity: 65% Normal
           </span>
         </div>
 
         {/* Multi-segment capacity progress bar */}
-        <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden flex">
+        <div className="h-3 w-full bg-white/5 border border-white/10 rounded-full overflow-hidden flex p-0.5">
           <div
-            className="bg-sky-500 transition-all duration-500"
+            className="bg-[#00F0FF] rounded-full transition-all duration-500 shadow-sm shadow-[#00F0FF]/50"
             style={{ width: `${Math.min(50, metrics.printingCount * 8)}%` }}
             title="Printing load"
           />
           <div
-            className="bg-amber-400 transition-all duration-500"
+            className="bg-amber-400 rounded-full transition-all duration-500 shadow-sm shadow-amber-400/50"
             style={{ width: `${Math.min(30, metrics.pendingCount * 5)}%` }}
             title="Pending load"
           />
           <div
-            className="bg-emerald-500 transition-all duration-500"
+            className="bg-[#CCFF00] rounded-full transition-all duration-500 shadow-sm shadow-[#CCFF00]/50"
             style={{ width: `${Math.min(20, metrics.readyCount * 4)}%` }}
             title="Ready load"
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-1">
+        <div className="flex flex-wrap items-center justify-between text-[11px] text-white/60 pt-1">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-sky-500" /> Currently Printing ({metrics.printingCount})
+            <span className="flex items-center gap-1.5 font-medium">
+              <span className="w-2.5 h-2.5 rounded-sm bg-[#00F0FF]" /> Currently Printing ({metrics.printingCount})
             </span>
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-1.5 font-medium">
               <span className="w-2.5 h-2.5 rounded-sm bg-amber-400" /> Pending Review ({metrics.pendingCount})
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" /> Ready for Collection ({metrics.readyCount})
+            <span className="flex items-center gap-1.5 font-medium">
+              <span className="w-2.5 h-2.5 rounded-sm bg-[#CCFF00]" /> Ready for Collection ({metrics.readyCount})
             </span>
           </div>
 
           <button
             onClick={simulateQueueStep}
-            className="font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 cursor-pointer"
+            className="font-bold text-[#CCFF00] hover:underline flex items-center gap-1.5 cursor-pointer bg-white/5 border border-white/10 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all"
           >
-            <Zap className="w-3 h-3 text-amber-500" />
-            <span>Simulate Print Cycle Advance</span>
+            <Zap className="w-3.5 h-3.5 text-[#CCFF00]" />
+            <span>Simulate Queue Cycle</span>
           </button>
         </div>
       </div>
@@ -129,12 +137,13 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
       {/* Priority Incoming Stream */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-slate-900">
-            Active Processing Line ({activeOrders.length})
+          <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <span>Active Processing Line ({activeOrders.length})</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF]" />
           </h3>
           <button
             onClick={() => onNavigate('/staff/orders')}
-            className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+            className="text-xs font-bold text-[#CCFF00] hover:underline flex items-center gap-1 cursor-pointer"
           >
             <span>Open Full Orders Table</span>
             <ArrowRight className="w-4 h-4" />
@@ -149,30 +158,30 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
               <div
                 key={order.id}
                 onClick={() => onNavigate('/staff/orders')}
-                className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-card hover:border-brand-200 hover:shadow-floating transition-all cursor-pointer space-y-3"
+                className="glass-card-dark rounded-2xl p-5 border border-white/10 hover:border-white/25 hover:bg-white/5 transition-all duration-200 cursor-pointer space-y-3.5 shadow-xl group"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-base font-black text-slate-900">
+                  <span className="font-mono text-lg font-black text-white">
                     {order.token}
                   </span>
                   <Badge status={order.status} size="sm" />
                 </div>
 
-                <div className="text-xs text-slate-600 space-y-1">
-                  <p className="font-bold text-slate-900">{order.studentName}</p>
-                  <p className="text-slate-500 truncate">
+                <div className="text-xs text-white/70 space-y-1">
+                  <p className="font-bold text-white text-sm">{order.studentName}</p>
+                  <p className="text-white/50 truncate">
                     {order.documents[0]?.name} • {totalPages} pages ({order.config.copies}x)
                   </p>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-white/40 font-mono">
                     {order.config.color} • {order.config.paperSize} • {order.config.finishing}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="font-extrabold text-slate-900">
+                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                  <span className="font-mono font-bold text-[#CCFF00] text-sm">
                     {formatCurrency(order.pricing.total)}
                   </span>
-                  <span className="text-[11px] text-brand-600 font-semibold">
+                  <span className="text-[11px] text-white/60 font-semibold group-hover:text-white group-hover:translate-x-0.5 transition-all">
                     Manage Order →
                   </span>
                 </div>
@@ -184,3 +193,4 @@ export const StaffDashboard: React.FC<StaffDashboardProps> = ({ onNavigate }) =>
     </div>
   );
 };
+

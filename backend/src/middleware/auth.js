@@ -9,20 +9,17 @@ import { getUserRepository } from '../repositories/userRepository.js';
  */
 export async function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      success: false,
-      message: 'Unauthorized: Missing or invalid Authorization header',
-      timestamp: new Date().toISOString(),
-    });
+  let token = null;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  } else if (typeof req.query.token === 'string' && req.query.token.trim()) {
+    token = req.query.token.trim();
   }
 
-  const token = authHeader.split(' ')[1];
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: 'Unauthorized: No token provided',
+      message: 'Unauthorized: Missing or invalid Authorization header',
       timestamp: new Date().toISOString(),
     });
   }

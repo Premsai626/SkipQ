@@ -1,4 +1,4 @@
-import { Order, OrderStatus, PrintConfiguration, DocumentItem, PriceBreakdown, User, NotificationItem, OperationalMetrics } from '../types';
+import { Order, OrderStatus, PrintConfiguration, DocumentItem, PriceBreakdown, User, NotificationItem, OperationalMetrics, StoreItem } from '../types';
 
 export const API_BASE = '/api/v1';
 
@@ -48,7 +48,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   return json.data as T;
 }
 
-// 1. Auth API
+// 1. Auth & Profile API
 export const authApi = {
   login: async (email: string, password: string) => {
     return request<{ user: User; token: string }>('/auth/login', {
@@ -57,7 +57,17 @@ export const authApi = {
     });
   },
 
-  register: async (userData: { name: string; email: string; password: string; department?: string; collegeId?: string; phone?: string }) => {
+  register: async (userData: {
+    name: string;
+    email: string;
+    password: string;
+    role?: 'student' | 'staff';
+    department?: string;
+    collegeId?: string;
+    phone?: string;
+    institution?: string;
+    yearOfStudy?: string;
+  }) => {
     return request<{ user: User; token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -68,58 +78,33 @@ export const authApi = {
     return request<User>('/auth/me');
   },
 
+  updateProfile: async (data: Partial<User>) => {
+    return request<User>('/profiles/me', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  getProfileById: async (id: string) => {
+    return request<User>(`/profiles/${id}`);
+  },
+
   syncGoogleUser: async (data: {
-    email: string;
+    supabaseToken: string;
+    role?: 'student' | 'staff';
+    email?: string;
     name?: string;
-    supabaseToken?: string;
     avatar?: string;
     department?: string;
     collegeId?: string;
     phone?: string;
+    institution?: string;
+    yearOfStudy?: string;
   }) => {
     return request<{ user: User; token: string }>('/auth/google-sync', {
       method: 'POST',
       body: JSON.stringify(data),
     });
-  },
-
-  bootstrapAdmin: async (data: {
-    bootstrapKey: string;
-    name: string;
-    email: string;
-    password: string;
-  }) => {
-    return request<{ user: User; token: string }>('/auth/admin/bootstrap', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  },
-};
-
-// 1b. Admin API (Staff Provisioning & Management)
-export const adminApi = {
-  provisionStaff: async (data: {
-    name: string;
-    email: string;
-    department?: string;
-    collegeId?: string;
-    phone?: string;
-    password?: string;
-  }) => {
-    return request<User>('/admin/staff', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  },
-
-  deprovisionStaff: async (userId: string) => {
-    return request<User>(`/admin/staff/${userId}/deactivate`, {
-      method: 'PATCH',
-    });
-  },
-
-  listStaff: async () => {
-    return request<User[]>('/admin/staff');
   },
 };
 
@@ -146,6 +131,34 @@ export const documentsApi = {
 
     return json.data as DocumentItem;
   },
+
+  getViewUrl: async (
+    documentId: string
+  ): Promise<{
+    id: string;
+    filename: string;
+    name: string;
+    mimeType: string;
+    signedUrl: string;
+    downloadUrl?: string;
+    viewUrl?: string;
+  }> => {
+    const token = getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const response = await fetch(`${API_BASE}/documents/${encodeURIComponent(documentId)}/view`, {
+      method: 'GET',
+      headers,
+    });
+
+    const json = await response.json();
+    if (!response.ok || !json.success) {
+      throw new Error(json.message || 'Unable to access document');
+    }
+
+    return json.data;
+  },
 };
 
 // 3. Pricing API
@@ -158,11 +171,57 @@ export const pricingApi = {
   },
 };
 
-// 4. Orders API
+// 4. Store API (Stationery Catalog)
+export const storeApi = {
+  getItems: async (params: { category?: string; search?: string; availableOnly?: boolean } = {}): Promise<StoreItem[]> => {
+    const qs = new URLSearchParams();
+    if (params.category) qs.append('category', params.category);
+    if (params.search) qs.append('search', params.search);
+    if (params.availableOnly !== undefined) qs.append('availableOnly', String(params.availableOnly));
+    const query = qs.toString() ? `?${qs.toString()}` : '';
+    return request<StoreItem[]>(`/store/items${query}`);
+  },
+
+  getItemById: async (id: string): Promise<StoreItem> => {
+    return request<StoreItem>(`/store/items/${id}`);
+  },
+
+  createItem: async (item: {
+    name: string;
+    description?: string;
+    category?: string;
+    price: number;
+    stock: number;
+    imageUrl?: string;
+    isAvailable?: boolean;
+  }): Promise<StoreItem> => {
+    return request<StoreItem>('/store/items', {
+      method: 'POST',
+      body: JSON.stringify(item),
+    });
+  },
+
+  updateItem: async (id: string, updates: Partial<StoreItem>): Promise<StoreItem> => {
+    return request<StoreItem>(`/store/items/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    });
+  },
+
+  deleteItem: async (id: string): Promise<{ success: boolean; message: string }> => {
+    return request<{ success: boolean; message: string }>(`/store/items/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// 5. Orders API (Print & Stationery Orders)
 export const ordersApi = {
   create: async (payload: {
-    documents: DocumentItem[];
-    config: PrintConfiguration;
+    orderType?: 'PRINT' | 'STORE';
+    documents?: DocumentItem[];
+    config?: PrintConfiguration;
+    items?: Array<{ itemId: string; quantity: number }>;
     paymentMethod: string;
     pickupCounter?: string;
   }): Promise<Order> => {
@@ -208,21 +267,21 @@ export const ordersApi = {
   },
 };
 
-// 5. Queue API
+// 6. Queue API
 export const queueApi = {
   getQueue: async (): Promise<Order[]> => {
     return request<Order[]>('/queue');
   },
 };
 
-// 6. Analytics API
+// 7. Analytics API
 export const analyticsApi = {
   getMetrics: async (): Promise<OperationalMetrics> => {
     return request<OperationalMetrics>('/analytics');
   },
 };
 
-// 7. Notifications API
+// 8. Notifications API
 export const notificationsApi = {
   getAll: async (): Promise<NotificationItem[]> => {
     return request<NotificationItem[]>('/notifications');

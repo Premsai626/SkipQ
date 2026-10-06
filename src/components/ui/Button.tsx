@@ -30,27 +30,27 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]';
+    'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#09090b] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]';
 
   const sizeStyles = {
     sm: 'text-xs px-3 py-1.5 gap-1.5',
     md: 'text-sm px-4 py-2.5 gap-2',
-    lg: 'text-base px-6 py-3.5 gap-2.5 font-semibold',
+    lg: 'text-base px-6 py-3.5 gap-2.5 font-bold',
   };
 
   const variantStyles = {
     primary:
-      'bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500 shadow-sm hover:shadow-glow',
+      'bg-[#CCFF00] text-black hover:bg-[#b8e600] focus:ring-[#CCFF00] shadow-lg shadow-[#CCFF00]/20 font-black',
     secondary:
-      'bg-slate-100 text-slate-800 hover:bg-slate-200 focus:ring-slate-400',
+      'bg-white/10 text-white hover:bg-white/15 border border-white/10 focus:ring-white/30 backdrop-blur-md',
     outline:
-      'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 focus:ring-brand-500 shadow-sm',
+      'border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 focus:ring-[#CCFF00] shadow-sm backdrop-blur-md',
     danger:
-      'bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 shadow-sm',
+      'bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500/30 focus:ring-rose-500 shadow-sm',
     ghost:
-      'text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:ring-slate-400',
+      'text-white/70 hover:text-white hover:bg-white/10 focus:ring-white/20',
     success:
-      'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm hover:shadow-glow-emerald',
+      'bg-emerald-500 text-black font-black hover:bg-emerald-400 focus:ring-emerald-500 shadow-lg shadow-emerald-500/20',
   };
 
   return (

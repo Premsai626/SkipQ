@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;
-  role: 'student' | 'staff' | 'admin';
+  role: 'student' | 'staff';
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -13,12 +13,14 @@ interface AuthContextType {
     name: string;
     email: string;
     password: string;
+    role?: 'student' | 'staff';
     department?: string;
     collegeId?: string;
     phone?: string;
   }) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  setUser: (user: User | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -56,12 +58,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         'User';
       const avatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || '';
 
+      const selectedRole = (localStorage.getItem('xeroxflow_google_selected_role') as 'student' | 'staff') || 'student';
+      localStorage.removeItem('xeroxflow_google_selected_role');
+
       // Pass Supabase access token so backend cryptographically validates the session
       const res = await authApi.syncGoogleUser({
         email: sessionUser.email,
         name,
         supabaseToken: session.access_token,
         avatar,
+        role: selectedRole,
       });
 
       if (res?.token && res?.user) {
@@ -110,7 +116,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await syncSessionUser(session);
       } else if (event === 'SIGNED_OUT') {
         removeAuthToken();
+        try {
+          localStorage.removeItem('xeroxflow_auth_token');
+          localStorage.removeItem('xeroxflow_post_auth_redirect');
+          localStorage.removeItem('xeroxflow_user_profile');
+          localStorage.removeItem('xeroxflow_google_selected_role');
+        } catch {}
         setUser(null);
+        const p = window.location.pathname || '';
+        if (p.startsWith('/student') || p.startsWith('/staff') || p.startsWith('/dashboard') || p.startsWith('/orders')) {
+          window.history.replaceState(null, '', '/');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }
       }
     });
 
@@ -134,6 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     name: string;
     email: string;
     password: string;
+    role?: 'student' | 'staff';
     department?: string;
     collegeId?: string;
     phone?: string;
@@ -177,11 +195,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await supabase.auth.signOut();
-    } catch {}
+    } catch (err) {
+      console.warn('Supabase signOut error:', err);
+    }
     removeAuthToken();
-    localStorage.removeItem('xeroxflow_post_auth_redirect');
-    localStorage.removeItem('xeroxflow_user_profile');
+    try {
+      localStorage.removeItem('xeroxflow_auth_token');
+      localStorage.removeItem('xeroxflow_post_auth_redirect');
+      localStorage.removeItem('xeroxflow_user_profile');
+      localStorage.removeItem('xeroxflow_google_selected_role');
+      // Clean any Supabase-managed storage items in localStorage
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('sb-') || key.includes('supabase.auth'))) {
+          localStorage.removeItem(key);
+        }
+      }
+    } catch {}
     setUser(null);
+    window.history.replaceState(null, '', '/');
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
@@ -195,6 +228,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         register,
         signInWithGoogle,
         logout,
+        setUser,
       }}
     >
       {children}

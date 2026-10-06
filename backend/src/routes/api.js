@@ -1,6 +1,6 @@
 import express from 'express';
 import { AuthController } from '../controllers/authController.js';
-import { AdminController } from '../controllers/adminController.js';
+import { StoreController } from '../controllers/storeController.js';
 import { DocumentController } from '../controllers/documentController.js';
 import { OrderController } from '../controllers/orderController.js';
 import {
@@ -51,17 +51,24 @@ router.get('/supabase/status', async (req, res) => {
   }
 });
 
-// 2. Authentication Routes
+// 2. Authentication & Profile Routes
 router.post('/auth/login', AuthController.login);
 router.post('/auth/register', AuthController.register);
 router.post('/auth/google-sync', AuthController.syncGoogleUser);
-router.post('/auth/admin/bootstrap', AuthController.bootstrapAdmin);
+router.post('/auth/google/sync', AuthController.syncGoogleUser);
 router.get('/auth/me', authenticate, AuthController.me);
+router.get('/profiles/:id', authenticate, AuthController.getProfileById);
+router.get('/auth/profiles/:id', authenticate, AuthController.getProfileById);
+router.patch('/profiles/me', authenticate, AuthController.updateProfile);
+router.patch('/auth/profile', authenticate, AuthController.updateProfile);
 
-// 3. Admin Staff Management Routes (Authenticated + Active + Admin Only)
-router.post('/admin/staff', authenticate, requireRole('admin'), AdminController.provisionStaff);
-router.patch('/admin/staff/:userId/deactivate', authenticate, requireRole('admin'), AdminController.deprovisionStaff);
-router.get('/admin/staff', authenticate, requireRole('admin'), AdminController.listStaff);
+// 3. Shared Stationery Store Catalog Routes
+router.get('/store/items', authenticate, StoreController.getItems);
+router.get('/store/items/:id', authenticate, StoreController.getItemById);
+router.post('/store/items', authenticate, requireRole('staff'), StoreController.createItem);
+router.put('/store/items/:id', authenticate, requireRole('staff'), StoreController.updateItem);
+router.patch('/store/items/:id', authenticate, requireRole('staff'), StoreController.updateItem);
+router.delete('/store/items/:id', authenticate, requireRole('staff'), StoreController.deleteItem);
 
 // 4. Documents Routes (Authenticated)
 router.post(
@@ -72,25 +79,27 @@ router.post(
 );
 router.get('/documents/presigned-url', authenticate, DocumentController.getPresignedUrl);
 router.get('/documents/file/:filename', authenticate, DocumentController.getFile);
+router.get('/documents/:documentId/view', authenticate, DocumentController.viewDocument);
+router.get('/documents/:documentId/signed-url', authenticate, DocumentController.viewDocument);
 
 // 5. Authoritative Pricing Calculator (Public/Student)
 router.post('/pricing/calculate', PricingController.calculate);
 
-// 6. Orders Routes
+// 6. Orders Routes (Print & Stationery)
 router.get('/orders', authenticate, OrderController.getAll);
 router.post('/orders', authenticate, OrderController.create);
 router.get('/orders/:id', authenticate, OrderController.getById);
 router.post('/orders/:id/cancel', authenticate, OrderController.cancel);
 
-// Operational Order State & Payment Actions (Staff & Admin Only)
-router.patch('/orders/:id/status', authenticate, requireRole('staff', 'admin'), OrderController.updateStatus);
-router.post('/orders/:id/verify-payment', authenticate, requireRole('staff', 'admin'), OrderController.verifyPayment);
+// Operational Order State & Payment Actions (Staff Only)
+router.patch('/orders/:id/status', authenticate, requireRole('staff'), OrderController.updateStatus);
+router.post('/orders/:id/verify-payment', authenticate, requireRole('staff'), OrderController.verifyPayment);
 
 // 7. Queue Route (Authenticated, sanitized for students)
 router.get('/queue', authenticate, QueueController.getQueue);
 
-// 8. Operational Analytics (Staff & Admin Only)
-router.get('/analytics', authenticate, requireRole('staff', 'admin'), AnalyticsController.getMetrics);
+// 8. Operational Analytics (Staff Only)
+router.get('/analytics', authenticate, requireRole('staff'), AnalyticsController.getMetrics);
 
 // 9. Notifications Routes (Authenticated)
 router.get('/notifications', authenticate, NotificationController.getAll);

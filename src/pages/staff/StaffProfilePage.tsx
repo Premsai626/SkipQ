@@ -4,8 +4,7 @@ import {
   Mail,
   Phone,
   Building,
-  GraduationCap,
-  Calendar,
+  ShieldCheck,
   LogOut,
   CheckCircle2,
   AlertCircle,
@@ -16,19 +15,18 @@ import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/api';
 import { Button } from '../../components/ui/Button';
 
-interface StudentProfilePageProps {
+interface StaffProfilePageProps {
   onNavigate: (path: string, replace?: boolean) => void;
 }
 
-export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNavigate }) => {
+export const StaffProfilePage: React.FC<StaffProfilePageProps> = ({ onNavigate }) => {
   const { user, setUser, logout } = useAuth();
 
   const [name, setName] = useState(user?.name || '');
-  const [institution, setInstitution] = useState(user?.institution || 'Campus Institute of Technology');
-  const [department, setDepartment] = useState(user?.department || 'Computer Science & Engineering');
-  const [yearOfStudy, setYearOfStudy] = useState(user?.yearOfStudy || '3rd Year');
+  const [institution, setInstitution] = useState(user?.institution || 'Campus Stationery & Xerox Center');
+  const [department, setDepartment] = useState(user?.department || 'Counter #2 • Main Desk');
   const [phone, setPhone] = useState(user?.phone || '');
-  const [collegeId, setCollegeId] = useState(user?.collegeId || '');
+  const [collegeId, setCollegeId] = useState(user?.collegeId || 'STAFF-DESK-01');
   const [profilePhoto, setProfilePhoto] = useState(user?.profilePhoto || '');
 
   const [isSaving, setIsSaving] = useState(false);
@@ -38,11 +36,10 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
   useEffect(() => {
     if (user) {
       setName(user.name || '');
-      setInstitution(user.institution || 'Campus Institute of Technology');
-      setDepartment(user.department || '');
-      setYearOfStudy(user.yearOfStudy || '3rd Year');
+      setInstitution(user.institution || 'Campus Stationery & Xerox Center');
+      setDepartment(user.department || 'Counter #2 • Main Desk');
       setPhone(user.phone || '');
-      setCollegeId(user.collegeId || '');
+      setCollegeId(user.collegeId || 'STAFF-DESK-01');
       setProfilePhoto(user.profilePhoto || '');
     }
   }, [user]);
@@ -58,7 +55,6 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
         name: name.trim(),
         institution: institution.trim(),
         department: department.trim(),
-        yearOfStudy: yearOfStudy.trim(),
         phone: phone.trim(),
         collegeId: collegeId.trim(),
         profilePhoto: profilePhoto.trim(),
@@ -70,7 +66,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
         setTimeout(() => setSavedSuccess(false), 3000);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to update profile');
+      setErrorMessage(err.message || 'Failed to update operator profile');
     } finally {
       setIsSaving(false);
     }
@@ -85,10 +81,10 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
     <div className="space-y-6 max-w-3xl mx-auto animate-in fade-in duration-200">
       <div>
         <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-          <GraduationCap className="w-6 h-6 text-[#CCFF00]" /> Student Profile
+          <ShieldCheck className="w-6 h-6 text-[#CCFF00]" /> Staff Operator Profile
         </h1>
         <p className="text-sm text-white/50 mt-0.5">
-          Manage your verified campus credentials, contact information, and academic department details.
+          Manage your operator terminal credentials, contact information, and station assignment.
         </p>
       </div>
 
@@ -102,7 +98,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
       {savedSuccess && (
         <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-3 animate-in fade-in duration-200">
           <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-400" />
-          <span className="font-bold font-mono">Profile updated successfully! Your campus credentials are up to date.</span>
+          <span className="font-bold font-mono">Operator profile saved successfully!</span>
         </div>
       )}
 
@@ -120,8 +116,8 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
                 className="w-20 h-20 rounded-2xl object-cover border-2 border-[#CCFF00]/40 shadow-xl"
               />
             ) : (
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-white/10 to-white/5 text-white flex items-center justify-center font-black text-2xl border border-white/15 shadow-xl font-mono">
-                {name?.slice(0, 2).toUpperCase() || 'ST'}
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-white/10 to-white/5 text-white flex items-center justify-center font-black text-2xl border border-white/15 shadow-xl">
+                <ShieldCheck className="w-9 h-9 text-[#CCFF00]" />
               </div>
             )}
             <div className="absolute -bottom-1 -right-1 p-1.5 bg-[#121215] rounded-full shadow border border-white/15 text-white/70">
@@ -131,15 +127,15 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-xl font-bold text-white truncate">{name || 'Campus Student'}</h2>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-black uppercase tracking-wider font-mono">
-                Verified Student
+              <h2 className="text-xl font-bold text-white truncate">{name || 'Xerox Desk Operator'}</h2>
+              <span className="px-2.5 py-0.5 rounded-full bg-[#CCFF00]/10 text-[#CCFF00] border border-[#CCFF00]/20 text-[10px] font-black uppercase tracking-wider font-mono">
+                Staff Operator
               </span>
             </div>
             <p className="text-xs text-white/50 mt-1 flex items-center gap-2">
-              <span className="font-mono font-bold text-white/80">{collegeId || 'Roll No. Not Set'}</span>
+              <span className="font-mono font-bold text-white/80">{collegeId || 'STAFF-DESK-01'}</span>
               <span className="text-white/20">•</span>
-              <span>{department || 'General Academic'}</span>
+              <span>{department || 'Counter #2 • Main Desk'}</span>
             </p>
             <p className="text-[11px] text-white/40 mt-0.5 font-mono">{user?.email}</p>
           </div>
@@ -147,10 +143,10 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
 
         {/* Form Inputs Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          {/* Full Name */}
+          {/* Operator Name */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <UserIcon className="w-3.5 h-3.5 text-[#CCFF00]" /> Full Name
+              <UserIcon className="w-3.5 h-3.5 text-[#CCFF00]" /> Operator Name
             </label>
             <input
               type="text"
@@ -164,7 +160,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
           {/* Email (Read-Only) */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <Mail className="w-3.5 h-3.5 text-white/40" /> Campus Email (Read-Only)
+              <Mail className="w-3.5 h-3.5 text-white/40" /> Staff Email (Read-Only)
             </label>
             <input
               type="email"
@@ -174,70 +170,52 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
             />
           </div>
 
-          {/* Institution */}
+          {/* Institution / Campus Section */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <Building className="w-3.5 h-3.5 text-[#00F0FF]" /> Institution / College
+              <Building className="w-3.5 h-3.5 text-[#00F0FF]" /> Facility / Institution
             </label>
             <input
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
-              placeholder="e.g. Campus Institute of Technology"
+              placeholder="e.g. Campus Stationery & Xerox Center"
               className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
             />
           </div>
 
-          {/* Department */}
+          {/* Desk / Counter Assignment */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <GraduationCap className="w-3.5 h-3.5 text-[#CCFF00]" /> Department / Branch
+              Counter Assignment / Department
             </label>
             <input
               type="text"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              placeholder="e.g. Computer Science & Engineering"
+              placeholder="e.g. Counter #2 • Main Desk"
               className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
             />
           </div>
 
-          {/* Roll No / College ID */}
+          {/* Terminal Code */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              Roll Number / Student ID
+              Terminal Identifier
             </label>
             <input
               type="text"
               value={collegeId}
               onChange={(e) => setCollegeId(e.target.value)}
-              placeholder="e.g. 21BCS1084"
+              placeholder="e.g. STAFF-DESK-01"
               className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium font-mono"
             />
           </div>
 
-          {/* Year of Study */}
+          {/* Operator Contact Phone */}
           <div className="space-y-1.5">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <Calendar className="w-3.5 h-3.5 text-white/50" /> Year of Study
-            </label>
-            <select
-              value={yearOfStudy}
-              onChange={(e) => setYearOfStudy(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-[#121215] text-white focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
-            >
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
-              <option value="Postgraduate">Postgraduate</option>
-            </select>
-          </div>
-
-          {/* Phone */}
-          <div className="space-y-1.5">
-            <label className="font-bold text-white/70 flex items-center gap-2">
-              <Phone className="w-3.5 h-3.5 text-[#CCFF00]" /> Phone Number (SMS Alerts)
+              <Phone className="w-3.5 h-3.5 text-[#CCFF00]" /> Contact Phone
             </label>
             <input
               type="tel"
@@ -249,9 +227,9 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
           </div>
 
           {/* Photo URL */}
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 sm:col-span-2">
             <label className="font-bold text-white/70 flex items-center gap-2">
-              <Camera className="w-3.5 h-3.5 text-white/40" /> Profile Photo URL (Optional)
+              <Camera className="w-3.5 h-3.5 text-white/40" /> Operator Profile Photo URL (Optional)
             </label>
             <input
               type="url"
@@ -281,7 +259,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({ onNaviga
             disabled={isSaving}
             leftIcon={<Save className="w-4 h-4" />}
           >
-            {isSaving ? 'Saving...' : 'Save Profile'}
+            {isSaving ? 'Saving...' : 'Save Operator Profile'}
           </Button>
         </div>
       </form>

@@ -13,10 +13,13 @@ import { OrderTrackingPage } from './pages/student/OrderTrackingPage';
 import { OrderHistoryPage } from './pages/student/OrderHistoryPage';
 import { NotificationsPage } from './pages/student/NotificationsPage';
 import { StudentProfilePage } from './pages/student/StudentProfilePage';
+import { StudentStorePage } from './pages/student/StudentStorePage';
 import { StaffDashboard } from './pages/staff/StaffDashboard';
 import { StaffOrdersPage } from './pages/staff/StaffOrdersPage';
 import { StaffQueuePage } from './pages/staff/StaffQueuePage';
 import { StaffAnalyticsPage } from './pages/staff/StaffAnalyticsPage';
+import { StaffStorePage } from './pages/staff/StaffStorePage';
+import { StaffProfilePage } from './pages/staff/StaffProfilePage';
 
 const AppContent: React.FC = () => {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -25,8 +28,12 @@ const AppContent: React.FC = () => {
 
   const { role, isAuthenticated } = useAuth();
 
-  const handleNavigate = (path: string) => {
-    window.history.pushState({}, '', path);
+  const handleNavigate = (path: string, replace = false) => {
+    if (replace) {
+      window.history.replaceState({}, '', path);
+    } else {
+      window.history.pushState({}, '', path);
+    }
     setCurrentPath(path);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -39,9 +46,26 @@ const AppContent: React.FC = () => {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  // Post-authentication redirect and strict dashboard segregation
+  // Strict route protection: Unauthenticated users visiting protected routes MUST be redirected to '/'
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      const isProtected =
+        currentPath.startsWith('/student') ||
+        currentPath.startsWith('/staff') ||
+        currentPath.startsWith('/orders') ||
+        currentPath.startsWith('/store') ||
+        currentPath.startsWith('/profile') ||
+        currentPath.startsWith('/notifications') ||
+        currentPath.startsWith('/queue') ||
+        currentPath.startsWith('/history') ||
+        currentPath.startsWith('/dashboard');
+
+      if (isProtected) {
+        window.history.replaceState(null, '', '/');
+        setCurrentPath('/');
+      }
+      return;
+    }
 
     // 1. If currently on home or auth pages, redirect directly to respective dashboard
     if (currentPath === '/' || currentPath === '/login' || currentPath === '/register') {
@@ -69,8 +93,9 @@ const AppContent: React.FC = () => {
     }
   }, [isAuthenticated, role, currentPath]);
 
-  // Determine if this is an app shell route (needs sidebar / padding)
+  // Determine if this is an app shell route (authenticated and not on public landing/auth)
   const isLandingOrAuth = currentPath === '/' || currentPath === '/login' || currentPath === '/register';
+  const showAppShell = isAuthenticated && !isLandingOrAuth;
 
   // Helper to extract Order ID from tracking URL like /student/orders/ord_1042/tracking or /orders/ord_1042/tracking
   const trackingMatch = currentPath.match(/\/orders\/([^/]+)\/tracking/);
@@ -102,6 +127,9 @@ const AppContent: React.FC = () => {
       if (currentPath === '/student/history' || currentPath === '/orders/history') {
         return <OrderHistoryPage onNavigate={handleNavigate} />;
       }
+      if (currentPath === '/student/store' || currentPath === '/store') {
+        return <StudentStorePage onNavigate={handleNavigate} />;
+      }
       if (currentPath === '/student/notifications' || currentPath === '/notifications') {
         return <NotificationsPage onNavigate={handleNavigate} />;
       }
@@ -123,6 +151,15 @@ const AppContent: React.FC = () => {
       if (currentPath === '/staff/queue') {
         return <StaffQueuePage onNavigate={handleNavigate} />;
       }
+      if (currentPath === '/staff/store') {
+        return <StaffStorePage onNavigate={handleNavigate} />;
+      }
+      if (currentPath === '/staff/notifications') {
+        return <NotificationsPage onNavigate={handleNavigate} />;
+      }
+      if (currentPath === '/staff/profile') {
+        return <StaffProfilePage onNavigate={handleNavigate} />;
+      }
       if (currentPath === '/staff/analytics') {
         return <StaffAnalyticsPage />;
       }
@@ -134,28 +171,36 @@ const AppContent: React.FC = () => {
     return <LandingPage onNavigate={handleNavigate} />;
   };
 
-  const isHome = currentPath === '/' || currentPath === '/login' || currentPath === '/register';
-
   return (
-    <div className={`min-h-screen flex flex-col ${isHome ? 'bg-[#0038FF]' : 'bg-slate-50 text-slate-900 selection:bg-brand-500 selection:text-white pb-20 md:pb-0'}`}>
-      {/* Top Navbar */}
-      {!isHome && <Navbar currentPath={currentPath} onNavigate={handleNavigate} />}
+    <div
+      className={`min-h-screen flex flex-col ${
+        !showAppShell
+          ? 'bg-[#0038FF]'
+          : 'bg-[#09090b] text-white selection:bg-[#CCFF00] selection:text-black pb-20 md:pb-0'
+      }`}
+    >
+      {/* Top Navbar: Only render for authenticated app shell */}
+      {showAppShell && <Navbar currentPath={currentPath} onNavigate={handleNavigate} />}
 
       {/* Main Layout Body */}
-      {isLandingOrAuth ? (
+      {!showAppShell ? (
         <main className="flex-1 w-full">{renderPage()}</main>
       ) : (
-        <div className="flex-1 flex max-w-7xl w-full mx-auto">
+        <div className="flex-1 flex max-w-7xl w-full mx-auto relative">
+          {/* Background Ambient Glow */}
+          <div className="dashboard-aurora absolute left-1/2 top-20 h-[500px] w-[700px] -translate-x-1/2 blur-[100px] pointer-events-none z-0 opacity-60" />
+          <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none opacity-40" />
+
           {/* Desktop Sidebar */}
           <Sidebar currentPath={currentPath} onNavigate={handleNavigate} />
 
           {/* Page Content Container */}
-          <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">{renderPage()}</main>
+          <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 relative z-10">{renderPage()}</main>
         </div>
       )}
 
-      {/* Mobile Bottom Navigation */}
-      {!isLandingOrAuth && (
+      {/* Mobile Bottom Navigation: Only render for authenticated app shell */}
+      {showAppShell && (
         <MobileNav currentPath={currentPath} onNavigate={handleNavigate} />
       )}
     </div>

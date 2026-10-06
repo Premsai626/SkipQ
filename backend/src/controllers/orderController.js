@@ -3,7 +3,7 @@ import { createOrderSchema, updateStatusSchema } from '../validators/index.js';
 
 export class OrderController {
   /**
-   * Create a new Order.
+   * Create a new Order (Print or Store).
    * Student identity is strictly derived from trusted req.user.
    */
   static async create(req, res, next) {
@@ -11,8 +11,10 @@ export class OrderController {
       const validated = createOrderSchema.parse(req.body);
 
       const order = await orderService.createOrder({
+        orderType: validated.orderType,
         documents: validated.documents,
         config: validated.config,
+        items: validated.items,
         paymentMethod: validated.paymentMethod,
         student: req.user, // Derived from verified JWT
         pickupCounter: validated.pickupCounter,
@@ -76,7 +78,7 @@ export class OrderController {
   /**
    * List Orders.
    * Students can strictly only view their own order list.
-   * Staff/Admin can view all campus orders or filter by student.
+   * Staff can view all campus orders or filter by student.
    */
   static async getAll(req, res, next) {
     try {
@@ -118,7 +120,7 @@ export class OrderController {
 
   /**
    * Operational Status Transition.
-   * Authorized Staff and Admin only.
+   * Authorized Staff only.
    */
   static async updateStatus(req, res, next) {
     try {
@@ -144,7 +146,7 @@ export class OrderController {
 
   /**
    * Verify Payment at Counter / Terminal.
-   * Authorized Staff and Admin only.
+   * Authorized Staff only.
    */
   static async verifyPayment(req, res, next) {
     try {

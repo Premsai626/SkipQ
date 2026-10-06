@@ -66,7 +66,7 @@ export async function testSupabaseConnection() {
         return {
           connected: true,
           tablesReady: false,
-          message: 'Connected to Supabase! The "orders" table does not exist yet. Please run backend/supabase/schema.sql in the Supabase SQL Editor.',
+          message: 'Connected to Supabase! The "orders" table does not exist yet. Please run supabase/schema.sql in the Supabase SQL Editor.',
         };
       }
       return {

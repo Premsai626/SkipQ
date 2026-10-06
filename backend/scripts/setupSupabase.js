@@ -21,7 +21,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY || SUPABASE_URL.includes('your-project-id')) 
   console.log('2. Go to Project Settings -> API');
   console.log('3. Copy your "Project URL" into SUPABASE_URL in backend/.env');
   console.log('4. Copy your "service_role" secret key into SUPABASE_SERVICE_ROLE_KEY');
-  console.log('5. In Supabase SQL Editor, run backend/supabase/schema.sql');
+  console.log('5. In Supabase SQL Editor, run supabase/schema.sql');
   console.log('===========================================================');
   process.exit(0);
 }
@@ -48,7 +48,7 @@ async function runDiagnostic() {
     if (error) {
       if (error.code === '42P01') {
         console.log('❌ Orders Table: NOT FOUND');
-        console.log('   Action: Run backend/supabase/schema.sql in Supabase SQL Editor.');
+        console.log('   Action: Run supabase/schema.sql in Supabase SQL Editor.');
       } else {
         console.log(`❌ Orders Table Error: ${error.message} (code: ${error.code})`);
       }
@@ -100,7 +100,30 @@ async function runDiagnostic() {
     allHealthy = false;
   }
 
-  // 4. Check Storage Bucket
+  // 4. Check Documents Table
+  try {
+    const { data, count, error } = await supabase
+      .from('documents')
+      .select('id, name, filename, owner_id', { count: 'exact' })
+      .limit(5);
+
+    if (error) {
+      if (error.code === '42P01' || error.code === 'PGRST205') {
+        console.log('⚠️ Documents Table: NOT FOUND in Supabase.');
+        console.log('   Action: Run supabase/migrations/20261004_add_documents_table.sql in Supabase SQL Editor.');
+      } else {
+        console.log(`❌ Documents Table Error: ${error.message}`);
+      }
+      allHealthy = false;
+    } else {
+      console.log(`✅ Documents Table: OK (Found ${count ?? data?.length ?? 0} documents)`);
+    }
+  } catch (err) {
+    console.log(`❌ Documents Table Exception: ${err.message}`);
+    allHealthy = false;
+  }
+
+  // 5. Check Storage Bucket
   try {
     const { data: buckets, error } = await supabase.storage.listBuckets();
     if (error) {
@@ -111,7 +134,7 @@ async function runDiagnostic() {
         console.log(`✅ Storage Bucket '${STORAGE_BUCKET}': OK (Public: ${foundBucket.public})`);
       } else {
         console.log(`⚠️ Storage Bucket '${STORAGE_BUCKET}' not found in bucket list.`);
-        console.log(`   (It will be created if you run backend/supabase/schema.sql)`);
+        console.log(`   (It will be created if you run supabase/schema.sql)`);
       }
     }
   } catch (err) {
@@ -123,7 +146,7 @@ async function runDiagnostic() {
     console.log('🎉 SUPABASE BACKEND IS FULLY CONNECTED & READY!');
     console.log('Orders, profiles, and queue state will persist in Supabase PostgreSQL.');
   } else {
-    console.log('⚠️ Some tables need setup. Please run backend/supabase/schema.sql');
+    console.log('⚠️ Some tables need setup. Please run supabase/schema.sql');
     console.log('   in your Supabase project SQL Editor to initialize all tables.');
   }
   console.log('===========================================================');

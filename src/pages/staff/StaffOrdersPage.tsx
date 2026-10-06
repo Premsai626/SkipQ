@@ -53,8 +53,8 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Order Queue Management</h1>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h1 className="text-2xl font-black text-white tracking-tight">Order Queue Management</h1>
+          <p className="text-sm text-white/50 mt-0.5">
             Real-time incoming orders, print validation, and student collection processing.
           </p>
         </div>
@@ -74,18 +74,18 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       <div className="flex flex-col sm:flex-row items-center gap-3">
         {/* Search */}
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by token (XR-1042), student name, or file..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-white text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-white/10 bg-white/5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#CCFF00]"
           />
         </div>
 
         {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-semibold overflow-x-auto w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold overflow-x-auto w-full sm:w-auto">
           {[
             { id: 'ALL', label: 'All Orders' },
             { id: 'PENDING', label: 'Pending' },
@@ -98,10 +98,10 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
             <button
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors ${
+              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors cursor-pointer ${
                 statusFilter === tab.id
-                  ? 'bg-white text-brand-600 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#CCFF00] text-black shadow-md font-bold'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               {tab.label}
@@ -111,26 +111,26 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       </div>
 
       {/* Responsive Table on Desktop, Cards on Mobile */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl shadow-card overflow-hidden">
+      <div className="glass-card-dark border border-white/10 rounded-3xl shadow-xl overflow-hidden backdrop-blur-2xl">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-                <th className="py-3 px-4">Token</th>
-                <th className="py-3 px-4">Student</th>
-                <th className="py-3 px-4">Files & Pages</th>
-                <th className="py-3 px-4">Configuration</th>
-                <th className="py-3 px-4">Amount</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4">Created</th>
-                <th className="py-3 px-4 text-right">Action</th>
+              <tr className="border-b border-white/10 bg-white/2 text-[11px] font-extrabold uppercase tracking-wider text-white/40">
+                <th className="py-3.5 px-4">Token</th>
+                <th className="py-3.5 px-4">Student</th>
+                <th className="py-3.5 px-4">Files & Pages</th>
+                <th className="py-3.5 px-4">Configuration</th>
+                <th className="py-3.5 px-4">Amount</th>
+                <th className="py-3.5 px-4">Status</th>
+                <th className="py-3.5 px-4">Created</th>
+                <th className="py-3.5 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-xs text-slate-500">
+                  <td colSpan={8} className="py-12 text-center text-xs text-white/40">
                     No orders matching the active criteria.
                   </td>
                 </tr>
@@ -151,7 +151,7 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
         {/* Mobile Cards View */}
         <div className="md:hidden p-4 space-y-3">
           {filteredOrders.length === 0 ? (
-            <p className="py-8 text-center text-xs text-slate-500">
+            <p className="py-8 text-center text-xs text-white/40">
               No orders matching current filter.
             </p>
           ) : (

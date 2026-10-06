@@ -17,7 +17,7 @@ This guide provides instructions to connect SkipQ to your **Supabase PostgreSQL 
 
 1. In your Supabase dashboard, click on **SQL Editor** from the left sidebar.
 2. Click **New Query**.
-3. Open and copy the entire contents of [`backend/supabase/schema.sql`](file:///c:/Users/prem%20sai/OneDrive/Desktop/xerox-antigravity/backend/supabase/schema.sql) (or [`supabase/schema.sql`](file:///c:/Users/prem%20sai/OneDrive/Desktop/xerox-antigravity/supabase/schema.sql)).
+3. Open and copy the entire contents of [`supabase/schema.sql`](file:///c:/Users/prem%20sai/OneDrive/Desktop/xerox-antigravity/supabase/schema.sql).
 4. Paste it into the SQL Editor and click **Run** (or press `Ctrl+Enter`).
 
 > **What this does:**

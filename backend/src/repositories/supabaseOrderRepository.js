@@ -14,15 +14,17 @@ function mapRowToOrder(row) {
   return {
     id: row.id,
     token: row.token,
+    orderType: row.order_type || row.orderType || (row.items && row.items.length > 0 ? 'STORE' : 'PRINT'),
     studentId: row.student_id,
     studentName: row.student_name,
     studentEmail: row.student_email,
     studentPhone: row.student_phone,
     documents: Array.isArray(row.documents) ? row.documents : [],
     config: row.config || {},
+    items: Array.isArray(row.items) ? row.items : [],
     pricing: row.pricing || {},
     status: row.status,
-    paymentMethod: row.payment_method,
+    paymentMethod: row.payment_method === 'UPI' ? 'ONLINE' : (row.payment_method || 'CASH'),
     paymentStatus: row.payment_status,
     estimatedMinutes: row.estimated_minutes ?? 10,
     queuePosition: row.queue_position ?? 0,
@@ -38,6 +40,11 @@ function mapRowToOrder(row) {
  * Transforms an application Order object into a Supabase row.
  */
 function mapOrderToRow(order) {
+  let dbPaymentMethod = order.paymentMethod || 'UPI';
+  if (dbPaymentMethod === 'ONLINE') {
+    dbPaymentMethod = 'UPI';
+  }
+
   const row = {
     token: order.token,
     student_name: order.studentName,
@@ -47,7 +54,7 @@ function mapOrderToRow(order) {
     config: order.config || {},
     pricing: order.pricing || {},
     status: order.status || 'PENDING',
-    payment_method: order.paymentMethod || 'UPI',
+    payment_method: dbPaymentMethod,
     payment_status: order.paymentStatus || 'PENDING',
     estimated_minutes: order.estimatedMinutes ?? 10,
     queue_position: order.queuePosition ?? 0,
@@ -157,19 +164,43 @@ export class SupabaseOrderRepository {
       row.student_id = validProfileId;
     }
 
-    const { data, error } = await client
-      .from('orders')
-      .insert([row])
-      .select()
-      .single();
+    let insertedData = null;
+    try {
+      const { data: firstTry, error: firstErr } = await client
+        .from('orders')
+        .insert([{
+          ...row,
+          order_type: order.orderType || 'PRINT',
+          items: order.items || [],
+        }])
+        .select()
+        .single();
 
-    if (error) {
-      console.error('[SupabaseOrderRepository] Error inserting order:', error);
-      throw new Error(`Failed to save order to Supabase: ${error.message}`);
+      if (!firstErr && firstTry) {
+        insertedData = firstTry;
+      } else {
+        // Fallback if custom columns are not yet in remote table schema
+        const { data: fallbackData, error: fallbackErr } = await client
+          .from('orders')
+          .insert([row])
+          .select()
+          .single();
+        if (fallbackErr) {
+          throw fallbackErr;
+        }
+        insertedData = {
+          ...fallbackData,
+          order_type: order.orderType || 'PRINT',
+          items: order.items || [],
+        };
+      }
+    } catch (insertErr) {
+      console.error('[SupabaseOrderRepository] Error inserting order:', insertErr);
+      throw new Error(`Failed to save order to Supabase: ${insertErr.message}`);
     }
 
     await this.recalculateQueuePositions();
-    return mapRowToOrder(data);
+    return mapRowToOrder(insertedData);
   }
 
   async findById(idOrToken) {

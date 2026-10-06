@@ -66,8 +66,8 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const ordersData = await ordersApi.getAll();
       setOrders(ordersData);
 
-      // Load analytics metrics only for staff or admin roles
-      if (role === 'staff' || role === 'admin') {
+      // Load analytics metrics only for staff
+      if (role === 'staff') {
         try {
           const metricsData = await analyticsApi.getMetrics();
           setMetrics(metricsData);
@@ -86,18 +86,35 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, []);
 
-  // Initial load
+  // Initial load & state reset on user change / logout
   useEffect(() => {
+    if (!user) {
+      setOrders([]);
+      setNotifications([]);
+      setMetrics({
+        pendingCount: 0,
+        printingCount: 0,
+        readyCount: 0,
+        completedTodayCount: 0,
+        todayRevenue: 0,
+        avgWaitMinutes: 0,
+        colorPercentage: 0,
+        topService: 'None yet',
+      });
+      setIsLoading(false);
+      return;
+    }
     refreshOrders();
   }, [refreshOrders, user]);
 
-  // Live polling every 5 seconds for real-time queue movement
+  // Live polling every 5 seconds only when user is authenticated
   useEffect(() => {
+    if (!user) return;
     const interval = setInterval(() => {
       refreshOrders();
     }, 5000);
     return () => clearInterval(interval);
-  }, [refreshOrders]);
+  }, [refreshOrders, user]);
 
   // Current active student order
   const activeOrder = orders.find(

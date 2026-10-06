@@ -17,6 +17,7 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .kilo
+.claude
 .DS_Store
 *.suo
 *.ntvs*
@@ -26,9 +27,13 @@ dist-ssr
 
 # Environment variables
 .env
+.env.local
+.env.*.local
 .env.*
 !.env.example
 backend/.env
+backend/.env.local
+backend/.env.*.local
 backend/.env.*
 !backend/.env.example
 

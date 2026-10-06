@@ -49,7 +49,7 @@ app.use(
 // 3. Rate Limiting on Sensitive Endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // limit each IP to 50 auth requests per 15 min
+  max: 100, // limit each IP to 100 auth requests per 15 min
   message: {
     success: false,
     message: 'Too many authentication attempts from this IP, please try again after 15 minutes',
@@ -58,9 +58,19 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use('/api/v1/auth/login', authLimiter);
-app.use('/api/v1/auth/register', authLimiter);
-app.use('/api/v1/auth/google-sync', authLimiter);
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60, // limit each IP to 60 document uploads per 15 min
+  message: {
+    success: false,
+    message: 'Too many upload attempts from this IP, please try again after 15 minutes',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(['/api/v1/auth', '/api/auth'], authLimiter);
+app.use(['/api/v1/documents/upload', '/api/documents/upload'], uploadLimiter);
 
 // 4. Body Parsers with safe size limits
 app.use(express.json({ limit: '10mb' }));

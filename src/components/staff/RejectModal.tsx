@@ -46,15 +46,15 @@ export const RejectModal: React.FC<RejectModalProps> = ({
       maxWidth="md"
     >
       <div className="space-y-4">
-        <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-start gap-2.5">
-          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300 flex items-start gap-2.5">
+          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
           <span>
-            This action will mark the token as <strong>REJECTED</strong> and remove it from the active printing line.
+            This action will mark the token as <strong className="text-rose-400">REJECTED</strong> and remove it from the active printing line.
           </span>
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+          <label className="text-xs font-bold text-white/50 uppercase tracking-wider">
             Select Rejection Reason
           </label>
           <div className="space-y-1.5">
@@ -63,8 +63,8 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                 key={r}
                 className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
                   reason === r
-                    ? 'border-brand-600 bg-brand-50/50 font-bold text-slate-900'
-                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'border-[#CCFF00] bg-[#CCFF00]/10 font-bold text-white ring-1 ring-[#CCFF00]/30'
+                    : 'border-white/10 text-white/70 hover:bg-white/5'
                 }`}
               >
                 <input
@@ -72,7 +72,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                   name="rejectionReason"
                   checked={reason === r}
                   onChange={() => setReason(r)}
-                  className="text-brand-600 focus:ring-brand-500"
+                  className="text-[#CCFF00] focus:ring-[#CCFF00]"
                 />
                 <span>{r}</span>
               </label>
@@ -82,18 +82,18 @@ export const RejectModal: React.FC<RejectModalProps> = ({
 
         {reason === 'Other reason (specified below)' && (
           <div>
-            <label className="text-xs font-semibold text-slate-700">Detailed Message</label>
+            <label className="text-xs font-semibold text-white/70">Detailed Message</label>
             <textarea
               rows={3}
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
               placeholder="Explain why this order could not be printed..."
-              className="w-full mt-1 p-3 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="w-full mt-1 p-3 text-xs rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-rose-500"
             />
           </div>
         )}
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/10">
           <Button variant="outline" size="sm" onClick={onClose}>
             Cancel
           </Button>

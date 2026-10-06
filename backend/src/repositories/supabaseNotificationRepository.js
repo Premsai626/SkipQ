@@ -60,6 +60,7 @@ export class SupabaseNotificationRepository {
     }
 
     const row = {
+      id: isUuid(id) ? id : uuidv4(),
       order_id: validOrderId,
       student_id: validStudentId,
       token,
@@ -69,10 +70,6 @@ export class SupabaseNotificationRepository {
       read: false,
       created_at: new Date().toISOString(),
     };
-
-    if (isUuid(id)) {
-      row.id = id;
-    }
 
     const { data, error } = await client
       .from('notifications')
@@ -121,9 +118,24 @@ export class SupabaseNotificationRepository {
     return (data || []).map(mapRowToNotification);
   }
 
-  async markRead(id) {
+  async markRead(id, studentId) {
     const client = this.getClient();
     if (!client) return null;
+
+    if (studentId) {
+      let checkQuery = client.from('notifications').select('student_id');
+      if (isUuid(id)) {
+        checkQuery = checkQuery.eq('id', id);
+      } else {
+        checkQuery = checkQuery.ilike('token', id);
+      }
+      const { data: existing } = await checkQuery.maybeSingle();
+      if (existing && existing.student_id && existing.student_id !== studentId) {
+        const err = new Error('Forbidden: You can only update your own notifications');
+        err.statusCode = 403;
+        throw err;
+      }
+    }
 
     let query = client.from('notifications').update({ read: true });
     if (isUuid(id)) {

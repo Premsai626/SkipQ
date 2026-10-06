@@ -21,41 +21,41 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
   return (
     <div
       onClick={() => onSelect(order)}
-      className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-card hover:border-brand-200 transition-all cursor-pointer space-y-3"
+      className="glass-card-dark border border-white/10 rounded-2xl p-4 shadow-xl hover:border-white/20 transition-all cursor-pointer space-y-3"
     >
       {/* Top row: Token, Status, Relative time */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-base font-black text-slate-900">
+          <span className="font-mono text-base font-black text-white">
             {order.token}
           </span>
           <Badge status={order.status} size="sm" />
         </div>
-        <span className="text-[11px] text-slate-400 font-medium">
+        <span className="text-[11px] text-white/40 font-medium">
           {formatRelativeTime(order.createdAt)}
         </span>
       </div>
 
       {/* Student & Specs */}
-      <div className="text-xs text-slate-600 space-y-1">
+      <div className="text-xs text-white/70 space-y-1">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-slate-800">{order.studentName}</span>
-          <span className="font-extrabold text-slate-900 text-sm">{formatCurrency(order.pricing.total)}</span>
+          <span className="font-bold text-white">{order.studentName}</span>
+          <span className="font-extrabold text-[#CCFF00] font-mono text-sm">{formatCurrency(order.pricing.total)}</span>
         </div>
-        <p className="text-slate-500">
+        <p className="text-white/40">
           {order.documents.length} files ({totalPages} pgs) • {order.config.color === 'COLOR' ? 'Color' : 'B&W'} • {order.config.sides === 'DOUBLE' ? 'Duplex' : 'Single'} • {order.config.copies} sets
         </p>
       </div>
 
       {/* Action Row */}
-      <div className="pt-2 border-t border-slate-100 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
-        <span className="text-[11px] text-slate-400 font-medium">{order.pickupCounter}</span>
+      <div className="pt-2 border-t border-white/10 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
+        <span className="text-[11px] text-white/40 font-medium">{order.pickupCounter}</span>
 
         <div className="flex items-center gap-1.5">
           {order.status === 'PENDING' && (
             <button
               onClick={(e) => onQuickAction(order, e)}
-              className="px-3 py-1.5 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-[#CCFF00] text-black font-bold text-xs shadow-sm cursor-pointer"
             >
               Accept
             </button>
@@ -64,7 +64,7 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
           {order.status === 'ACCEPTED' && order.paymentStatus !== 'VERIFIED' && (
             <button
               onClick={(e) => onQuickAction(order, e)}
-              className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-emerald-500 text-white font-bold text-xs shadow-sm cursor-pointer"
             >
               Verify Cash
             </button>
@@ -73,7 +73,7 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
           {(order.status === 'PAYMENT_VERIFIED' || (order.status === 'ACCEPTED' && order.paymentStatus === 'VERIFIED')) && (
             <button
               onClick={(e) => onQuickAction(order, e)}
-              className="px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-[#00F0FF] text-black font-bold text-xs shadow-sm cursor-pointer"
             >
               Start Print
             </button>
@@ -82,7 +82,7 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
           {order.status === 'PRINTING' && (
             <button
               onClick={(e) => onQuickAction(order, e)}
-              className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-emerald-500 text-white font-bold text-xs shadow-sm cursor-pointer"
             >
               Mark Ready
             </button>
@@ -91,7 +91,7 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
           {order.status === 'READY_FOR_PICKUP' && (
             <button
               onClick={(e) => onQuickAction(order, e)}
-              className="px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold text-xs shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-white/15 text-white font-bold text-xs shadow-sm cursor-pointer"
             >
               Mark Collected
             </button>
@@ -99,7 +99,7 @@ export const OrderCardMobile: React.FC<OrderCardMobileProps> = ({
 
           <button
             onClick={() => onSelect(order)}
-            className="p-1.5 rounded-xl text-slate-500 hover:bg-slate-100"
+            className="p-1.5 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             title="Inspect"
           >
             <Eye className="w-4 h-4" />

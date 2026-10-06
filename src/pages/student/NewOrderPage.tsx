@@ -7,7 +7,7 @@ import { StepPayment } from '../../components/student/StepPayment';
 import { StepSuccessToken } from '../../components/student/StepSuccessToken';
 import { PriceSummaryCard } from '../../components/student/PriceSummaryCard';
 import { DocumentItem, PrintConfiguration, PaymentMethod, Order } from '../../types';
-import { calculatePrice } from '../../utils/pricing';
+import { calculatePrice } from '../../services/pricingService';
 import { useOrders } from '../../context/OrderContext';
 import { useAuth } from '../../context/AuthContext';
 
@@ -82,7 +82,7 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Stepper Header */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-4 sm:p-5 shadow-card">
+      <div className="glass-card-dark rounded-3xl p-4 sm:p-5 border border-white/10 shadow-2xl backdrop-blur-2xl">
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -104,7 +104,7 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Main Step Form Area (7-8 cols on desktop) */}
-          <div className="lg:col-span-8 bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-card">
+          <div className="lg:col-span-8 glass-card-dark rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl backdrop-blur-2xl">
             {currentStep === 1 && (
               <StepUpload
                 documents={documents}

@@ -58,75 +58,85 @@ export function getStatusStyle(status: OrderStatus): StatusStyle {
   switch (status) {
     case 'PENDING':
       return {
-        label: 'Pending',
-        bg: 'bg-amber-50',
-        text: 'text-amber-800',
-        border: 'border-amber-200',
-        dotColor: 'bg-amber-500',
+        label: 'Pending Review',
+        bg: 'bg-amber-500/15',
+        text: 'text-amber-300',
+        border: 'border-amber-500/30',
+        dotColor: 'bg-amber-400',
         description: 'Waiting for Xerox staff to review',
       };
     case 'ACCEPTED':
       return {
         label: 'Accepted',
-        bg: 'bg-blue-50',
-        text: 'text-blue-800',
-        border: 'border-blue-200',
-        dotColor: 'bg-blue-500',
-        description: 'Approved by staff, in queue line',
+        bg: 'bg-sky-500/15',
+        text: 'text-sky-300',
+        border: 'border-sky-500/30',
+        dotColor: 'bg-sky-400',
+        description: 'Approved by staff, queued in line',
       };
     case 'PAYMENT_VERIFIED':
       return {
         label: 'Payment Verified',
-        bg: 'bg-indigo-50',
-        text: 'text-indigo-800',
-        border: 'border-indigo-200',
-        dotColor: 'bg-indigo-500',
+        bg: 'bg-indigo-500/15',
+        text: 'text-indigo-300',
+        border: 'border-indigo-500/30',
+        dotColor: 'bg-indigo-400',
         description: 'Payment cleared, ready for printing',
       };
     case 'PRINTING':
       return {
-        label: 'Printing',
-        bg: 'bg-sky-50',
-        text: 'text-sky-800',
-        border: 'border-sky-300',
-        dotColor: 'bg-sky-500 animate-ping',
+        label: 'Printing Live',
+        bg: 'bg-[#00F0FF]/15',
+        text: 'text-[#00F0FF]',
+        border: 'border-[#00F0FF]/40',
+        dotColor: 'bg-[#00F0FF] animate-ping',
         description: 'Currently running on Xerox machine',
       };
     case 'READY_FOR_PICKUP':
       return {
         label: 'Ready for Pickup',
-        bg: 'bg-emerald-50',
-        text: 'text-emerald-800',
-        border: 'border-emerald-300',
-        dotColor: 'bg-emerald-500',
+        bg: 'bg-[#CCFF00]/15',
+        text: 'text-[#CCFF00]',
+        border: 'border-[#CCFF00]/40',
+        dotColor: 'bg-[#CCFF00]',
         description: 'Available at counter for collection',
       };
     case 'COLLECTED':
       return {
         label: 'Collected',
-        bg: 'bg-slate-100',
-        text: 'text-slate-700',
-        border: 'border-slate-200',
-        dotColor: 'bg-slate-400',
+        bg: 'bg-white/5',
+        text: 'text-white/60',
+        border: 'border-white/10',
+        dotColor: 'bg-white/40',
         description: 'Picked up by student',
       };
     case 'REJECTED':
+    case 'DECLINED':
       return {
-        label: 'Rejected',
-        bg: 'bg-rose-50',
-        text: 'text-rose-800',
-        border: 'border-rose-200',
+        label: 'Declined',
+        bg: 'bg-rose-500/15',
+        text: 'text-rose-400',
+        border: 'border-rose-500/30',
         dotColor: 'bg-rose-500',
         description: 'Declined by Xerox staff',
       };
     case 'CANCELLED':
       return {
         label: 'Cancelled',
-        bg: 'bg-slate-50',
-        text: 'text-slate-500',
-        border: 'border-slate-200',
-        dotColor: 'bg-slate-300',
+        bg: 'bg-white/5',
+        text: 'text-white/40',
+        border: 'border-white/10',
+        dotColor: 'bg-white/30',
         description: 'Cancelled by student',
+      };
+    default:
+      return {
+        label: 'Pending Review',
+        bg: 'bg-amber-500/15',
+        text: 'text-amber-300',
+        border: 'border-amber-500/30',
+        dotColor: 'bg-amber-400',
+        description: 'Waiting for Xerox staff to review',
       };
   }
 }

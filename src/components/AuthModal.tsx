@@ -7,13 +7,10 @@ import {
   GraduationCap,
   Store,
   Lock,
-  Mail,
-  User,
   KeyRound,
   CheckCircle2,
   ArrowRight,
   ShieldCheck,
-  Info,
 } from 'lucide-react';
 
 export type UserRole = 'student' | 'staff';
@@ -68,27 +65,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [studentDept, setStudentDept] = useState('CSE (AIML)');
   const [studentPassword, setStudentPassword] = useState('');
 
-  // Staff Form State (Sign In Only)
+  // Staff Form State
   const [staffIdentifier, setStaffIdentifier] = useState('');
   const [staffPassword, setStaffPassword] = useState('');
+  const [staffName, setStaffName] = useState('');
+  const [staffDept, setStaffDept] = useState('Campus Stationery');
 
   // Auth Context
   const { login, register, signInWithGoogle } = useAuth();
-
-  // Synchronize role and mode when modal opens
-  React.useEffect(() => {
-    if (isOpen) {
-      setRole(defaultRole);
-      // Staff cannot sign up through public interface
-      setMode(defaultRole === 'staff' ? 'signin' : defaultMode);
-      setSuccessMessage(null);
-    }
-  }, [isOpen, defaultRole, defaultMode]);
 
   // Loading & Feedback State
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Synchronize role and mode when modal opens
+  React.useEffect(() => {
+    if (isOpen) {
+      setRole(defaultRole);
+      setMode(defaultMode);
+      setSuccessMessage(null);
+    }
+  }, [isOpen, defaultRole, defaultMode]);
 
   // Handle standard form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -117,6 +115,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             name: studentName.trim(),
             email: studentIdentifier,
             password: studentPassword,
+            role: 'student',
             department: studentDept,
             collegeId: studentRollNo.trim(),
           });
@@ -129,7 +128,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           onClose();
         }, 800);
       } else {
-        // Staff Authentication (Sign In Only)
+        // Staff Authentication
         const email = staffIdentifier.includes('@')
           ? staffIdentifier.toLowerCase().trim()
           : `${staffIdentifier.toLowerCase().trim()}@campus.edu`;
@@ -138,12 +137,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           throw new Error('Please enter both your staff email/terminal ID and password');
         }
 
-        await login(email, staffPassword);
-        setSuccessMessage(`Stationery staff authenticated. Launching Operator Dashboard...`);
+        if (mode === 'signin') {
+          await login(email, staffPassword);
+          setSuccessMessage(`Stationery staff authenticated. Launching Operator Dashboard...`);
+        } else {
+          if (!staffName.trim()) throw new Error('Please enter your full name');
+          if (staffPassword.length < 6) throw new Error('Password must be at least 6 characters');
+
+          await register({
+            name: staffName.trim(),
+            email,
+            password: staffPassword,
+            role: 'staff',
+            department: staffDept || 'Campus Stationery',
+            collegeId: staffIdentifier.trim(),
+          });
+          setSuccessMessage(`Staff account created for ${staffName}! Launching Operator Dashboard...`);
+        }
 
         setTimeout(() => {
           setIsLoading(false);
-          if (onStaffSuccess) onStaffSuccess({ shopId: staffIdentifier, name: staffIdentifier });
+          if (onStaffSuccess) onStaffSuccess({ shopId: staffIdentifier, name: staffName || staffIdentifier });
           onClose();
         }, 800);
       }
@@ -160,6 +174,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       localStorage.setItem('xeroxflow_post_auth_redirect', role === 'staff' ? '/staff' : '/student');
+      localStorage.setItem('xeroxflow_google_selected_role', role);
       await signInWithGoogle();
     } catch (err: any) {
       setIsGoogleLoading(false);
@@ -182,7 +197,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className="fixed inset-0 bg-black/60 backdrop-blur-md"
           />
 
-          {/* Glassmorphic Modal Box */}
+          {/* Glassmorphic Modal Box with Original SkipQ Blue Gradient */}
           <motion.div
             initial={{ opacity: 0, scale: 0.94, y: 25 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -203,7 +218,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <div>
                   <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-white drop-shadow-sm flex items-center gap-2">
                     {role === 'staff'
-                      ? 'Operator Terminal Sign In'
+                      ? mode === 'signin'
+                        ? 'Operator Terminal Sign In'
+                        : 'Create Staff Account'
                       : mode === 'signin'
                       ? 'Sign In to SkipQ'
                       : 'Create Student Account'}
@@ -244,12 +261,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="button"
                 onClick={() => {
                   setRole('staff');
-                  setMode('signin'); // Staff is sign-in only
                   setSuccessMessage(null);
                 }}
                 className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
                   role === 'staff'
-                    ? 'bg-[#CCFF00] text-black shadow-md scale-[1.02]'
+                    ? 'bg-white text-[#0038FF] shadow-md scale-[1.02]'
                     : 'text-white/80 hover:text-white hover:bg-white/10'
                 }`}
               >
@@ -258,49 +274,39 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             </div>
 
-            {/* Top Selector 2: Mode Switcher (Student Only: Sign In vs Sign Up) */}
-            {role === 'student' ? (
-              <div className="flex items-center justify-between px-1 mb-5">
-                <div className="inline-flex rounded-xl bg-white/15 p-1 border border-white/20 text-xs font-bold w-full">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMode('signin');
-                      setSuccessMessage(null);
-                    }}
-                    className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
-                      mode === 'signin'
-                        ? 'bg-white text-black shadow-sm font-black'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    Existing Member (Sign In)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMode('signup');
-                      setSuccessMessage(null);
-                    }}
-                    className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
-                      mode === 'signup'
-                        ? 'bg-white text-black shadow-sm font-black'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    New Member (Sign Up)
-                  </button>
-                </div>
+            {/* Top Selector 2: Mode Switcher (Sign In vs Sign Up) */}
+            <div className="flex items-center justify-between px-1 mb-5">
+              <div className="inline-flex rounded-2xl bg-black/25 p-1 border border-white/20 text-xs font-bold w-full">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('signin');
+                    setSuccessMessage(null);
+                  }}
+                  className={`flex-1 py-1.5 rounded-xl transition-all text-center ${
+                    mode === 'signin'
+                      ? 'bg-white text-[#0038FF] shadow-sm'
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  Existing Member (Sign In)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('signup');
+                    setSuccessMessage(null);
+                  }}
+                  className={`flex-1 py-1.5 rounded-xl transition-all text-center ${
+                    mode === 'signup'
+                      ? 'bg-white text-[#0038FF] shadow-sm'
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  New Member (Sign Up)
+                </button>
               </div>
-            ) : (
-              /* Informative Banner for Staff */
-              <div className="p-3 mb-4 rounded-xl bg-blue-950/40 border border-white/20 text-white/90 text-xs flex items-center gap-2.5">
-                <Info className="w-4 h-4 text-[#CCFF00] flex-shrink-0" />
-                <span className="leading-snug">
-                  Staff accounts are provisioned by Campus Administration. Enter your provisioned credentials below.
-                </span>
-              </div>
-            )}
+            </div>
 
             {/* Google Authentication SSO Button */}
             <div className="mb-4">
@@ -308,7 +314,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="button"
                 onClick={handleGoogleAuth}
                 disabled={isGoogleLoading || isLoading}
-                className="w-full py-2.5 px-4 rounded-xl bg-white text-gray-800 hover:bg-gray-50 active:scale-[0.99] font-bold text-xs flex items-center justify-center gap-3 transition-all shadow-md border border-white/60"
+                className="w-full py-2.5 px-4 rounded-xl bg-white text-gray-800 hover:bg-gray-100 active:scale-[0.99] font-bold text-xs flex items-center justify-center gap-3 transition-all shadow-md"
               >
                 {isGoogleLoading ? (
                   <div className="w-4 h-4 border-2 border-[#0038FF] border-t-transparent rounded-full animate-spin" />
@@ -321,11 +327,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             {/* Divider */}
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-px flex-1 bg-white/25"></div>
-              <span className="text-[10px] uppercase font-bold text-white/70 tracking-wider">
+              <div className="h-px flex-1 bg-white/20"></div>
+              <span className="text-[10px] uppercase font-bold text-white/60 tracking-wider">
                 Or continue with {role === 'student' ? 'Credentials' : 'Terminal Account'}
               </span>
-              <div className="h-px flex-1 bg-white/25"></div>
+              <div className="h-px flex-1 bg-white/20"></div>
             </div>
 
             {/* Feedback Message */}
@@ -333,7 +339,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-3 mb-4 rounded-xl bg-[#CCFF00]/25 border border-[#CCFF00] text-white text-xs font-bold flex items-center gap-2.5 backdrop-blur-md shadow-md"
+                className="p-3 mb-4 rounded-2xl bg-[#CCFF00]/20 border border-[#CCFF00] text-white text-xs font-bold flex items-center gap-2.5 backdrop-blur-md"
               >
                 <CheckCircle2 className="w-4 h-4 text-[#CCFF00] flex-shrink-0" />
                 <span className="leading-snug">{successMessage}</span>
@@ -465,8 +471,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
 
-              {/* STAFF SIGN IN (Sign In Only) */}
-              {role === 'staff' && (
+              {/* STAFF SIGN IN */}
+              {role === 'staff' && mode === 'signin' && (
                 <>
                   <div>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
@@ -504,6 +510,68 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
 
+              {/* STAFF SIGN UP */}
+              {role === 'staff' && mode === 'signup' && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                        Staff Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={staffName}
+                        onChange={(e) => setStaffName(e.target.value)}
+                        placeholder="Operator Name"
+                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                        Station / Department
+                      </label>
+                      <input
+                        type="text"
+                        value={staffDept}
+                        onChange={(e) => setStaffDept(e.target.value)}
+                        placeholder="Campus Stationery"
+                        className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                      Staff Email
+                    </label>
+                    <input
+                      type="email"
+                      value={staffIdentifier}
+                      onChange={(e) => setStaffIdentifier(e.target.value)}
+                      placeholder="operator@campus.edu"
+                      className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/90 block mb-1">
+                      Set Password / PIN
+                    </label>
+                    <input
+                      type="password"
+                      value={staffPassword}
+                      onChange={(e) => setStaffPassword(e.target.value)}
+                      placeholder="Minimum 6 characters"
+                      className="w-full px-3.5 py-2 bg-black/25 border border-white/30 rounded-xl text-xs font-bold text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CCFF00] backdrop-blur-md"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
               {/* Submit CTA Button */}
               <button
                 type="submit"
@@ -519,7 +587,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <>
                     <span>
                       {role === 'staff'
-                        ? 'Launch Operator Terminal'
+                        ? mode === 'signin'
+                          ? 'Launch Operator Terminal'
+                          : 'Create Staff Account'
                         : mode === 'signin'
                         ? 'Access Student Dashboard'
                         : 'Create Student Account'}

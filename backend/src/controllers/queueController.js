@@ -1,7 +1,7 @@
+import { z } from 'zod';
 import { orderService } from '../services/orderService.js';
 import { PricingService } from '../services/pricingService.js';
 import { printConfigSchema, documentItemSchema } from '../validators/index.js';
-import { z } from 'zod';
 
 export class QueueController {
   /**
@@ -12,11 +12,11 @@ export class QueueController {
   static async getQueue(req, res, next) {
     try {
       const queue = await orderService.getQueue();
-      const isStaffOrAdmin = req.user && (req.user.role === 'staff' || req.user.role === 'admin');
+      const isStaff = req.user && req.user.role === 'staff';
 
       const sanitizedQueue = queue.map((order) => {
-        // Staff and Admin see all operational fields
-        if (isStaffOrAdmin) {
+        // Staff see all operational fields
+        if (isStaff) {
           return order;
         }
 
@@ -53,8 +53,8 @@ export class QueueController {
 
 export class AnalyticsController {
   /**
-   * Operational Analytics for Xerox Shop Operators and Campus Admin.
-   * Protected: Staff and Admin only.
+   * Operational Analytics for Xerox Shop Operators.
+   * Protected: Staff only.
    */
   static async getMetrics(req, res, next) {
     try {
@@ -95,9 +95,9 @@ export class PricingController {
 export class NotificationController {
   static async getAll(req, res, next) {
     try {
-      // Students only view their own notifications
-      const studentId = req.user?.role === 'student' ? req.user.id : undefined;
-      const notifications = await orderService.getNotifications(studentId);
+      // Both students and staff only view their own notifications
+      const userId = req.user?.id;
+      const notifications = await orderService.getNotifications(userId);
       res.json({
         success: true,
         data: notifications,
@@ -111,7 +111,8 @@ export class NotificationController {
   static async markRead(req, res, next) {
     try {
       const { id } = req.params;
-      const updated = await orderService.markNotificationRead(id);
+      const userId = req.user?.id;
+      const updated = await orderService.markNotificationRead(id, userId);
       res.json({
         success: true,
         data: updated,
