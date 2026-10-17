@@ -42,20 +42,27 @@ if (nodeEnv === 'production') {
   }
 }
 
+const frontendOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
 export const config = {
   port: parseInt(process.env.PORT || '5001', 10),
   nodeEnv,
   jwtSecret: jwtSecretEnv || (nodeEnv === 'development' ? 'xerox_flow_production_jwt_secret_key_2026' : ''),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '2h',
 
-  // CORS Allowed Origins
-  allowedOrigins: [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:5001',
-    'http://127.0.0.1:5001',
-    process.env.FRONTEND_URL,
-  ].filter(Boolean),
+  // CORS Allowed Origins (normalized and deduplicated)
+  allowedOrigins: Array.from(
+    new Set([
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'http://localhost:5001',
+      'http://127.0.0.1:5001',
+      ...frontendOrigins,
+    ])
+  ),
 
   // Storage & Database Drivers
   databaseDriver,

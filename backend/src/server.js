@@ -2,7 +2,7 @@ import { app } from './app.js';
 import { config } from './config/index.js';
 import { isSupabaseConfigured, testSupabaseConnection } from './config/supabase.js';
 
-const server = app.listen(config.port, async () => {
+const server = app.listen(config.port, '0.0.0.0', async () => {
   console.log(`=========================================`);
   console.log(`🚀 SkipQ REST API SERVER ACTIVE`);
   console.log(`📡 Port: ${config.port}`);

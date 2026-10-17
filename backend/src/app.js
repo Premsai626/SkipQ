@@ -31,10 +31,12 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (such as mobile apps, curl, server-to-server)
       if (!origin) return callback(null, true);
+      const cleanOrigin = origin.replace(/\/+$/, '');
       if (
-        config.allowedOrigins.includes(origin) ||
-        origin.startsWith('http://localhost:') ||
-        origin.startsWith('http://127.0.0.1:')
+        config.allowedOrigins.includes(cleanOrigin) ||
+        cleanOrigin.startsWith('http://localhost:') ||
+        cleanOrigin.startsWith('http://127.0.0.1:') ||
+        (process.env.ALLOW_VERCEL_PREVIEWS === 'true' && /^https:\/\/[a-z0-9-]+(\.vercel\.app)$/.test(cleanOrigin))
       ) {
         return callback(null, true);
       }
