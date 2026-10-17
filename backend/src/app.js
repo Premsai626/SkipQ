@@ -69,8 +69,20 @@ const uploadLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const aiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // limit each IP to 30 AI requests per minute
+  message: {
+    success: false,
+    message: 'Too many AI requests. Please wait a moment before sending another message.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 app.use(['/api/v1/auth', '/api/auth'], authLimiter);
 app.use(['/api/v1/documents/upload', '/api/documents/upload'], uploadLimiter);
+app.use(['/api/v1/ai', '/api/ai'], aiLimiter);
 
 // 4. Body Parsers with safe size limits
 app.use(express.json({ limit: '10mb' }));

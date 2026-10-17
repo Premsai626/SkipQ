@@ -123,7 +123,30 @@ async function runDiagnostic() {
     allHealthy = false;
   }
 
-  // 5. Check Storage Bucket
+  // 5. Check Store Items Table (Stationery Catalog)
+  try {
+    const { data, count, error } = await supabase
+      .from('store_items')
+      .select('id, name, price, stock', { count: 'exact' })
+      .limit(5);
+
+    if (error) {
+      if (error.code === '42P01' || error.code === 'PGRST205') {
+        console.log('⚠️ Store Items Table: NOT FOUND in Supabase.');
+        console.log('   Action: Run supabase/schema.sql in Supabase SQL Editor.');
+      } else {
+        console.log(`❌ Store Items Table Error: ${error.message}`);
+      }
+      allHealthy = false;
+    } else {
+      console.log(`✅ Store Items Table: OK (Found ${count ?? data?.length ?? 0} items)`);
+    }
+  } catch (err) {
+    console.log(`❌ Store Items Table Exception: ${err.message}`);
+    allHealthy = false;
+  }
+
+  // 6. Check Storage Bucket
   try {
     const { data: buckets, error } = await supabase.storage.listBuckets();
     if (error) {

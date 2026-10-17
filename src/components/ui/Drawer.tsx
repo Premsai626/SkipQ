@@ -44,23 +44,23 @@ export const Drawer: React.FC<DrawerProps> = ({
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-md transition-opacity duration-300"
+        className="fixed inset-0 bg-[#080B12]/80 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
         <div
-          className={`w-screen ${widthStyles[width]} bg-[#0c0c0e]/95 backdrop-blur-3xl shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out border-l border-white/15 text-white`}
+          className={`w-screen ${widthStyles[width]} bg-[#0D111B]/95 backdrop-blur-3xl shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out border-l border-[#273244] text-[#F9FAFB]`}
         >
           {/* Drawer Header */}
-          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between bg-white/2">
+          <div className="px-6 py-5 border-b border-[#273244] flex items-center justify-between bg-[#111827]/60">
             <div>
-              <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
-              {subtitle && <p className="text-xs text-white/50 mt-0.5">{subtitle}</p>}
+              <h2 className="text-lg font-bold text-[#F9FAFB] tracking-tight">{title}</h2>
+              {subtitle && <p className="text-xs text-[#9CA3AF] mt-0.5">{subtitle}</p>}
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-2 rounded-xl text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] transition-colors cursor-pointer"
               aria-label="Close drawer"
             >
               <X className="w-5 h-5" />
@@ -74,3 +74,4 @@ export const Drawer: React.FC<DrawerProps> = ({
     </div>
   );
 };
+export default Drawer;

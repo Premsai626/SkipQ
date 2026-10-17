@@ -75,7 +75,7 @@ export const updateStatusSchema = z.object({
 
 // Authentication Schemas - Strict Two Roles (Student & Staff)
 export const loginSchema = z.object({
-  email: z.string().email('Valid email address is required'),
+  email: z.string().min(1, 'Valid email address or roll number is required'),
   password: z.string().min(1, 'Password is required'),
 });
 

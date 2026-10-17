@@ -54,7 +54,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold text-white/50 uppercase tracking-wider">
+          <label className="text-xs font-bold text-[#9CA3AF] uppercase tracking-wider font-mono">
             Select Rejection Reason
           </label>
           <div className="space-y-1.5">
@@ -63,8 +63,8 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                 key={r}
                 className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
                   reason === r
-                    ? 'border-[#CCFF00] bg-[#CCFF00]/10 font-bold text-white ring-1 ring-[#CCFF00]/30'
-                    : 'border-white/10 text-white/70 hover:bg-white/5'
+                    ? 'border-[#FB7185] bg-[#FB7185]/10 font-bold text-[#F9FAFB] ring-1 ring-[#FB7185]/30'
+                    : 'border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232]'
                 }`}
               >
                 <input
@@ -72,7 +72,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                   name="rejectionReason"
                   checked={reason === r}
                   onChange={() => setReason(r)}
-                  className="text-[#CCFF00] focus:ring-[#CCFF00]"
+                  className="text-[#FB7185] focus:ring-[#FB7185]"
                 />
                 <span>{r}</span>
               </label>
@@ -82,18 +82,18 @@ export const RejectModal: React.FC<RejectModalProps> = ({
 
         {reason === 'Other reason (specified below)' && (
           <div>
-            <label className="text-xs font-semibold text-white/70">Detailed Message</label>
+            <label className="text-xs font-semibold text-[#9CA3AF]">Detailed Message</label>
             <textarea
               rows={3}
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
               placeholder="Explain why this order could not be printed..."
-              className="w-full mt-1 p-3 text-xs rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="w-full mt-1 p-3 text-xs rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#FB7185]"
             />
           </div>
         )}
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/10">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#273244]">
           <Button variant="outline" size="sm" onClick={onClose}>
             Cancel
           </Button>

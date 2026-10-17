@@ -86,19 +86,19 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
     >
       <div className="space-y-6">
         {/* Status and Action Banner */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between shadow-lg">
+        <div className="p-4 rounded-2xl bg-[#0D111B] border border-[#273244] flex items-center justify-between shadow-lg">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-white/40">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
               Current Lifecycle
             </span>
             <div className="mt-1 flex items-center gap-2">
               <Badge status={order.status} size="lg" />
               {order.paymentStatus === 'VERIFIED' ? (
-                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-[#34D399] bg-[#34D399]/10 border border-[#34D399]/20 px-2.5 py-0.5 rounded-full font-mono">
                   Paid
                 </span>
               ) : (
-                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-[#FBBF24] bg-[#FBBF24]/10 border border-[#FBBF24]/20 px-2.5 py-0.5 rounded-full font-mono">
                   Payment Due
                 </span>
               )}
@@ -106,18 +106,18 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
           </div>
 
           <div className="text-right">
-            <span className="text-[10px] font-black uppercase tracking-wider text-white/40">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
               Total Charge
             </span>
-            <p className="text-2xl font-black text-[#CCFF00] font-mono mt-0.5">
+            <p className="text-2xl font-black text-[#00D4FF] font-mono mt-0.5">
               {formatCurrency(order.pricing.total)}
             </p>
           </div>
         </div>
 
         {/* Dynamic Contextual Action Buttons (Specification 29) */}
-        <div className="p-4 rounded-2xl bg-[#00F0FF]/10 border border-[#00F0FF]/20 space-y-3 shadow-lg">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#00F0FF]">
+        <div className="p-4 rounded-2xl bg-[#00D4FF]/10 border border-[#00D4FF]/20 space-y-3 shadow-lg">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#00D4FF] font-mono">
             Operational Action Required
           </span>
 
@@ -208,13 +208,13 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
             )}
 
             {order.status === 'COLLECTED' && (
-              <span className="text-xs font-semibold text-white/50 py-1">
+              <span className="text-xs font-semibold text-[#34D399] py-1 font-mono">
                 ✓ Order has been fulfilled and collected by student.
               </span>
             )}
 
             {order.status === 'REJECTED' && (
-              <div className="text-xs text-rose-400">
+              <div className="text-xs text-[#FB7185] font-mono">
                 <strong>Declined:</strong> {order.rejectionReason}
               </div>
             )}
@@ -222,69 +222,69 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
         </div>
 
         {/* Student Information */}
-        <div className="glass-card-dark rounded-2xl p-4 space-y-2 border border-white/10">
-          <h4 className="text-[10px] font-black uppercase tracking-wider text-white/40">
+        <div className="bg-[#0D111B] rounded-2xl p-4 space-y-2 border border-[#273244]">
+          <h4 className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
             Student Details
           </h4>
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 font-bold text-white">
-              <User className="w-4 h-4 text-[#CCFF00]" />
+            <div className="flex items-center gap-2 font-bold text-[#F9FAFB]">
+              <User className="w-4 h-4 text-[#00D4FF]" />
               <span>{order.studentName}</span>
             </div>
-            <span className="text-xs text-white/50 font-mono">{order.studentPhone}</span>
+            <span className="text-xs text-[#9CA3AF] font-mono">{order.studentPhone}</span>
           </div>
-          <p className="text-xs text-white/50">{order.studentEmail}</p>
-          <div className="pt-2 flex items-center justify-between text-xs text-white/70 border-t border-white/10">
+          <p className="text-xs text-[#9CA3AF]">{order.studentEmail}</p>
+          <div className="pt-2 flex items-center justify-between text-xs text-[#9CA3AF] border-t border-[#273244]">
             <span>Pickup OTP Verification Code:</span>
-            <span className="font-mono font-bold text-[#CCFF00] bg-black/50 border border-[#CCFF00]/30 px-2 py-0.5 rounded">
+            <span className="font-mono font-bold text-[#00D4FF] bg-[#080B12] border border-[#00D4FF]/30 px-2 py-0.5 rounded">
               {order.otpCode}
             </span>
           </div>
         </div>
 
         {/* Print Specifications Checklist */}
-        <div className="glass-card-dark rounded-2xl p-4 space-y-3 border border-white/10">
-          <h4 className="text-[10px] font-black uppercase tracking-wider text-white/40">
+        <div className="bg-[#0D111B] rounded-2xl p-4 space-y-3 border border-[#273244]">
+          <h4 className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
             Print Configuration
           </h4>
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-              <span className="text-white/40 block">Service</span>
-              <span className="font-bold text-white">{order.config.service}</span>
+            <div className="p-2.5 rounded-xl bg-[#111827] border border-[#273244]">
+              <span className="text-[#6B7280] block">Service</span>
+              <span className="font-bold text-[#F9FAFB]">{order.config.service}</span>
             </div>
-            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-              <span className="text-white/40 block">Color</span>
-              <span className="font-bold text-white">{order.config.color === 'COLOR' ? 'Color' : 'B&W'}</span>
+            <div className="p-2.5 rounded-xl bg-[#111827] border border-[#273244]">
+              <span className="text-[#6B7280] block">Color</span>
+              <span className="font-bold text-[#F9FAFB]">{order.config.color === 'COLOR' ? 'Color' : 'B&W'}</span>
             </div>
-            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-              <span className="text-white/40 block">Paper & Sides</span>
-              <span className="font-bold text-white">
+            <div className="p-2.5 rounded-xl bg-[#111827] border border-[#273244]">
+              <span className="text-[#6B7280] block">Paper & Sides</span>
+              <span className="font-bold text-[#F9FAFB]">
                 {order.config.paperSize} • {order.config.sides === 'DOUBLE' ? 'Duplex' : 'Single'}
               </span>
             </div>
-            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-              <span className="text-white/40 block">Copies & Binding</span>
-              <span className="font-bold text-white">
+            <div className="p-2.5 rounded-xl bg-[#111827] border border-[#273244]">
+              <span className="text-[#6B7280] block">Copies & Binding</span>
+              <span className="font-bold text-[#F9FAFB]">
                 {order.config.copies} Sets • {order.config.finishing}
               </span>
             </div>
           </div>
 
           {order.config.instructions && (
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300">
-              <span className="font-bold block text-amber-400">Operator Instructions:</span>
+            <div className="p-3 rounded-xl bg-[#FBBF24]/10 border border-[#FBBF24]/30 text-xs text-[#FBBF24]">
+              <span className="font-bold block text-[#FBBF24]">Operator Instructions:</span>
               <span>"{order.config.instructions}"</span>
             </div>
           )}
         </div>
 
         {/* Uploaded Documents List with Secure Authorized Access */}
-        <div className="glass-card-dark rounded-2xl p-4 space-y-3 border border-white/10">
+        <div className="bg-[#0D111B] rounded-2xl p-4 space-y-3 border border-[#273244]">
           <div className="flex items-center justify-between">
-            <h4 className="text-[10px] font-black uppercase tracking-wider text-white/40">
+            <h4 className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
               Documents ({order.documents.length})
             </h4>
-            <span className="text-xs font-bold text-[#CCFF00]">
+            <span className="text-xs font-bold text-[#00D4FF] font-mono">
               {totalPages} Pages total
             </span>
           </div>
@@ -298,18 +298,18 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
               return (
                 <div
                   key={doc.id}
-                  className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs"
+                  className="p-3 rounded-xl bg-[#111827] border border-[#273244] space-y-2 text-xs"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 flex items-center justify-center shrink-0">
                         <FileText className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-bold text-white truncate" title={doc.name}>
+                        <p className="font-bold text-[#F9FAFB] truncate" title={doc.name}>
                           {doc.name}
                         </p>
-                        <p className="text-[11px] text-white/40">
+                        <p className="text-[11px] text-[#6B7280]">
                           {formatBytes(doc.size)} • {doc.pages} pages
                         </p>
                       </div>
@@ -321,7 +321,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
                         type="button"
                         disabled={isLoading}
                         onClick={() => handleOpenDocument(doc, false)}
-                        className="px-3 py-1.5 rounded-lg bg-[#CCFF00] hover:bg-[#b8e600] disabled:opacity-50 text-black font-bold flex items-center gap-1.5 shadow-md shadow-[#CCFF00]/10 transition-colors cursor-pointer"
+                        className="px-3 py-1.5 rounded-lg bg-[#00D4FF] hover:bg-[#00b4d8] disabled:opacity-50 text-black font-bold flex items-center gap-1.5 shadow-md shadow-[#00D4FF]/10 transition-colors cursor-pointer font-mono"
                         title="View Document in browser"
                       >
                         {isLoading ? (
@@ -337,7 +337,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
                         type="button"
                         disabled={isLoading}
                         onClick={() => handleOpenDocument(doc, true)}
-                        className="p-1.5 rounded-lg bg-white/10 border border-white/15 hover:bg-white/20 disabled:opacity-50 text-white transition-colors shadow-sm cursor-pointer"
+                        className="p-1.5 rounded-lg bg-[#1A2232] border border-[#273244] hover:bg-[#202B3D] disabled:opacity-50 text-[#F9FAFB] transition-colors shadow-sm cursor-pointer"
                         title="Download Document"
                       >
                         <Download className="w-3.5 h-3.5" />
@@ -347,8 +347,8 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
 
                   {/* Inline Error display if access fails */}
                   {error && (
-                    <div className="flex items-center gap-1.5 p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px]">
-                      <AlertCircle className="w-3.5 h-3.5 shrink-0 text-rose-400" />
+                    <div className="flex items-center gap-1.5 p-2 rounded-lg bg-[#FB7185]/10 border border-[#FB7185]/30 text-[#FB7185] text-[11px]">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0 text-[#FB7185]" />
                       <span>{error}</span>
                     </div>
                   )}

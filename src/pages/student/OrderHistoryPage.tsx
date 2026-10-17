@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import {
   Search,
   Filter,
-  FileText,
-  RotateCcw,
   ExternalLink,
   Download,
-  CheckCircle2,
-  Calendar,
 } from 'lucide-react';
 import { useOrders } from '../../context/OrderContext';
-import { Order, OrderStatus } from '../../types';
+import { Order } from '../../types';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
@@ -59,18 +55,18 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
       <div className="flex flex-col sm:flex-row items-center gap-3">
         {/* Search */}
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by token (XR-1042) or document name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-white/10 bg-white/5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#CCFF00]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#273244] bg-[#0D111B] text-xs text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
           />
         </div>
 
         {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold overflow-x-auto w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D111B] border border-[#273244] text-xs font-semibold overflow-x-auto w-full sm:w-auto">
           {[
             { id: 'ALL', label: 'All Orders' },
             { id: 'ACTIVE', label: 'In Queue' },
@@ -82,8 +78,8 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors cursor-pointer ${
                 statusFilter === tab.id
-                  ? 'bg-[#CCFF00] text-black shadow-md font-bold'
-                  : 'text-white/60 hover:text-white'
+                  ? 'bg-[#00D4FF] text-black shadow-md font-bold'
+                  : 'text-[#9CA3AF] hover:text-[#F9FAFB]'
               }`}
             >
               {tab.label}
@@ -94,9 +90,9 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
 
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
-        <div className="text-center py-16 glass-card-dark rounded-3xl border border-white/10 p-8 space-y-3">
-          <p className="text-sm font-bold text-white/80">No matching orders found</p>
-          <p className="text-xs text-white/40">Try adjusting your search query or filter tags.</p>
+        <div className="text-center py-16 bg-[#111827] rounded-3xl border border-[#273244] p-8 space-y-3">
+          <p className="text-sm font-bold text-[#F9FAFB]/80">No matching orders found</p>
+          <p className="text-xs text-[#9CA3AF]">Try adjusting your search query or filter tags.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -106,26 +102,26 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
             return (
               <div
                 key={order.id}
-                className="glass-card-dark border border-white/10 rounded-3xl p-5 shadow-xl hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="bg-[#111827] border border-[#273244] rounded-3xl p-5 shadow-xl hover:border-[#00D4FF]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="flex items-start sm:items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#CCFF00]/10 text-[#CCFF00] border border-[#CCFF00]/20 flex items-center justify-center font-mono font-black text-sm shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 flex items-center justify-center font-mono font-black text-sm shrink-0">
                     XR
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-base font-extrabold text-white">
+                      <span className="font-mono text-base font-extrabold text-[#F9FAFB]">
                         {order.token}
                       </span>
                       <Badge status={order.status} size="sm" />
                     </div>
 
-                    <p className="text-xs text-white/70">
+                    <p className="text-xs text-[#9CA3AF]">
                       {order.documents[0]?.name || 'Document'} {order.documents.length > 1 ? `+ ${order.documents.length - 1} more` : ''} • {totalPages} pages • {order.config.color === 'COLOR' ? 'Color' : 'B&W'} • {order.config.copies} sets
                     </p>
 
-                    <div className="flex items-center gap-3 text-[11px] text-white/40">
+                    <div className="flex items-center gap-3 text-[11px] text-[#6B7280]">
                       <span>{formatDate(order.createdAt)}</span>
                       <span>•</span>
                       <span>{order.pickupCounter}</span>
@@ -133,10 +129,10 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-3 sm:pt-0 border-t sm:border-0 border-white/10">
+                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-3 sm:pt-0 border-t sm:border-0 border-[#273244]">
                   <div className="text-left sm:text-right">
-                    <span className="text-[10px] uppercase font-bold text-white/40 block">Total</span>
-                    <span className="font-extrabold text-base text-[#CCFF00] font-mono">
+                    <span className="text-[10px] uppercase font-bold text-[#9CA3AF] block font-mono">Total</span>
+                    <span className="font-extrabold text-base text-[#00D4FF] font-mono">
                       {formatCurrency(order.pricing.total)}
                     </span>
                   </div>
@@ -175,42 +171,42 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
           description={`Order reference #${selectedReceipt.id}`}
         >
           <div className="space-y-4 text-xs">
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex justify-between items-center">
+            <div className="p-3.5 rounded-2xl bg-[#0D111B] border border-[#273244] flex justify-between items-center">
               <div>
-                <p className="font-bold text-white">{selectedReceipt.studentName}</p>
-                <p className="text-white/40">{selectedReceipt.studentEmail}</p>
+                <p className="font-bold text-[#F9FAFB]">{selectedReceipt.studentName}</p>
+                <p className="text-[#9CA3AF]">{selectedReceipt.studentEmail}</p>
               </div>
               <Badge status={selectedReceipt.status} size="sm" />
             </div>
 
-            <div className="space-y-2 divide-y divide-white/10">
+            <div className="space-y-2 divide-y divide-[#273244]">
               <div className="flex justify-between py-1">
-                <span className="text-white/50">Service:</span>
-                <span className="font-semibold text-white">{selectedReceipt.config.service}</span>
+                <span className="text-[#9CA3AF]">Service:</span>
+                <span className="font-semibold text-[#F9FAFB]">{selectedReceipt.config.service}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-white/50">Specs:</span>
-                <span className="font-semibold text-white">
+                <span className="text-[#9CA3AF]">Specs:</span>
+                <span className="font-semibold text-[#F9FAFB]">
                   {selectedReceipt.config.color} • {selectedReceipt.config.paperSize} • {selectedReceipt.config.sides}
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-white/50">Finishing:</span>
-                <span className="font-semibold text-white">{selectedReceipt.config.finishing}</span>
+                <span className="text-[#9CA3AF]">Finishing:</span>
+                <span className="font-semibold text-[#F9FAFB]">{selectedReceipt.config.finishing}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-white/50">Payment:</span>
-                <span className="font-bold text-emerald-400">
+                <span className="text-[#9CA3AF]">Payment:</span>
+                <span className="font-bold text-[#34D399]">
                   {selectedReceipt.paymentMethod} (Verified)
                 </span>
               </div>
-              <div className="flex justify-between py-2 text-sm font-bold border-t border-white/10">
-                <span className="text-white">Total Amount:</span>
-                <span className="text-[#CCFF00] font-mono font-black">{formatCurrency(selectedReceipt.pricing.total)}</span>
+              <div className="flex justify-between py-2 text-sm font-bold border-t border-[#273244]">
+                <span className="text-[#F9FAFB]">Total Amount:</span>
+                <span className="text-[#00D4FF] font-mono font-black">{formatCurrency(selectedReceipt.pricing.total)}</span>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex justify-end gap-2">
+            <div className="pt-3 border-t border-[#273244] flex justify-end gap-2">
               <Button
                 variant="outline"
                 size="sm"

@@ -149,10 +149,10 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <ShoppingBag className="w-6 h-6 text-[#CCFF00]" /> Store Catalog Management
+          <h1 className="text-2xl font-black text-[#F9FAFB] tracking-tight flex items-center gap-2">
+            <ShoppingBag className="w-6 h-6 text-[#00D4FF]" /> Store Catalog Management
           </h1>
-          <p className="text-sm text-white/50 mt-0.5">
+          <p className="text-sm text-[#9CA3AF] mt-0.5">
             Configure campus stationery items, live inventory levels, pricing, and student availability.
           </p>
         </div>
@@ -163,33 +163,33 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
       </div>
 
       {successMessage && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-3 animate-in fade-in duration-200">
-          <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-400" />
+        <div className="p-4 rounded-2xl bg-[#34D399]/10 border border-[#34D399]/20 text-[#34D399] text-xs flex items-center gap-3 animate-in fade-in duration-200">
+          <CheckCircle2 className="w-5 h-5 shrink-0 text-[#34D399]" />
           <span className="font-bold font-mono">{successMessage}</span>
         </div>
       )}
 
       {errorMessage && (
-        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 shrink-0 text-rose-400" />
+        <div className="p-4 rounded-2xl bg-[#FB7185]/10 border border-[#FB7185]/20 text-[#FB7185] text-xs flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 shrink-0 text-[#FB7185]" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {/* Catalog Table */}
-      <div className="glass-card-dark border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-2xl">
+      <div className="bg-[#111827] border border-[#273244] rounded-3xl shadow-2xl overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-white/40 text-xs font-mono">
+          <div className="p-12 text-center text-[#9CA3AF]/60 text-xs font-mono">
             Loading store inventory...
           </div>
         ) : items.length === 0 ? (
-          <div className="p-12 text-center text-white/40 text-xs font-medium">
+          <div className="p-12 text-center text-[#9CA3AF] text-xs font-medium">
             No items in store. Click "Add Store Item" to create the first one.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-white/5 border-b border-white/10 text-white/40 uppercase font-mono font-black text-[10px] tracking-wider">
+              <thead className="bg-[#0D111B]/60 border-b border-[#273244] text-[#9CA3AF] uppercase font-mono font-black text-[10px] tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">Item Details</th>
                   <th className="py-3.5 px-4">Category</th>
@@ -200,28 +200,28 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 font-medium">
+              <tbody className="divide-y divide-[#273244]/50 font-medium">
                 {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                  <tr key={item.id} className="hover:bg-[#1A2232]/50 transition-colors">
                     <td className="py-3 px-4">
-                      <p className="font-bold text-white text-xs">{item.name}</p>
-                      <p className="text-[11px] text-white/40 line-clamp-1">{item.description}</p>
+                      <p className="font-bold text-[#F9FAFB] text-xs">{item.name}</p>
+                      <p className="text-[11px] text-[#9CA3AF] line-clamp-1">{item.description}</p>
                     </td>
 
                     <td className="py-3 px-4">
-                      <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-white/70 font-semibold text-[10px] font-mono">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 font-semibold text-[10px] font-mono">
                         {item.category}
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 font-black text-[#CCFF00] text-sm font-mono">
+                    <td className="py-3 px-4 font-black text-[#00D4FF] text-sm font-mono">
                       ₹{item.price}
                     </td>
 
                     <td className="py-3 px-4">
                       <span
                         className={`font-mono font-bold ${
-                          item.stock < 10 ? 'text-rose-400' : 'text-white/80'
+                          item.stock < 10 ? 'text-[#FB7185]' : 'text-[#F9FAFB]/80'
                         }`}
                       >
                         {item.stock} units
@@ -231,10 +231,10 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                     <td className="py-3 px-4">
                       <button
                         onClick={() => handleTogglePublish(item)}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors border ${
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors border font-mono ${
                           item.isAvailable
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20'
-                            : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+                            ? 'bg-[#34D399]/10 text-[#34D399] border-[#34D399]/20 hover:bg-[#34D399]/20'
+                            : 'bg-[#1A2232] text-[#9CA3AF] border-[#273244] hover:bg-[#202B3D]'
                         }`}
                         title="Click to toggle visibility"
                       >
@@ -243,21 +243,21 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                       </button>
                     </td>
 
-                    <td className="py-3 px-4 text-white/40 text-[11px] font-mono">
+                    <td className="py-3 px-4 text-[#6B7280] text-[11px] font-mono">
                       {item.createdBy?.slice(0, 10) || 'Desk'}
                     </td>
 
                     <td className="py-3 px-4 text-right space-x-2">
                       <button
                         onClick={() => openEditModal(item)}
-                        className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 border border-white/10 cursor-pointer transition-colors"
+                        className="p-1.5 rounded-xl bg-[#1A2232] hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] border border-[#273244] cursor-pointer transition-colors"
                         title="Edit Item"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(item)}
-                        className="p-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 cursor-pointer transition-colors"
+                        className="p-1.5 rounded-xl bg-[#FB7185]/10 hover:bg-[#FB7185]/20 text-[#FB7185] border border-[#FB7185]/20 cursor-pointer transition-colors"
                         title="Delete Item"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -274,14 +274,14 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
       {/* Add / Edit Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="glass-card-dark rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-white/15 animate-in fade-in zoom-in-95 duration-150 backdrop-blur-2xl">
-            <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-              <h3 className="font-black text-white text-lg">
+          <div className="bg-[#111827] rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-[#273244] animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-4 border-b border-[#273244] mb-4">
+              <h3 className="font-black text-[#F9FAFB] text-lg">
                 {editingItem ? 'Edit Store Item' : 'Add New Stationery Item'}
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                className="w-7 h-7 rounded-full bg-[#1A2232] hover:bg-[#202B3D] flex items-center justify-center text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -289,24 +289,24 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-white/70">Item Name *</label>
+                <label className="font-bold text-[#9CA3AF]">Item Name *</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="e.g. Engineering Graph Book (60 Pgs)"
-                  className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold text-white/70">Category *</label>
+                  <label className="font-bold text-[#9CA3AF]">Category *</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-[#121215] text-white focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
                   >
                     <option value="Stationery">Stationery</option>
                     <option value="Lab Apparel">Lab Apparel</option>
@@ -318,7 +318,7 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-white/70">Unit Price (₹) *</label>
+                  <label className="font-bold text-[#9CA3AF]">Unit Price (₹) *</label>
                   <input
                     type="number"
                     step="0.5"
@@ -326,35 +326,35 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     required
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium font-mono"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold text-white/70">Initial Stock (Units) *</label>
+                  <label className="font-bold text-[#9CA3AF]">Initial Stock (Units) *</label>
                   <input
                     type="number"
                     min="0"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                     required
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium font-mono"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-white/70">Availability</label>
+                  <label className="font-bold text-[#9CA3AF]">Availability</label>
                   <div className="flex items-center gap-2 pt-2">
                     <input
                       type="checkbox"
                       id="isAvailCheck"
                       checked={isAvailable}
                       onChange={(e) => setIsAvailable(e.target.checked)}
-                      className="w-4 h-4 accent-[#CCFF00] rounded"
+                      className="w-4 h-4 accent-[#00D4FF] rounded"
                     />
-                    <label htmlFor="isAvailCheck" className="text-white/80 font-semibold cursor-pointer">
+                    <label htmlFor="isAvailCheck" className="text-[#F9FAFB]/80 font-semibold cursor-pointer">
                       Published to Store
                     </label>
                   </div>
@@ -362,28 +362,28 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-white/70">Description</label>
+                <label className="font-bold text-[#9CA3AF]">Description</label>
                 <textarea
                   rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Specification, paper GSM, compliance notes..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-white/70">Product Image URL (Optional)</label>
+                <label className="font-bold text-[#9CA3AF]">Product Image URL (Optional)</label>
                 <input
                   type="url"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="https://example.com/item.png"
-                  className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-[#CCFF00] focus:ring-2 focus:ring-[#CCFF00]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4 border-t border-white/10">
+              <div className="flex items-center justify-end gap-2 pt-4 border-t border-[#273244]">
                 <Button
                   type="button"
                   variant="outline"

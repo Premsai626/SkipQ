@@ -59,7 +59,7 @@ export async function testSupabaseConnection() {
   }
 
   try {
-    const { data, error } = await client.from('orders').select('id').limit(1);
+    const { error } = await client.from('orders').select('id').limit(1);
     if (error) {
       // Check if table hasn't been created yet
       if (error.code === '42P01') {

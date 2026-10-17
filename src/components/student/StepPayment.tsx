@@ -3,10 +3,8 @@ import {
   QrCode,
   CreditCard,
   Banknote,
-  ShieldCheck,
   CheckCircle2,
   AlertTriangle,
-  Loader2,
   ArrowLeft,
   Sparkles,
   RefreshCw,
@@ -82,24 +80,24 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
           }}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedMethod === 'UPI'
-              ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/10'
-              : 'border-white/10 bg-white/5 hover:border-white/20'
+              ? 'border-[#00D4FF] bg-[#00D4FF]/10 ring-2 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/10'
+              : 'border-[#273244] bg-[#0D111B]/60 hover:border-[#00D4FF]/40'
           }`}
         >
           <div className="flex items-center justify-between mb-2">
             <div
               className={`p-2 rounded-xl ${
-                selectedMethod === 'UPI' ? 'bg-[#CCFF00] text-black' : 'bg-white/10 text-white/70'
+                selectedMethod === 'UPI' ? 'bg-[#00D4FF] text-black font-bold' : 'bg-[#1A2232] text-[#9CA3AF]'
               }`}
             >
               <QrCode className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#34D399]/20 text-[#34D399] border border-[#34D399]/30 font-mono">
               Instant
             </span>
           </div>
-          <p className="text-sm font-bold text-white">UPI Instant Pay</p>
-          <p className="text-xs text-white/40 mt-0.5">GPay, PhonePe, Paytm, BHIM</p>
+          <p className="text-sm font-bold text-[#F9FAFB]">UPI Instant Pay</p>
+          <p className="text-xs text-[#9CA3AF] mt-0.5">GPay, PhonePe, Paytm, BHIM</p>
         </button>
 
         {/* Card */}
@@ -111,24 +109,24 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
           }}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedMethod === 'CARD'
-              ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/10'
-              : 'border-white/10 bg-white/5 hover:border-white/20'
+              ? 'border-[#00D4FF] bg-[#00D4FF]/10 ring-2 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/10'
+              : 'border-[#273244] bg-[#0D111B]/60 hover:border-[#00D4FF]/40'
           }`}
         >
           <div className="flex items-center justify-between mb-2">
             <div
               className={`p-2 rounded-xl ${
-                selectedMethod === 'CARD' ? 'bg-[#CCFF00] text-black' : 'bg-white/10 text-white/70'
+                selectedMethod === 'CARD' ? 'bg-[#00D4FF] text-black font-bold' : 'bg-[#1A2232] text-[#9CA3AF]'
               }`}
             >
               <CreditCard className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/70 font-mono">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1A2232] text-[#9CA3AF] font-mono border border-[#273244]">
               Cards
             </span>
           </div>
-          <p className="text-sm font-bold text-white">Campus / Debit Card</p>
-          <p className="text-xs text-white/40 mt-0.5">Visa, Mastercard, RuPay</p>
+          <p className="text-sm font-bold text-[#F9FAFB]">Campus / Debit Card</p>
+          <p className="text-xs text-[#9CA3AF] mt-0.5">Visa, Mastercard, RuPay</p>
         </button>
 
         {/* Cash at Counter */}
@@ -140,60 +138,60 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
           }}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedMethod === 'CASH'
-              ? 'border-[#CCFF00] bg-[#CCFF00]/10 ring-2 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/10'
-              : 'border-white/10 bg-white/5 hover:border-white/20'
+              ? 'border-[#00D4FF] bg-[#00D4FF]/10 ring-2 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/10'
+              : 'border-[#273244] bg-[#0D111B]/60 hover:border-[#00D4FF]/40'
           }`}
         >
           <div className="flex items-center justify-between mb-2">
             <div
               className={`p-2 rounded-xl ${
-                selectedMethod === 'CASH' ? 'bg-[#CCFF00] text-black' : 'bg-white/10 text-white/70'
+                selectedMethod === 'CASH' ? 'bg-[#00D4FF] text-black font-bold' : 'bg-[#1A2232] text-[#9CA3AF]'
               }`}
             >
               <Banknote className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#FBBF24]/20 text-[#FBBF24] border border-[#FBBF24]/30 font-mono">
               Counter
             </span>
           </div>
-          <p className="text-sm font-bold text-white">Cash at Counter</p>
-          <p className="text-xs text-white/40 mt-0.5">Pay operator upon pickup</p>
+          <p className="text-sm font-bold text-[#F9FAFB]">Cash at Counter</p>
+          <p className="text-xs text-[#9CA3AF] mt-0.5">Pay operator upon pickup</p>
         </button>
       </div>
 
       {/* Selected Payment Method Interactive Canvas */}
-      <div className="glass-card-dark border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-2xl">
+      <div className="bg-[#111827] border border-[#273244] rounded-3xl p-6 shadow-2xl">
         {selectedMethod === 'UPI' && (
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Simulated QR Code Box */}
-              <div className="w-36 h-36 rounded-2xl bg-black/80 border border-white/10 p-3 flex flex-col items-center justify-center text-white relative shadow-xl">
-                <QrCode className="w-24 h-24 text-white" />
-                <span className="text-[9px] font-black tracking-widest text-[#CCFF00] mt-1 font-mono">
+              <div className="w-36 h-36 rounded-2xl bg-[#080B12] border border-[#273244] p-3 flex flex-col items-center justify-center text-white relative shadow-xl">
+                <QrCode className="w-24 h-24 text-[#00D4FF]" />
+                <span className="text-[9px] font-black tracking-widest text-[#00D4FF] mt-1 font-mono">
                   SCAN TO PAY
                 </span>
-                <span className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded bg-[#CCFF00] text-black text-[9px] font-black shadow font-mono">
+                <span className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded bg-[#00D4FF] text-black text-[9px] font-black shadow font-mono">
                   DEMO
                 </span>
               </div>
 
               <div className="space-y-3 flex-1 text-center sm:text-left">
                 <div>
-                  <h4 className="text-sm font-bold text-white">
+                  <h4 className="text-sm font-bold text-[#F9FAFB]">
                     Scan QR or approve UPI request
                   </h4>
-                  <p className="text-xs text-white/50 mt-0.5">
-                    Amount to authorize: <span className="font-black text-[#CCFF00] font-mono">{formatCurrency(pricing.total)}</span>
+                  <p className="text-xs text-[#9CA3AF] mt-0.5">
+                    Amount to authorize: <span className="font-black text-[#00D4FF] font-mono">{formatCurrency(pricing.total)}</span>
                   </p>
                 </div>
 
                 <div className="max-w-xs">
-                  <label className="text-[11px] font-semibold text-white/60">Virtual UPI ID</label>
+                  <label className="text-[11px] font-semibold text-[#9CA3AF]">Virtual UPI ID</label>
                   <input
                     type="text"
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 text-xs font-mono rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#CCFF00]/40 focus:border-[#CCFF00]"
+                    className="w-full mt-1 px-3 py-2 text-xs font-mono rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#00D4FF]/40 focus:border-[#00D4FF]"
                     placeholder="name@upi"
                   />
                 </div>
@@ -204,34 +202,34 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
 
         {selectedMethod === 'CARD' && (
           <div className="space-y-4 max-w-md">
-            <h4 className="text-sm font-bold text-white">Campus Debit Card Details</h4>
+            <h4 className="text-sm font-bold text-[#F9FAFB]">Campus Debit Card Details</h4>
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] font-semibold text-white/60">Card Number</label>
+                <label className="text-[11px] font-semibold text-[#9CA3AF]">Card Number</label>
                 <input
                   type="text"
                   readOnly
                   value="4242 •••• •••• 4242"
-                  className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-white/10 bg-white/5 text-white/80"
+                  className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB]/80"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-semibold text-white/60">Expiry</label>
+                  <label className="text-[11px] font-semibold text-[#9CA3AF]">Expiry</label>
                   <input
                     type="text"
                     readOnly
                     value="12 / 28"
-                    className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-white/10 bg-white/5 text-white/80"
+                    className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB]/80"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-semibold text-white/60">CVV</label>
+                  <label className="text-[11px] font-semibold text-[#9CA3AF]">CVV</label>
                   <input
                     type="password"
                     readOnly
                     value="888"
-                    className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-white/10 bg-white/5 text-white/80"
+                    className="w-full mt-1 px-3 py-2.5 text-xs font-mono rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB]/80"
                   />
                 </div>
               </div>
@@ -240,18 +238,18 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
         )}
 
         {selectedMethod === 'CASH' && (
-          <div className="space-y-2 text-white/80">
-            <h4 className="text-sm font-bold text-white">Cash Payment at Xerox Counter</h4>
-            <p className="text-xs text-white/60">
-              Your order will be queued immediately in <span className="font-bold text-amber-400">PENDING PAYMENT</span> state. Please hand over {formatCurrency(pricing.total)} to the desk operator when collecting.
+          <div className="space-y-2 text-[#F9FAFB]/90">
+            <h4 className="text-sm font-bold text-[#F9FAFB]">Cash Payment at Xerox Counter</h4>
+            <p className="text-xs text-[#9CA3AF]">
+              Your order will be queued immediately in <span className="font-bold text-[#FBBF24]">PENDING PAYMENT</span> state. Please hand over {formatCurrency(pricing.total)} to the desk operator when collecting.
             </p>
           </div>
         )}
 
         {/* Failure Simulation Toggle for Hackathon Evaluators */}
-        <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+        <div className="mt-5 pt-4 border-t border-[#273244] flex items-center justify-between text-xs text-[#9CA3AF]">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#00F0FF]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#00D4FF]" />
             <span>Tester: Simulate payment gateway rejection?</span>
           </div>
           <button
@@ -259,8 +257,8 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
             onClick={() => setSimulateFailure(!simulateFailure)}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
               simulateFailure
-                ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                : 'bg-white/10 text-white/60 hover:bg-white/20'
+                ? 'bg-[#FB7185]/20 text-[#FB7185] border border-[#FB7185]/30'
+                : 'bg-[#1A2232] text-[#9CA3AF] hover:bg-[#202B3D] border border-[#273244]'
             }`}
           >
             {simulateFailure ? 'Failure Simulation ON' : 'Normal (Success)'}
@@ -269,12 +267,12 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
 
         {/* Error State Banner */}
         {isFailed && (
-          <div className="mt-4 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300 space-y-2 animate-in fade-in">
+          <div className="mt-4 p-4 rounded-2xl bg-[#FB7185]/10 border border-[#FB7185]/20 text-xs text-[#FB7185] space-y-2 animate-in fade-in">
             <div className="flex items-center gap-2 font-bold">
-              <AlertTriangle className="w-4 h-4 text-rose-400" />
+              <AlertTriangle className="w-4 h-4 text-[#FB7185]" />
               <span>Simulated Payment Declined</span>
             </div>
-            <p className="text-[11px] text-rose-300/80">
+            <p className="text-[11px] text-[#FB7185]/80">
               The simulated campus gateway timed out. You can retry with UPI or choose "Cash at Counter" instead.
             </p>
             <div className="pt-1 flex gap-2">
@@ -305,7 +303,7 @@ export const StepPayment: React.FC<StepPaymentProps> = ({
       </div>
 
       {/* Navigation & Submit CTA */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <div className="flex items-center justify-between pt-4 border-t border-[#273244]">
         <Button
           type="button"
           variant="outline"

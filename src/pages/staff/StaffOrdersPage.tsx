@@ -74,18 +74,18 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       <div className="flex flex-col sm:flex-row items-center gap-3">
         {/* Search */}
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by token (XR-1042), student name, or file..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-white/10 bg-white/5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#CCFF00]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#273244] bg-[#0D111B] text-xs text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
           />
         </div>
 
         {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold overflow-x-auto w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D111B] border border-[#273244] text-xs font-semibold overflow-x-auto w-full sm:w-auto">
           {[
             { id: 'ALL', label: 'All Orders' },
             { id: 'PENDING', label: 'Pending' },
@@ -98,10 +98,10 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
             <button
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors cursor-pointer font-mono ${
                 statusFilter === tab.id
-                  ? 'bg-[#CCFF00] text-black shadow-md font-bold'
-                  : 'text-white/60 hover:text-white'
+                  ? 'bg-[#00D4FF] text-black shadow-md font-bold'
+                  : 'text-[#9CA3AF] hover:text-[#F9FAFB]'
               }`}
             >
               {tab.label}
@@ -111,12 +111,12 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       </div>
 
       {/* Responsive Table on Desktop, Cards on Mobile */}
-      <div className="glass-card-dark border border-white/10 rounded-3xl shadow-xl overflow-hidden backdrop-blur-2xl">
+      <div className="bg-[#111827] border border-[#273244] rounded-3xl shadow-xl overflow-hidden">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/2 text-[11px] font-extrabold uppercase tracking-wider text-white/40">
+              <tr className="border-b border-[#273244] bg-[#0D111B]/60 text-[11px] font-extrabold uppercase tracking-wider text-[#9CA3AF] font-mono">
                 <th className="py-3.5 px-4">Token</th>
                 <th className="py-3.5 px-4">Student</th>
                 <th className="py-3.5 px-4">Files & Pages</th>
@@ -127,10 +127,10 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
                 <th className="py-3.5 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#273244]/50">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-xs text-white/40">
+                  <td colSpan={8} className="py-12 text-center text-xs text-[#9CA3AF]">
                     No orders matching the active criteria.
                   </td>
                 </tr>

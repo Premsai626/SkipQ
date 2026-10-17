@@ -30,15 +30,13 @@
 SkipQ enforces strict application security standards:
 
 ### Role & Account Status Model
-- **Roles**: Exactly three roles: `student`, `staff`, `admin`. Role indicates authorization level, not status.
-- **Status**: Separate account lifecycle status (`active` | `deactivated`).
-- **Student Registration**: Normal registration always assigns `role = 'student'` and `status = 'active'`. Clients cannot supply or self-promote their role.
-- **Staff Provisioning**: Staff accounts cannot be registered publicly. They are provisioned exclusively by authenticated administrators via `POST /api/v1/admin/staff`.
-- **Staff Deprovisioning**: Admins deprovision staff via `PATCH /api/v1/admin/staff/:userId/deactivate`. Deprovisioned staff retain their account and order history, but their role becomes `student`, immediately revoking staff operational capabilities.
-- **Server-Side Authoritative Checks**: Protected operations verify the user's current role and status directly against the database on each request, preventing old JWTs from retaining revoked privileges.
+- **Roles**: Exactly two roles: `student` and `staff` (no admin role). Role indicates operational authorization level.
+- **Status**: Separate account lifecycle status (`active` | `deactivated`). Deactivated accounts are rejected at the authentication boundary.
+- **Registration**: Direct onboarding for both students and staff operators. In production environments, staff registration can be scoped to institutional email domains or invitation tokens.
+- **Server-Side Authoritative Checks**: Protected operations verify the user's current role and active status directly against the database on each request, preventing stale JWT claims from retaining revoked privileges.
 - **Password Security**: Passwords are encrypted with `bcryptjs`. Generic 401 messages prevent user enumeration.
-- **Data Isolation**: Students can strictly view and cancel only their own orders and documents.
-- **Zero Demo Credentials**: The platform contains no hardcoded demo credentials. Users register through standard authentication, and test accounts are provisioned programmatically.
+- **Data Isolation**: Students can strictly view and cancel only their own orders and documents. Staff members can only view documents associated with campus print orders.
+- **Zero Demo Credentials**: The platform contains no hardcoded demo credentials. Users register through standard authentication, and test accounts are provisioned dynamically in automated test suites.
 
 ---
 

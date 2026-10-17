@@ -11,15 +11,15 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    solid: 'glass-card-dark rounded-2xl',
-    glass: 'glass-card-dark rounded-2xl backdrop-blur-2xl',
+    solid: 'bg-[#111827] border border-[#273244] rounded-2xl shadow-lg',
+    glass: 'bg-[#111827]/85 backdrop-blur-xl border border-[#273244] rounded-2xl shadow-xl',
     interactive:
-      'glass-card-dark rounded-2xl hover:border-white/25 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer',
+      'bg-[#111827] border border-[#273244] rounded-2xl hover:border-[#00D4FF]/50 hover:bg-[#1A2232] hover:shadow-[0_4px_24px_rgba(0,212,255,0.08)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer',
   };
 
   return (
     <div
-      className={`rounded-2xl p-5 ${variantStyles[variant]} ${className}`}
+      className={`p-5 ${variantStyles[variant]} ${className}`}
       {...props}
     >
       {children}

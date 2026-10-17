@@ -11,4 +11,14 @@ services:
     environment:
       - PORT=80
       - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-production_secure_jwt_secret_skipq_change_me_2026}
+      - DATABASE_DRIVER=${DATABASE_DRIVER:-supabase}
+      - STORAGE_DRIVER=${STORAGE_DRIVER:-supabase}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_STORAGE_BUCKET=${SUPABASE_STORAGE_BUCKET:-xerox-documents}
+    env_file:
+      - path: backend/.env
+        required: false
     restart: unless-stopped

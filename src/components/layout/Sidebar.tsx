@@ -55,31 +55,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
   const navItems = role === 'staff' ? staffNavItems : studentNavItems;
 
   return (
-    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between border-r border-white/10 bg-[#09090b]/60 backdrop-blur-2xl p-4 min-h-[calc(100vh-4rem)] relative z-10">
+    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between border-r border-[#273244] bg-[#0D111B]/80 backdrop-blur-2xl p-4 min-h-[calc(100vh-4rem)] relative z-10">
       <div className="space-y-6">
         {/* Role identification banner */}
         <div
           className={`p-3.5 rounded-2xl border flex items-center justify-between ${
             role === 'staff'
-              ? 'bg-gradient-to-r from-white/10 to-white/5 border-white/15 text-white shadow-lg'
-              : 'bg-gradient-to-r from-[#CCFF00]/10 to-[#00F0FF]/5 border-[#CCFF00]/20 text-white shadow-lg'
+              ? 'bg-gradient-to-r from-[#8B5CF6]/15 to-[#00D4FF]/5 border-[#273244] text-[#F9FAFB] shadow-lg'
+              : 'bg-gradient-to-r from-[#00D4FF]/10 to-[#8B5CF6]/5 border-[#273244] text-[#F9FAFB] shadow-lg'
           }`}
         >
           <div className="flex items-center gap-3">
             <div
               className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold shadow-inner ${
                 role === 'staff'
-                  ? 'bg-white/15 text-[#CCFF00] border border-white/20'
-                  : 'bg-[#CCFF00] text-black shadow-md shadow-[#CCFF00]/20'
+                  ? 'bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/30'
+                  : 'bg-[#00D4FF] text-black shadow-md shadow-[#00D4FF]/25'
               }`}
             >
               {role === 'staff' ? <ShieldCheck className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
             </div>
             <div>
-              <p className="text-xs font-black tracking-tight leading-tight">
+              <p className="text-xs font-black tracking-tight leading-tight text-[#F9FAFB]">
                 {role === 'staff' ? 'STAFF OPERATOR' : 'STUDENT PORTAL'}
               </p>
-              <p className="text-[10px] text-white/50 leading-tight">
+              <p className="text-[10px] text-[#9CA3AF] leading-tight">
                 {role === 'staff' ? 'Station #1 • Main Desk' : 'Verified Campus ID'}
               </p>
             </div>
@@ -102,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 <button
                   key={item.label}
                   onClick={() => onNavigate(item.path)}
-                  className="w-full mt-2 mb-3 flex items-center justify-between px-4 py-3.5 rounded-2xl bg-[#CCFF00] text-black font-black text-sm shadow-xl shadow-[#CCFF00]/20 hover:bg-[#b8e600] active:scale-[0.98] transition-all duration-200 cursor-pointer select-none group"
+                  className="w-full mt-2 mb-3 flex items-center justify-between px-4 py-3.5 rounded-2xl bg-[#00D4FF] text-black font-black text-sm shadow-xl shadow-[#00D4FF]/20 hover:bg-[#00b8e6] active:scale-[0.98] transition-all duration-200 cursor-pointer select-none group"
                 >
                   <div className="flex items-center gap-2.5">
                     <Printer className="w-5 h-5 transition-transform group-hover:scale-110" />
@@ -121,27 +121,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 onClick={() => onNavigate(item.path)}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-xs transition-all duration-150 cursor-pointer select-none text-left ${
                   isActive
-                    ? 'bg-white/15 text-white font-black border border-white/20 shadow-md backdrop-blur-xl'
-                    : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-[#1A2232] text-[#00D4FF] font-black border border-[#00D4FF]/30 shadow-md backdrop-blur-xl'
+                    : 'text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] border border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
-                      isActive ? 'text-[#CCFF00]' : 'text-white/40'
+                      isActive ? 'text-[#00D4FF]' : 'text-[#6B7280]'
                     }`}
                   />
                   <span>{item.label}</span>
                 </div>
 
                 {item.count !== undefined && item.count > 0 && (
-                  <span className="px-2 py-0.5 text-[10px] font-black rounded-full bg-rose-500 text-white shadow-sm shadow-rose-500/30">
+                  <span className="px-2 py-0.5 text-[10px] font-black rounded-full bg-[#FB7185] text-white shadow-sm shadow-[#FB7185]/30">
                     {item.count}
                   </span>
                 )}
 
                 {item.badge && (
-                  <span className="px-2 py-0.5 text-[9px] font-black rounded-full bg-[#00F0FF]/15 border border-[#00F0FF]/30 text-[#00F0FF] uppercase tracking-wider">
+                  <span className="px-2 py-0.5 text-[9px] font-black rounded-full bg-[#00D4FF]/15 border border-[#00D4FF]/30 text-[#00D4FF] uppercase tracking-wider">
                     {item.badge}
                   </span>
                 )}
@@ -152,18 +152,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
       </div>
 
       {/* Footer link to landing page */}
-      <div className="pt-4 border-t border-white/10 space-y-2">
+      <div className="pt-4 border-t border-[#273244] space-y-2">
         <button
           onClick={() => onNavigate('/')}
-          className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-white/50 hover:text-white rounded-xl hover:bg-white/5 transition-colors cursor-pointer"
+          className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-[#9CA3AF] hover:text-[#00D4FF] rounded-xl hover:bg-[#202B3D] transition-colors cursor-pointer"
         >
           <span>View Landing Page</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
         </button>
-        <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[10px] text-white/40 text-center font-medium tracking-wide">
+        <div className="px-3 py-1.5 rounded-xl bg-[#111827] border border-[#273244] text-[10px] text-[#6B7280] text-center font-medium tracking-wide">
           SkipQ • Campus Edition 2026
         </div>
       </div>
     </aside>
   );
 };
+export default Sidebar;

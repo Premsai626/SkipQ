@@ -137,3 +137,44 @@ export interface OperationalMetrics {
   colorPercentage: number;
   topService: string;
 }
+
+export interface AiPrintEstimate {
+  pages: number;
+  copies: number;
+  color: 'BW' | 'COLOR';
+  sides: 'SINGLE' | 'DOUBLE';
+  finishing: 'NONE' | 'STAPLE' | 'SPIRAL' | 'LAMINATION';
+  paperSize: 'A4' | 'A3';
+  estimatedTotal: number;
+  estimatedMinutes: number;
+  totalSheets: number;
+}
+
+export interface AiNavigationTarget {
+  path: string;
+  label?: string;
+  reason?: string;
+}
+
+export interface AiChatMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp: string;
+  status?: 'sending' | 'sent' | 'error';
+  errorMessage?: string;
+  data?: {
+    products?: StoreItem[];
+    orders?: any[];
+    navigationTarget?: AiNavigationTarget;
+    printEstimate?: AiPrintEstimate;
+  };
+}
+
+export interface AiServiceStatus {
+  configured: boolean;
+  model: string;
+  service: string;
+  userRole: string;
+}
+

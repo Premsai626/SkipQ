@@ -50,11 +50,17 @@ export class UserRepository {
   async findByEmail(email) {
     if (!email) return null;
     const normalized = email.toLowerCase().trim();
+    const strippedRoll = normalized.endsWith('@campus.edu')
+      ? normalized.slice(0, -'@campus.edu'.length)
+      : normalized;
 
     // 1. Check in-memory store
     let inMemoryUser = null;
     for (const u of this.users.values()) {
-      if (u.email.toLowerCase() === normalized) {
+      if (
+        u.email.toLowerCase() === normalized ||
+        (u.collegeId && (u.collegeId.toLowerCase() === normalized || u.collegeId.toLowerCase() === strippedRoll))
+      ) {
         inMemoryUser = { ...u };
         break;
       }
@@ -68,7 +74,7 @@ export class UserRepository {
           const { data, error } = await client
             .from('profiles')
             .select('*')
-            .eq('email', normalized)
+            .or(`email.ilike.${normalized},college_id.ilike.${normalized},college_id.ilike.${strippedRoll}`)
             .maybeSingle();
 
           if (!error && data) {

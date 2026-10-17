@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Component as HeroPage } from '../components/ui/hero';
 import { CinematicFooter } from '../components/ui/motion-footer';
 import { AuthModal, UserRole, AuthMode } from '../components/AuthModal';
+import { InfoModal, InfoModalTab } from '../components/InfoModal';
 
 interface LandingPageProps {
   onNavigate: (path: string) => void;
@@ -13,6 +14,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, initialAut
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(initialAuthOpen);
   const [authRole, setAuthRole] = useState<UserRole>('student');
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
+
+  // Info Modal State (Services, Privacy, Terms, Support)
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [infoModalTab, setInfoModalTab] = useState<InfoModalTab>('services');
 
   const handleOpenAuthModal = (role: UserRole = 'student', mode: AuthMode = 'signin') => {
     setAuthRole(role);
@@ -52,6 +57,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, initialAut
       handleOpenAuthModal('staff', 'signin');
       return;
     }
+    if (target === 'privacy' || target === 'terms' || target === 'services' || target === 'pricing' || target === 'support') {
+      setInfoModalTab(target === 'pricing' ? 'services' : (target as InfoModalTab));
+      setIsInfoModalOpen(true);
+      return;
+    }
     const element = document.getElementById(target);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -59,7 +69,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, initialAut
   };
 
   return (
-    <div className="min-h-screen bg-[#0038FF] text-white selection:bg-[#CCFF00] selection:text-black">
+    <div className="min-h-screen bg-[#080B12] text-[#F9FAFB] selection:bg-[#00D4FF]/25 selection:text-[#00D4FF] relative overflow-hidden">
       <HeroPage
         onNavigate={handleNavigateTarget}
         onOpenAuthModal={handleOpenAuthModal}
@@ -79,6 +89,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, initialAut
         defaultMode={authMode}
         onStudentSuccess={handleStudentAuthSuccess}
         onStaffSuccess={handleStaffAuthSuccess}
+      />
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        activeTab={infoModalTab}
+        onTabChange={setInfoModalTab}
       />
     </div>
   );

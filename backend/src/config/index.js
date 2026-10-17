@@ -81,4 +81,8 @@ export const config = {
     'image/png',
   ],
   allowedExtensions: ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.jpg', '.jpeg', '.png'],
+
+  // Google Gemini Configuration
+  geminiApiKey: process.env.GEMINI_API_KEY ? String(process.env.GEMINI_API_KEY).trim() : '',
+  geminiModel: process.env.GEMINI_MODEL ? String(process.env.GEMINI_MODEL).trim() : 'gemini-3.5-flash',
 };

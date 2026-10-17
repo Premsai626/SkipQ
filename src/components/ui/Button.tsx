@@ -30,7 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const baseStyles =
-    'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#09090b] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]';
+    'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#080B12] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]';
 
   const sizeStyles = {
     sm: 'text-xs px-3 py-1.5 gap-1.5',
@@ -40,17 +40,17 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-[#CCFF00] text-black hover:bg-[#b8e600] focus:ring-[#CCFF00] shadow-lg shadow-[#CCFF00]/20 font-black',
+      'bg-[#00D4FF] text-black hover:bg-[#00b8e6] focus:ring-[#00D4FF] shadow-lg shadow-[#00D4FF]/25 font-black',
     secondary:
-      'bg-white/10 text-white hover:bg-white/15 border border-white/10 focus:ring-white/30 backdrop-blur-md',
+      'bg-[#1A2232] text-[#F9FAFB] hover:bg-[#202B3D] border border-[#273244] focus:ring-[#00D4FF]/40 backdrop-blur-md',
     outline:
-      'border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 focus:ring-[#CCFF00] shadow-sm backdrop-blur-md',
+      'border border-[#273244] bg-[#111827]/80 text-[#F9FAFB] hover:bg-[#1A2232] hover:border-[#00D4FF]/50 focus:ring-[#00D4FF] shadow-sm backdrop-blur-md',
     danger:
-      'bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500/30 focus:ring-rose-500 shadow-sm',
+      'bg-[#FB7185]/15 border border-[#FB7185]/40 text-[#FB7185] hover:bg-[#FB7185]/25 focus:ring-[#FB7185] shadow-sm',
     ghost:
-      'text-white/70 hover:text-white hover:bg-white/10 focus:ring-white/20',
+      'text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] focus:ring-[#00D4FF]/30',
     success:
-      'bg-emerald-500 text-black font-black hover:bg-emerald-400 focus:ring-emerald-500 shadow-lg shadow-emerald-500/20',
+      'bg-[#34D399] text-black font-black hover:bg-[#2ecc8f] focus:ring-[#34D399] shadow-lg shadow-[#34D399]/25',
   };
 
   return (
@@ -70,3 +70,4 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+export default Button;

@@ -21,25 +21,25 @@ const STYLES = `
   font-family: 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
 
-  --color-foreground: #ffffff;
-  --color-background: #09090b;
-  --color-primary: #CCFF00;
-  --color-secondary: #00F0FF;
-  --color-destructive: #ef4444;
+  --color-foreground: #F9FAFB;
+  --color-background: #080B12;
+  --color-primary: #00D4FF;
+  --color-secondary: #8B5CF6;
+  --color-destructive: #FB7185;
 
-  /* Dynamic Variables using standard shadcn/tailwind tokens */
-  --pill-bg-1: rgba(255, 255, 255, 0.06);
-  --pill-bg-2: rgba(255, 255, 255, 0.02);
-  --pill-shadow: rgba(0, 0, 0, 0.5);
-  --pill-highlight: rgba(255, 255, 255, 0.15);
+  /* Dynamic Variables using official Obsidian tokens */
+  --pill-bg-1: rgba(26, 34, 50, 0.7);
+  --pill-bg-2: rgba(17, 24, 39, 0.85);
+  --pill-shadow: rgba(0, 0, 0, 0.8);
+  --pill-highlight: rgba(0, 212, 255, 0.15);
   --pill-inset-shadow: rgba(0, 0, 0, 0.8);
-  --pill-border: rgba(255, 255, 255, 0.12);
+  --pill-border: #273244;
 
-  --pill-bg-1-hover: rgba(255, 255, 255, 0.12);
-  --pill-bg-2-hover: rgba(255, 255, 255, 0.05);
-  --pill-border-hover: rgba(255, 255, 255, 0.3);
-  --pill-shadow-hover: rgba(0, 0, 0, 0.7);
-  --pill-highlight-hover: rgba(255, 255, 255, 0.3);
+  --pill-bg-1-hover: rgba(32, 43, 61, 0.85);
+  --pill-bg-2-hover: rgba(26, 34, 50, 0.85);
+  --pill-border-hover: #00D4FF;
+  --pill-shadow-hover: rgba(0, 212, 255, 0.25);
+  --pill-highlight-hover: rgba(0, 212, 255, 0.35);
 }
 
 @keyframes footer-breathe {
@@ -357,25 +357,25 @@ export function CinematicFooter({
       */}
       <div
         ref={wrapperRef}
-        className="relative min-h-screen w-full overflow-hidden bg-[#09090b]"
+        className="relative min-h-screen w-full overflow-hidden bg-[#080B12]"
       >
-        <footer className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-[#09090b] text-white cinematic-footer-wrapper">
+        <footer className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-[#080B12] text-[#F9FAFB] cinematic-footer-wrapper">
 
           {/* Ambient Light & Grid Background */}
-          <div className="footer-aurora absolute left-1/2 top-1/2 h-[60vh] w-[80vw] -translate-x-1/2 -translate-y-1/2 animate-footer-breathe rounded-[50%] blur-[80px] pointer-events-none z-0" />
-          <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none" />
+          <div className="footer-aurora absolute left-1/2 top-1/2 h-[60vh] w-[80vw] -translate-x-1/2 -translate-y-1/2 animate-footer-breathe rounded-[50%] blur-[100px] pointer-events-none z-0" />
+          <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none opacity-40" />
 
           {/* Giant background text */}
           <div
             ref={giantTextRef}
-            className="footer-giant-bg-text absolute -bottom-[5vh] left-1/2 -translate-x-1/2 whitespace-nowrap z-0 pointer-events-none select-none uppercase"
+            className="footer-giant-bg-text absolute -bottom-[5vh] left-1/2 -translate-x-1/2 whitespace-nowrap z-0 pointer-events-none select-none uppercase opacity-15"
           >
             {brandText}
           </div>
 
           {/* 1. Diagonal Sleek Marquee (Top of footer) */}
-          <div className="absolute top-12 left-0 w-full overflow-hidden border-y border-white/10 bg-black/50 backdrop-blur-md py-4 z-10 -rotate-2 scale-110 shadow-2xl">
-            <div className="flex w-max animate-footer-scroll-marquee text-xs md:text-sm font-bold tracking-[0.3em] text-white/60 uppercase">
+          <div className="absolute top-12 left-0 w-full overflow-hidden border-y border-[#273244] bg-[#0D111B]/80 backdrop-blur-md py-4 z-10 -rotate-2 scale-110 shadow-2xl">
+            <div className="flex w-max animate-footer-scroll-marquee text-xs md:text-sm font-bold tracking-[0.3em] text-[#9CA3AF] uppercase">
               <MarqueeList items={marqueeItems} />
               <MarqueeList items={marqueeItems} />
             </div>
@@ -385,7 +385,7 @@ export function CinematicFooter({
           <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 mt-20 w-full max-w-5xl mx-auto">
             <h2
               ref={headingRef}
-              className="text-5xl md:text-8xl font-black footer-text-glow tracking-tighter mb-12 text-center text-white"
+              className="text-5xl md:text-8xl font-black footer-text-glow tracking-tighter mb-12 text-center text-[#F9FAFB]"
             >
               {heading}
             </h2>
@@ -398,10 +398,10 @@ export function CinematicFooter({
                 <MagneticButton
                   as="button"
                   onClick={handleGetStarted}
-                  className="footer-glass-pill px-8 md:px-10 py-4 md:py-5 rounded-full text-white font-bold text-sm md:text-base flex items-center gap-3 group shadow-xl bg-[#CCFF00]/10 hover:bg-[#CCFF00]/20 border-[#CCFF00]/40 hover:border-[#CCFF00]/80 transition-all cursor-pointer"
+                  className="footer-glass-pill px-8 md:px-10 py-4 md:py-5 rounded-full text-[#F9FAFB] font-bold text-sm md:text-base flex items-center gap-3 group shadow-xl bg-[#00D4FF]/10 hover:bg-[#00D4FF]/20 border-[#00D4FF]/40 hover:border-[#00D4FF] transition-all cursor-pointer"
                 >
-                  <span className="text-[#CCFF00] font-black tracking-wide">{getStartedText}</span>
-                  <svg className="w-5 h-5 text-[#CCFF00] transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <span className="text-[#00D4FF] font-black tracking-wide">{getStartedText}</span>
+                  <svg className="w-5 h-5 text-[#00D4FF] transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </MagneticButton>
@@ -410,9 +410,9 @@ export function CinematicFooter({
                 <MagneticButton
                   as="button"
                   onClick={handleExplore}
-                  className="footer-glass-pill px-8 md:px-10 py-4 md:py-5 rounded-full text-white font-bold text-sm md:text-base flex items-center gap-3 group shadow-lg cursor-pointer hover:text-[#00F0FF] border-white/15 hover:border-[#00F0FF]/50"
+                  className="footer-glass-pill px-8 md:px-10 py-4 md:py-5 rounded-full text-[#F9FAFB] font-bold text-sm md:text-base flex items-center gap-3 group shadow-lg cursor-pointer hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/50"
                 >
-                  <svg className="w-5 h-5 text-white/60 group-hover:text-[#00F0FF] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-[#9CA3AF] group-hover:text-[#00D4FF] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <circle cx="12" cy="12" r="9" strokeWidth="2" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v18M3 12h18" />
                   </svg>
@@ -422,16 +422,19 @@ export function CinematicFooter({
 
               {/* Secondary Navigation & Support Links */}
               <div className="flex flex-wrap justify-center gap-3 md:gap-6 w-full mt-2">
-                <MagneticButton as="a" href="#how-it-works" onClick={(e: any) => handleLinkClick('how-it-works', e)} className="footer-glass-pill px-6 py-3 rounded-full text-white/70 font-medium text-xs md:text-sm hover:text-white border-white/10 hover:border-white/30">
+                <MagneticButton as="a" href="#how-it-works" onClick={(e: any) => handleLinkClick('how-it-works', e)} className="footer-glass-pill px-6 py-3 rounded-full text-[#9CA3AF] font-medium text-xs md:text-sm hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/40">
                   How It Works
                 </MagneticButton>
-                <MagneticButton as="a" href="#" onClick={(e: any) => handleLinkClick('privacy', e)} className="footer-glass-pill px-6 py-3 rounded-full text-white/70 font-medium text-xs md:text-sm hover:text-white border-white/10 hover:border-white/30">
+                <MagneticButton as="a" href="#services" onClick={(e: any) => handleLinkClick('services', e)} className="footer-glass-pill px-6 py-3 rounded-full text-[#9CA3AF] font-medium text-xs md:text-sm hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/40">
+                  Services & Pricing
+                </MagneticButton>
+                <MagneticButton as="a" href="#privacy" onClick={(e: any) => handleLinkClick('privacy', e)} className="footer-glass-pill px-6 py-3 rounded-full text-[#9CA3AF] font-medium text-xs md:text-sm hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/40">
                   Privacy Policy
                 </MagneticButton>
-                <MagneticButton as="a" href="#" onClick={(e: any) => handleLinkClick('terms', e)} className="footer-glass-pill px-6 py-3 rounded-full text-white/70 font-medium text-xs md:text-sm hover:text-white border-white/10 hover:border-white/30">
+                <MagneticButton as="a" href="#terms" onClick={(e: any) => handleLinkClick('terms', e)} className="footer-glass-pill px-6 py-3 rounded-full text-[#9CA3AF] font-medium text-xs md:text-sm hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/40">
                   Terms of Service
                 </MagneticButton>
-                <MagneticButton as="a" href="#" onClick={(e: any) => handleLinkClick('support', e)} className="footer-glass-pill px-6 py-3 rounded-full text-white/70 font-medium text-xs md:text-sm hover:text-white border-white/10 hover:border-white/30">
+                <MagneticButton as="a" href="#support" onClick={(e: any) => handleLinkClick('support', e)} className="footer-glass-pill px-6 py-3 rounded-full text-[#9CA3AF] font-medium text-xs md:text-sm hover:text-[#00D4FF] border-[#273244] hover:border-[#00D4FF]/40">
                   Support
                 </MagneticButton>
               </div>
@@ -442,23 +445,23 @@ export function CinematicFooter({
           <div className="relative z-20 w-full pb-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
 
             {/* Copyright */}
-            <div className="text-white/40 text-[10px] md:text-xs font-semibold tracking-widest uppercase order-2 md:order-1">
+            <div className="text-[#6B7280] text-[10px] md:text-xs font-semibold tracking-widest uppercase order-2 md:order-1">
               © 2026 SkipQ. All rights reserved.
             </div>
 
             {/* "Made with Love" Badge */}
-            <div className="footer-glass-pill px-6 py-3 rounded-full flex items-center gap-2 order-1 md:order-2 cursor-default border-white/15 bg-white/5">
-              <span className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Crafted with</span>
-              <span className="animate-footer-heartbeat text-sm md:text-base text-red-500">❤</span>
-              <span className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">for</span>
-              <span className="text-[#CCFF00] font-black text-xs md:text-sm tracking-normal ml-1">Campus Life</span>
+            <div className="footer-glass-pill px-6 py-3 rounded-full flex items-center gap-2 order-1 md:order-2 cursor-default border-[#273244] bg-[#111827]">
+              <span className="text-[#9CA3AF] text-[10px] md:text-xs font-bold uppercase tracking-widest">Crafted with</span>
+              <span className="animate-footer-heartbeat text-sm md:text-base text-[#FB7185]">❤</span>
+              <span className="text-[#9CA3AF] text-[10px] md:text-xs font-bold uppercase tracking-widest">for</span>
+              <span className="text-[#00D4FF] font-black text-xs md:text-sm tracking-normal ml-1">Campus Life</span>
             </div>
 
             {/* Back to top */}
             <MagneticButton
               as="button"
               onClick={scrollToTop}
-              className="w-12 h-12 rounded-full footer-glass-pill flex items-center justify-center text-white/70 hover:text-white group order-3 border-white/15 bg-white/5"
+              className="w-12 h-12 rounded-full footer-glass-pill flex items-center justify-center text-[#9CA3AF] hover:text-[#00D4FF] group order-3 border-[#273244] bg-[#111827]"
             >
               <svg className="w-5 h-5 transform group-hover:-translate-y-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>

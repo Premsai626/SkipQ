@@ -82,7 +82,7 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Stepper Header */}
-      <div className="glass-card-dark rounded-3xl p-4 sm:p-5 border border-white/10 shadow-2xl backdrop-blur-2xl">
+      <div className="bg-[#111827] rounded-3xl p-4 sm:p-5 border border-[#273244] shadow-2xl backdrop-blur-2xl">
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -104,7 +104,7 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Main Step Form Area (7-8 cols on desktop) */}
-          <div className="lg:col-span-8 glass-card-dark rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl backdrop-blur-2xl">
+          <div className="lg:col-span-8 bg-[#111827] rounded-3xl p-6 sm:p-8 border border-[#273244] shadow-2xl backdrop-blur-2xl text-[#F9FAFB]">
             {currentStep === 1 && (
               <StepUpload
                 documents={documents}

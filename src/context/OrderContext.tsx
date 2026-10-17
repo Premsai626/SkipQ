@@ -10,7 +10,6 @@ import {
 } from '../types';
 import {
   ordersApi,
-  queueApi,
   analyticsApi,
   notificationsApi,
 } from '../services/api';
@@ -84,7 +83,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [role]);
 
   // Initial load & state reset on user change / logout
   useEffect(() => {

@@ -36,7 +36,7 @@ export const StepSuccessToken: React.FC<StepSuccessTokenProps> = ({
         particleCount: 65,
         spread: 60,
         origin: { y: 0.6 },
-        colors: ['#6366f1', '#4f46e5', '#10b981', '#fbbf24'],
+        colors: ['#00D4FF', '#8B5CF6', '#34D399', '#FBBF24'],
       });
     } catch {
       // ignore
@@ -53,14 +53,14 @@ export const StepSuccessToken: React.FC<StepSuccessTokenProps> = ({
     <div className="max-w-xl mx-auto py-4 text-center space-y-8 animate-in fade-in zoom-in-95 duration-300">
       {/* Success Eyebrow */}
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20 shadow-xs font-mono">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#34D399]/10 text-[#34D399] text-xs font-bold border border-[#34D399]/20 shadow-xs font-mono">
+          <CheckCircle2 className="w-4 h-4 text-[#34D399]" />
           <span>ORDER CONFIRMED & QUEUED</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-black text-[#F9FAFB] tracking-tight">
           Your Printing Token is Ready!
         </h2>
-        <p className="text-sm text-white/50 max-w-md mx-auto font-normal">
+        <p className="text-sm text-[#9CA3AF] max-w-md mx-auto font-normal">
           Skip waiting at the counter. Track your queue position in real time and collect when ready.
         </p>
       </div>
@@ -68,12 +68,12 @@ export const StepSuccessToken: React.FC<StepSuccessTokenProps> = ({
       {/* Hero Token Showcase Card */}
       <div className="relative group">
         {/* Ambient Glow */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-[#CCFF00]/20 via-[#00F0FF]/20 to-emerald-500/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition duration-500" />
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#00D4FF]/20 via-[#8B5CF6]/20 to-[#34D399]/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition duration-500" />
 
-        <div className="relative glass-card-dark border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 backdrop-blur-2xl">
+        <div className="relative bg-[#111827] border border-[#273244] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
           {/* Top Row: Token Label & Live Status */}
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-widest text-white/40 font-mono">
+            <span className="text-xs font-black uppercase tracking-widest text-[#9CA3AF] font-mono">
               OFFICIAL CAMPUS TOKEN
             </span>
             <Badge status={order.status} size="lg" />
@@ -83,59 +83,59 @@ export const StepSuccessToken: React.FC<StepSuccessTokenProps> = ({
           <div className="py-2">
             <button
               onClick={copyToken}
-              className="inline-flex items-center gap-3 font-mono text-4xl sm:text-5xl font-black text-white tracking-tight hover:text-[#CCFF00] transition-colors cursor-pointer group/token"
+              className="inline-flex items-center gap-3 font-mono text-4xl sm:text-5xl font-black text-[#F9FAFB] tracking-tight hover:text-[#00D4FF] transition-colors cursor-pointer group/token"
               title="Click to copy token"
             >
               <span>{order.token}</span>
-              <span className="p-1.5 rounded-lg bg-white/5 group-hover/token:bg-[#CCFF00]/10 text-white/50 group-hover/token:text-[#CCFF00] transition-colors border border-white/10">
-                {copied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
+              <span className="p-1.5 rounded-lg bg-[#1A2232] group-hover/token:bg-[#00D4FF]/10 text-[#9CA3AF] group-hover/token:text-[#00D4FF] transition-colors border border-[#273244]">
+                {copied ? <Check className="w-5 h-5 text-[#34D399]" /> : <Copy className="w-5 h-5 text-[#9CA3AF]" />}
               </span>
             </button>
-            <p className="text-xs text-white/40 mt-1 font-normal">
+            <p className="text-xs text-[#9CA3AF] mt-1 font-normal">
               {copied ? 'Copied to clipboard!' : 'Show this token at the collection counter'}
             </p>
           </div>
 
           {/* Queue Statistics Bento */}
-          <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/10">
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-left">
-              <span className="text-[10px] font-black uppercase tracking-wider text-white/40 font-mono">
+          <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#273244]">
+            <div className="p-3.5 rounded-2xl bg-[#0D111B] border border-[#273244] text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
                 Queue Position
               </span>
-              <p className="text-xl font-black text-white mt-0.5 font-mono">
+              <p className="text-xl font-black text-[#F9FAFB] mt-0.5 font-mono">
                 {order.queuePosition > 1 ? `${order.queuePosition - 1} ahead` : 'Next in line'}
               </p>
-              <p className="text-[11px] text-emerald-400 font-medium mt-0.5">Moving quickly</p>
+              <p className="text-[11px] text-[#34D399] font-medium mt-0.5">Moving quickly</p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-left">
-              <span className="text-[10px] font-black uppercase tracking-wider text-white/40 font-mono">
+            <div className="p-3.5 rounded-2xl bg-[#0D111B] border border-[#273244] text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] font-mono">
                 Estimated Time
               </span>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <Clock className="w-4 h-4 text-[#CCFF00]" />
-                <p className="text-xl font-black text-[#CCFF00] font-mono">
+                <Clock className="w-4 h-4 text-[#00D4FF]" />
+                <p className="text-xl font-black text-[#00D4FF] font-mono">
                   ~{order.estimatedMinutes} mins
                 </p>
               </div>
-              <p className="text-[11px] text-white/40 font-medium mt-0.5">Live calculation</p>
+              <p className="text-[11px] text-[#9CA3AF] font-medium mt-0.5">Live calculation</p>
             </div>
           </div>
 
           {/* Pickup Counter & Verification OTP */}
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between text-left">
+          <div className="p-4 rounded-2xl bg-[#0D111B] border border-[#273244] flex items-center justify-between text-left">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-[#CCFF00] text-black">
+              <div className="p-2 rounded-xl bg-[#00D4FF] text-black font-bold">
                 <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white">{order.pickupCounter}</p>
-                <p className="text-[11px] text-white/50 font-normal">
-                  Pickup OTP: <span className="font-mono font-black text-[#CCFF00]">{order.otpCode}</span>
+                <p className="text-xs font-bold text-[#F9FAFB]">{order.pickupCounter}</p>
+                <p className="text-[11px] text-[#9CA3AF] font-normal">
+                  Pickup OTP: <span className="font-mono font-black text-[#00D4FF]">{order.otpCode}</span>
                 </p>
               </div>
             </div>
-            <span className="text-xs font-black text-[#CCFF00] bg-black/50 px-3 py-1.5 rounded-xl border border-[#CCFF00]/30 font-mono">
+            <span className="text-xs font-black text-[#00D4FF] bg-[#080B12] px-3 py-1.5 rounded-xl border border-[#00D4FF]/30 font-mono">
               {formatCurrency(order.pricing.total)}
             </span>
           </div>

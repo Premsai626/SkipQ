@@ -45,26 +45,26 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop with blur */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-[#080B12]/80 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal dialog box */}
+      {/* Modal dialog box in Obsidian Theme */}
       <div
-        className={`relative w-full ${widthStyles[maxWidth]} glass-card-dark rounded-3xl shadow-2xl border border-white/20 z-10 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-150 text-white`}
+        className={`relative w-full ${widthStyles[maxWidth]} bg-[#111827] rounded-3xl shadow-2xl border border-[#273244] z-10 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-150 text-[#F9FAFB]`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/2">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#273244] bg-[#0D111B]/60">
           <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
+            <h3 className="text-lg font-bold text-[#F9FAFB] tracking-tight">{title}</h3>
             {description && (
-              <p className="text-xs text-white/50 mt-0.5">{description}</p>
+              <p className="text-xs text-[#9CA3AF] mt-0.5">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -76,3 +76,4 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
+export default Modal;

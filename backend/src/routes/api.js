@@ -9,6 +9,7 @@ import {
   PricingController,
   NotificationController,
 } from '../controllers/queueController.js';
+import { AiController } from '../controllers/aiController.js';
 import { uploadMiddleware } from '../services/storageService.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
 import { config } from '../config/index.js';
@@ -104,5 +105,9 @@ router.get('/analytics', authenticate, requireRole('staff'), AnalyticsController
 // 9. Notifications Routes (Authenticated)
 router.get('/notifications', authenticate, NotificationController.getAll);
 router.patch('/notifications/:id/read', authenticate, NotificationController.markRead);
+
+// 10. SkipQ AI Assistant Routes (Strictly Authenticated)
+router.get('/ai/status', authenticate, AiController.getStatus);
+router.post('/ai/chat', authenticate, AiController.chat);
 
 export default router;

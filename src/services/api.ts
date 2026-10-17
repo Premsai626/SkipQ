@@ -1,6 +1,11 @@
 import { Order, OrderStatus, PrintConfiguration, DocumentItem, PriceBreakdown, User, NotificationItem, OperationalMetrics, StoreItem } from '../types';
 
-export const API_BASE = '/api/v1';
+const configuredBase = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+export const API_BASE = configuredBase
+  ? configuredBase.endsWith('/api/v1')
+    ? configuredBase
+    : `${configuredBase}/api/v1`
+  : '/api/v1';
 
 // Token storage helper
 export function getAuthToken(): string | null {
@@ -292,3 +297,30 @@ export const notificationsApi = {
     });
   },
 };
+
+// 9. SkipQ AI Assistant API (Gemini Powered)
+export const aiApi = {
+  getStatus: async () => {
+    return request<{ configured: boolean; model: string; service: string; userRole: string }>('/ai/status');
+  },
+  sendMessage: async (
+    message: string,
+    conversationHistory?: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>
+  ) => {
+    return request<{
+      message: string;
+      data?: {
+        products?: StoreItem[];
+        orders?: any[];
+        navigationTarget?: { path: string; label?: string; reason?: string };
+        printEstimate?: any;
+      };
+      model?: string;
+      timestamp?: string;
+    }>('/ai/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message, conversationHistory }),
+    });
+  },
+};
+

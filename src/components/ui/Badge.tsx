@@ -40,25 +40,25 @@ export const Badge: React.FC<BadgeProps> = ({
     );
   }
 
-  // Generic variant badges
-  let variantStyle = 'bg-white/5 text-white/70 border-white/10';
-  let dotStyle = 'bg-white/40';
+  // Generic variant badges using official palette
+  let variantStyle = 'bg-[#1A2232] text-[#9CA3AF] border-[#273244]';
+  let dotStyle = 'bg-[#9CA3AF]';
 
   if (variant === 'success') {
-    variantStyle = 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
-    dotStyle = 'bg-emerald-400';
+    variantStyle = 'bg-[#34D399]/15 text-[#34D399] border-[#34D399]/30';
+    dotStyle = 'bg-[#34D399]';
   } else if (variant === 'warning') {
-    variantStyle = 'bg-amber-500/15 text-amber-300 border-amber-500/30';
-    dotStyle = 'bg-amber-400';
+    variantStyle = 'bg-[#FBBF24]/15 text-[#FBBF24] border-[#FBBF24]/30';
+    dotStyle = 'bg-[#FBBF24]';
   } else if (variant === 'error') {
-    variantStyle = 'bg-rose-500/15 text-rose-300 border-rose-500/30';
-    dotStyle = 'bg-rose-400';
+    variantStyle = 'bg-[#FB7185]/15 text-[#FB7185] border-[#FB7185]/30';
+    dotStyle = 'bg-[#FB7185]';
   } else if (variant === 'info') {
-    variantStyle = 'bg-[#00F0FF]/15 text-[#00F0FF] border-[#00F0FF]/30';
-    dotStyle = 'bg-[#00F0FF]';
+    variantStyle = 'bg-[#00D4FF]/15 text-[#00D4FF] border-[#00D4FF]/30';
+    dotStyle = 'bg-[#00D4FF]';
   } else if (variant === 'live') {
-    variantStyle = 'bg-[#CCFF00]/15 text-[#CCFF00] border-[#CCFF00]/40 font-bold';
-    dotStyle = 'bg-[#CCFF00] live-indicator-dot';
+    variantStyle = 'bg-[#00D4FF]/15 text-[#00D4FF] border-[#00D4FF]/40 font-bold';
+    dotStyle = 'bg-[#00D4FF] live-indicator-dot';
   }
 
   const sizeClasses =
@@ -73,3 +73,4 @@ export const Badge: React.FC<BadgeProps> = ({
     </span>
   );
 };
+export default Badge;

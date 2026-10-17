@@ -22,9 +22,9 @@ export const Stepper: React.FC<StepperProps> = ({
     <div className="w-full py-4 px-2">
       <div className="flex items-center justify-between max-w-2xl mx-auto relative">
         {/* Connecting track line */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-white/10 -z-0" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-[#273244] -z-0" />
         <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#CCFF00] -z-0 transition-all duration-300 shadow-sm shadow-[#CCFF00]/40"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#00D4FF] -z-0 transition-all duration-300 shadow-sm shadow-[#00D4FF]/40"
           style={{
             width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
           }}
@@ -46,10 +46,10 @@ export const Stepper: React.FC<StepperProps> = ({
                 disabled={!isClickable}
                 className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200 ${
                   isCompleted
-                    ? 'bg-[#CCFF00] text-black shadow-md shadow-[#CCFF00]/30 font-black cursor-pointer'
+                    ? 'bg-[#00D4FF] text-black shadow-md shadow-[#00D4FF]/30 font-black cursor-pointer'
                     : isCurrent
-                    ? 'bg-black text-[#CCFF00] border-2 border-[#CCFF00] ring-4 ring-[#CCFF00]/20 shadow-lg shadow-[#CCFF00]/20 font-black'
-                    : 'bg-white/5 text-white/40 border border-white/10 cursor-not-allowed'
+                    ? 'bg-[#080B12] text-[#00D4FF] border-2 border-[#00D4FF] ring-4 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/20 font-black'
+                    : 'bg-[#111827] text-[#6B7280] border border-[#273244] cursor-not-allowed'
                 }`}
               >
                 {isCompleted ? <Check className="w-4 h-4 stroke-[3]" /> : step.id}
@@ -57,10 +57,10 @@ export const Stepper: React.FC<StepperProps> = ({
               <span
                 className={`text-xs mt-1.5 font-medium whitespace-nowrap transition-colors ${
                   isCurrent
-                    ? 'text-[#CCFF00] font-bold'
+                    ? 'text-[#00D4FF] font-bold'
                     : isCompleted
-                    ? 'text-white'
-                    : 'text-white/40'
+                    ? 'text-[#F9FAFB]'
+                    : 'text-[#6B7280]'
                 }`}
               >
                 <span className="hidden sm:inline">{step.name}</span>
@@ -73,3 +73,4 @@ export const Stepper: React.FC<StepperProps> = ({
     </div>
   );
 };
+export default Stepper;
