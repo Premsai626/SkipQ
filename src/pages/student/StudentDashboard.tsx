@@ -55,7 +55,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
           onClick={() => onNavigate('/student/orders/new')}
           size="lg"
           variant="primary"
-          className="shadow-xl shadow-[#00D4FF]/25 shrink-0"
+          className="shadow-xl shadow-[#00D4FF]/25 shrink-0 hidden sm:flex"
           leftIcon={<PlusCircle className="w-5 h-5" />}
         >
           + New Print Order

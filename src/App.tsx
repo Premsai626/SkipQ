@@ -183,7 +183,7 @@ const AppContent: React.FC = () => {
   return (
     <div
       className={`min-h-screen flex flex-col bg-[#080B12] text-[#F9FAFB] selection:bg-[#00D4FF]/25 selection:text-[#00D4FF] ${
-        showAppShell ? 'pb-20 md:pb-0' : ''
+        showAppShell ? 'pb-28 sm:pb-24 md:pb-0' : ''
       }`}
     >
       {/* Top Navbar: Only render for authenticated app shell */}

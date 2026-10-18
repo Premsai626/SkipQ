@@ -231,11 +231,11 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, curren
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open SkipQ AI Assistant"
-          className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50 group flex items-center gap-2.5 p-3 sm:px-4 sm:py-3.5 rounded-full bg-[#111827]/95 backdrop-blur-xl border border-[#00D4FF]/60 text-[#F9FAFB] shadow-[0_8px_30px_rgba(0,212,255,0.25)] hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)] hover:border-[#00D4FF] hover:scale-105 active:scale-95 transition-all duration-300"
+          className="fixed bottom-[4.75rem] right-3 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50 group flex items-center gap-2 p-2.5 sm:px-4 sm:py-3.5 rounded-full bg-[#111827]/95 backdrop-blur-xl border border-[#00D4FF]/60 text-[#F9FAFB] shadow-[0_8px_30px_rgba(0,212,255,0.25)] hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)] hover:border-[#00D4FF] hover:scale-105 active:scale-95 transition-all duration-300"
         >
           <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00D4FF] to-[#8B5CF6] flex items-center justify-center text-[#080B12] shadow-inner">
-              <Sparkles className="w-4 h-4 text-[#080B12] animate-pulse" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#00D4FF] to-[#8B5CF6] flex items-center justify-center text-[#080B12] shadow-inner">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#080B12] animate-pulse" />
             </div>
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#00D4FF] text-[#080B12] text-[10px] font-black flex items-center justify-center animate-bounce">
@@ -245,7 +245,7 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, curren
           </div>
 
           <div className="flex flex-col text-left">
-            <span className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-white flex items-center gap-1.5">
+            <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-white flex items-center gap-1.5">
               SkipQ AI <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-ping" />
             </span>
             <span className="text-[9px] sm:text-[10px] text-[#9CA3AF] hidden xs:inline">
