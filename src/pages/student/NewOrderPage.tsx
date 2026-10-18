@@ -9,7 +9,6 @@ import { PriceSummaryCard } from '../../components/student/PriceSummaryCard';
 import { DocumentItem, PrintConfiguration, PaymentMethod, Order } from '../../types';
 import { calculatePrice } from '../../services/pricingService';
 import { useOrders } from '../../context/OrderContext';
-import { useAuth } from '../../context/AuthContext';
 
 interface NewOrderPageProps {
   onNavigate: (path: string) => void;
@@ -17,7 +16,6 @@ interface NewOrderPageProps {
 
 export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
   const { createOrder } = useOrders();
-  const { user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
@@ -82,7 +80,7 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Stepper Header */}
-      <div className="bg-[#111827] rounded-3xl p-4 sm:p-5 border border-[#273244] shadow-2xl backdrop-blur-2xl">
+      <div className="bg-[#121821] rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 border border-[#273244] shadow-md">
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -102,9 +100,9 @@ export const NewOrderPage: React.FC<NewOrderPageProps> = ({ onNavigate }) => {
           onGoToDashboard={() => onNavigate('/student')}
         />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
           {/* Main Step Form Area (7-8 cols on desktop) */}
-          <div className="lg:col-span-8 bg-[#111827] rounded-3xl p-6 sm:p-8 border border-[#273244] shadow-2xl backdrop-blur-2xl text-[#F9FAFB]">
+          <div className="lg:col-span-8 bg-[#121821] rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-[#273244] shadow-xl text-[#F1F5F9] min-w-0">
             {currentStep === 1 && (
               <StepUpload
                 documents={documents}

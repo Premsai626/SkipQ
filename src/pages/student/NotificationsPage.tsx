@@ -27,10 +27,10 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
     <div className="space-y-6 max-w-3xl mx-auto animate-in fade-in duration-200">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-[#F9FAFB] tracking-tight flex items-center gap-2">
-            <Bell className="w-6 h-6 text-[#00D4FF]" /> Notification Center
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F1F5F9] tracking-tight flex items-center gap-2">
+            <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-[#06D6F0]" /> Notification Center
           </h1>
-          <p className="text-sm text-[#9CA3AF] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-0.5">
             Real-time updates regarding your queue status, station assignment, and collection alerts.
           </p>
         </div>
@@ -51,20 +51,20 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
       <div className="flex gap-2 border-b border-[#273244] pb-2">
         <button
           onClick={() => setFilter('ALL')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-mono ${
             filter === 'ALL'
-              ? 'bg-[#00D4FF] text-black font-black shadow-md shadow-[#00D4FF]/20'
-              : 'bg-[#0D111B] border border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232]'
+              ? 'bg-[#06D6F0] text-black font-bold shadow-sm'
+              : 'bg-[#18212C] border border-[#273244] text-[#94A3B8] hover:bg-[#121821]'
           }`}
         >
           All ({notifications.length})
         </button>
         <button
           onClick={() => setFilter('UNREAD')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer font-mono ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-mono ${
             filter === 'UNREAD'
-              ? 'bg-[#00D4FF] text-black font-black shadow-md shadow-[#00D4FF]/20'
-              : 'bg-[#0D111B] border border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232]'
+              ? 'bg-[#06D6F0] text-black font-bold shadow-sm'
+              : 'bg-[#18212C] border border-[#273244] text-[#94A3B8] hover:bg-[#121821]'
           }`}
         >
           Unread ({notifications.filter((n) => !n.read).length})
@@ -73,13 +73,13 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
 
       {/* Notifications List */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 bg-[#111827] rounded-3xl border border-[#273244] p-8 space-y-2">
-          <Bell className="w-10 h-10 text-[#9CA3AF]/30 mx-auto mb-2" />
-          <p className="text-sm font-bold text-[#F9FAFB]">No notifications to show</p>
-          <p className="text-xs text-[#9CA3AF]">You're all caught up with your print requests!</p>
+        <div className="text-center py-16 bg-[#121821] rounded-2xl border border-[#273244] p-6 sm:p-8 space-y-2">
+          <Bell className="w-10 h-10 text-[#94A3B8]/30 mx-auto mb-2" />
+          <p className="text-sm font-bold text-[#F1F5F9]">No notifications to show</p>
+          <p className="text-xs text-[#94A3B8]">You're all caught up with your print requests!</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {filtered.map((item) => {
             const isUnread = !item.read;
 
@@ -90,53 +90,53 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
                   markNotificationRead(item.id);
                   if (item.orderId) onNavigate(`/student/orders/${item.orderId}/tracking`);
                 }}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-4 group ${
+                className={`p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer flex items-start justify-between gap-3 group ${
                   isUnread
-                    ? 'bg-[#111827] border-[#00D4FF]/40 bg-[#00D4FF]/5 shadow-lg shadow-[#00D4FF]/5'
-                    : 'bg-[#111827] border-[#273244] hover:border-[#00D4FF]/30'
+                    ? 'bg-[#121821] border-[#06D6F0]/50'
+                    : 'bg-[#121821] border-[#273244] hover:border-[#06D6F0]/30'
                 }`}
               >
-                <div className="flex items-start gap-3.5">
+                <div className="flex items-start gap-3 min-w-0 flex-1">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 border ${
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 border ${
                       item.type === 'success'
                         ? 'bg-[#34D399]/10 text-[#34D399] border-[#34D399]/20'
                         : item.type === 'error'
-                        ? 'bg-[#FB7185]/10 text-[#FB7185] border-[#FB7185]/20'
-                        : 'bg-[#00D4FF]/10 text-[#00D4FF] border-[#00D4FF]/20'
+                        ? 'bg-[#F87171]/10 text-[#F87171] border-[#F87171]/20'
+                        : 'bg-[#06D6F0]/10 text-[#06D6F0] border-[#06D6F0]/20'
                     }`}
                   >
                     {item.type === 'success' ? (
-                      <CheckCircle2 className="w-5 h-5" />
+                      <CheckCircle2 className="w-4 h-4" />
                     ) : item.type === 'error' ? (
-                      <AlertOctagon className="w-5 h-5" />
+                      <AlertOctagon className="w-4 h-4" />
                     ) : (
-                      <Bell className="w-5 h-5" />
+                      <Bell className="w-4 h-4" />
                     )}
                   </div>
 
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-[#F9FAFB]">{item.title}</h4>
+                  <div className="space-y-0.5 min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="text-xs sm:text-sm font-bold text-[#F1F5F9] truncate">{item.title}</h4>
                       {isUnread && (
-                        <span className="w-2 h-2 rounded-full bg-[#00D4FF] shadow-[0_0_8px_#00D4FF]" />
+                        <span className="w-2 h-2 rounded-full bg-[#06D6F0]" />
                       )}
                       {item.token && (
-                        <span className="font-mono text-xs font-black text-[#00D4FF] bg-[#00D4FF]/10 px-2 py-0.5 rounded-md border border-[#00D4FF]/20">
+                        <span className="font-mono text-[11px] font-bold text-[#06D6F0] bg-[#06D6F0]/10 px-1.5 py-0.5 rounded border border-[#06D6F0]/20">
                           {item.token}
                         </span>
                       )}
                     </div>
 
-                    <p className="text-xs text-[#9CA3AF] leading-relaxed">{item.message}</p>
-                    <p className="text-[10px] text-[#6B7280] pt-1 font-mono">
+                    <p className="text-xs text-[#94A3B8] leading-relaxed break-words">{item.message}</p>
+                    <p className="text-[10px] text-[#94A3B8]/60 pt-0.5 font-mono">
                       {formatRelativeTime(item.timestamp)}
                     </p>
                   </div>
                 </div>
 
                 <div className="shrink-0 pt-1">
-                  <ArrowRight className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#F9FAFB] transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#F1F5F9] transition-colors" />
                 </div>
               </div>
             );

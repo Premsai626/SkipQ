@@ -43,56 +43,56 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0D111B]/85 backdrop-blur-xl border-b border-[#273244] shadow-2xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 w-full bg-[#121821]/95 backdrop-blur-xl border-b border-[#273244] shadow-md select-none">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
         {/* Brand Logo */}
         <div
           onClick={() => onNavigate(role === 'staff' ? '/staff' : '/student')}
-          className="flex items-center gap-3 cursor-pointer group select-none"
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer group shrink min-w-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00D4FF] to-[#8B5CF6] p-[1px] shadow-lg shadow-[#00D4FF]/20 group-hover:scale-105 transition-transform duration-200">
-            <div className="w-full h-full bg-[#080B12] rounded-[11px] flex items-center justify-center text-[#00D4FF]">
-              <Printer className="w-5 h-5" />
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-[#06D6F0] to-[#8B5CF6] p-[1px] shadow-sm shrink-0">
+            <div className="w-full h-full bg-[#0B0F14] rounded-[11px] flex items-center justify-center text-[#06D6F0]">
+              <Printer className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="font-black text-lg tracking-tight text-[#F9FAFB] group-hover:text-[#00D4FF] transition-colors">
-                SKIP<span className="text-[#00D4FF]">Q</span>
+              <span className="font-black text-base sm:text-lg tracking-tight text-[#F1F5F9] group-hover:text-[#06D6F0] transition-colors">
+                SKIP<span className="text-[#06D6F0]">Q</span>
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#00D4FF]/10 border border-[#00D4FF]/30 text-[9px] font-black text-[#00D4FF] tracking-wider">
+              <span className="px-1.5 py-0.5 rounded-full bg-[#06D6F0]/10 border border-[#06D6F0]/30 text-[8px] sm:text-[9px] font-black text-[#06D6F0] tracking-wider hidden xs:inline-block">
                 CAMPUS
               </span>
             </div>
-            <p className="text-[10px] text-[#9CA3AF] font-medium hidden sm:block">
+            <p className="text-[10px] text-[#94A3B8] font-medium hidden sm:block truncate">
               Smart Print & Queue Management
             </p>
           </div>
         </div>
 
-        {/* Center Live Queue Ticker (Desktop) */}
-        <div className="hidden md:flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#111827] border border-[#273244] text-xs text-[#F9FAFB] backdrop-blur-md shadow-inner">
-          <span className="w-2 h-2 rounded-full bg-[#00D4FF] live-indicator-dot" />
-          <span className="font-bold text-[#F9FAFB]">Campus Station:</span>
-          <span className="text-[#9CA3AF]">{metrics.printingCount} print jobs active</span>
-          <span className="text-[#6B7280]">•</span>
-          <span className="text-[#00D4FF] font-semibold flex items-center gap-1">
+        {/* Center Live Queue Ticker (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#18212C] border border-[#273244] text-xs text-[#F1F5F9] backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-[#06D6F0] live-indicator-dot" />
+          <span className="font-bold text-[#F1F5F9]">Campus Station:</span>
+          <span className="text-[#94A3B8]">{metrics.printingCount} print jobs active</span>
+          <span className="text-[#273244]">•</span>
+          <span className="text-[#06D6F0] font-semibold flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5" /> Turnaround ~{metrics.avgWaitMinutes}m
           </span>
         </div>
 
         {/* Right Actions & User Profile Menu */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Notifications Button */}
           <button
             onClick={() => onNavigate(role === 'staff' ? '/staff/orders' : '/student/notifications')}
-            className="relative p-2.5 rounded-full bg-[#111827] border border-[#273244] text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] hover:border-[#00D4FF]/30 transition-all cursor-pointer"
+            className="relative p-2 sm:p-2.5 rounded-full bg-[#18212C] border border-[#273244] text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-[#202B3D] hover:border-[#06D6F0]/30 transition-all cursor-pointer"
             title="Notifications"
             aria-label="View notifications"
           >
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#FB7185] text-white text-[10px] font-black rounded-full flex items-center justify-center animate-pulse border border-[#080B12]">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#F87171] text-white text-[9px] font-black rounded-full flex items-center justify-center border border-[#121821]">
                 {unreadCount}
               </span>
             )}
@@ -102,33 +102,34 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-[#111827] border border-[#273244] hover:border-[#00D4FF]/40 hover:bg-[#202B3D] transition-all cursor-pointer select-none"
+              className="flex items-center gap-2 p-1 sm:p-1.5 sm:pr-3 rounded-full bg-[#18212C] border border-[#273244] hover:border-[#06D6F0]/40 hover:bg-[#202B3D] transition-all cursor-pointer select-none"
+              aria-label="User menu"
             >
-              <div className="w-8 h-8 rounded-full bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30 flex items-center justify-center font-bold text-xs">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#06D6F0]/15 text-[#06D6F0] border border-[#06D6F0]/30 flex items-center justify-center font-bold text-xs shrink-0">
                 {role === 'staff' ? (
-                  <Shield className="w-4 h-4 text-[#00D4FF]" />
+                  <Shield className="w-4 h-4 text-[#06D6F0]" />
                 ) : (
-                  user?.name?.slice(0, 2).toUpperCase() || <UserIcon className="w-4 h-4" />
+                  user?.name?.slice(0, 2).toUpperCase() || <UserIcon className="w-3.5 h-3.5" />
                 )}
               </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-[#F9FAFB] leading-tight">
-                  {user?.name || 'Prem Sai'}
+              <div className="hidden sm:block text-left max-w-[120px] truncate">
+                <p className="text-xs font-bold text-[#F1F5F9] leading-tight truncate">
+                  {user?.name || 'Student'}
                 </p>
-                <p className="text-[10px] text-[#9CA3AF] capitalize">
+                <p className="text-[10px] text-[#94A3B8] capitalize truncate">
                   {role === 'staff' ? 'Campus Staff Desk' : 'Verified Student'}
                 </p>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-[#9CA3AF]" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#94A3B8] pr-1 sm:pr-0" />
             </button>
 
             {/* Dropdown Menu */}
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-60 bg-[#111827] backdrop-blur-2xl rounded-2xl shadow-2xl border border-[#273244] p-2 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute right-0 mt-2 w-56 sm:w-60 bg-[#121821] backdrop-blur-2xl rounded-2xl shadow-2xl border border-[#273244] p-2 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
                 <div className="px-3 py-2.5 border-b border-[#273244]">
-                  <p className="font-bold text-[#F9FAFB] text-sm">{user?.name || 'Prem Sai'}</p>
-                  <p className="text-[11px] text-[#9CA3AF] truncate mt-0.5">{user?.email}</p>
-                  <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30 uppercase">
+                  <p className="font-bold text-[#F1F5F9] text-sm truncate">{user?.name || 'Student'}</p>
+                  <p className="text-[11px] text-[#94A3B8] truncate mt-0.5">{user?.email}</p>
+                  <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#06D6F0]/15 text-[#06D6F0] border border-[#06D6F0]/30 uppercase font-mono">
                     {role === 'staff' ? 'Xerox Operator' : user?.collegeId || 'Student'}
                   </span>
                 </div>
@@ -141,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/student');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium flex items-center justify-between transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium flex items-center justify-between transition-colors"
                       >
                         <span>Student Dashboard</span>
                       </button>
@@ -150,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/student/history');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium flex items-center justify-between transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium flex items-center justify-between transition-colors"
                       >
                         <span>Order History</span>
                         <History className="w-3.5 h-3.5 text-[#6B7280]" />
@@ -160,7 +161,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/student/profile');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium flex items-center justify-between transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium flex items-center justify-between transition-colors"
                       >
                         <span>Account Profile</span>
                         <UserIcon className="w-3.5 h-3.5 text-[#6B7280]" />
@@ -173,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/staff');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium transition-colors"
                       >
                         Operational Hub
                       </button>
@@ -182,7 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/staff/orders');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium transition-colors"
                       >
                         Manage Orders
                       </button>
@@ -191,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/staff/store');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium transition-colors"
                       >
                         Store Management
                       </button>
@@ -200,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                           setMenuOpen(false);
                           onNavigate('/staff/profile');
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] font-medium flex items-center justify-between transition-colors"
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#18212C] text-[#94A3B8] hover:text-[#06D6F0] font-medium flex items-center justify-between transition-colors"
                       >
                         <span>Operator Profile</span>
                         <UserIcon className="w-3.5 h-3.5 text-[#6B7280]" />
@@ -212,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
                 <div className="pt-1.5 border-t border-[#273244]">
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FB7185]/15 text-[#FB7185] font-bold flex items-center gap-2 transition-colors cursor-pointer"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#F87171]/15 text-[#F87171] font-bold flex items-center gap-2 transition-colors cursor-pointer"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Sign Out</span>

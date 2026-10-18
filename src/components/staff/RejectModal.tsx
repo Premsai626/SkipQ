@@ -54,7 +54,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold text-[#9CA3AF] uppercase tracking-wider font-mono">
+          <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider font-mono">
             Select Rejection Reason
           </label>
           <div className="space-y-1.5">
@@ -63,8 +63,8 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                 key={r}
                 className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
                   reason === r
-                    ? 'border-[#FB7185] bg-[#FB7185]/10 font-bold text-[#F9FAFB] ring-1 ring-[#FB7185]/30'
-                    : 'border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232]'
+                    ? 'border-[#F87171] bg-[#F87171]/10 font-bold text-[#F1F5F9] ring-1 ring-[#F87171]/30'
+                    : 'border-[#273244] text-[#94A3B8] hover:bg-[#18212C]'
                 }`}
               >
                 <input
@@ -72,7 +72,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
                   name="rejectionReason"
                   checked={reason === r}
                   onChange={() => setReason(r)}
-                  className="text-[#FB7185] focus:ring-[#FB7185]"
+                  className="text-[#F87171] focus:ring-[#F87171]"
                 />
                 <span>{r}</span>
               </label>
@@ -82,13 +82,13 @@ export const RejectModal: React.FC<RejectModalProps> = ({
 
         {reason === 'Other reason (specified below)' && (
           <div>
-            <label className="text-xs font-semibold text-[#9CA3AF]">Detailed Message</label>
+            <label className="text-xs font-semibold text-[#94A3B8]">Detailed Message</label>
             <textarea
               rows={3}
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
               placeholder="Explain why this order could not be printed..."
-              className="w-full mt-1 p-3 text-xs rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#FB7185]"
+              className="w-full mt-1 p-3 text-xs rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:outline-none focus:border-[#F87171] focus:ring-1 focus:ring-[#F87171]/30"
             />
           </div>
         )}

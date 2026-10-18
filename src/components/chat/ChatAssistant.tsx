@@ -5,16 +5,12 @@ import {
   Send,
   RotateCcw,
   Bot,
-  User as UserIcon,
   ShoppingBag,
   Printer,
   Compass,
   ArrowRight,
   Clock,
-  CheckCircle2,
   AlertCircle,
-  FileText,
-  ChevronDown,
   ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -26,7 +22,7 @@ interface ChatAssistantProps {
   currentPath?: string;
 }
 
-export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, currentPath }) => {
+export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, currentPath: _currentPath }) => {
   const { user, isAuthenticated } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -231,24 +227,24 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, curren
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open SkipQ AI Assistant"
-          className="fixed bottom-[4.75rem] right-3 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50 group flex items-center gap-2 p-2.5 sm:px-4 sm:py-3.5 rounded-full bg-[#111827]/95 backdrop-blur-xl border border-[#00D4FF]/60 text-[#F9FAFB] shadow-[0_8px_30px_rgba(0,212,255,0.25)] hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)] hover:border-[#00D4FF] hover:scale-105 active:scale-95 transition-all duration-300"
+          className="fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-3 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-40 group flex items-center gap-2 p-2 sm:px-3.5 sm:py-2.5 rounded-full bg-[#121821]/95 backdrop-blur-xl border border-[#06D6F0]/40 text-[#F1F5F9] shadow-lg hover:border-[#06D6F0] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
         >
           <div className="relative">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#00D4FF] to-[#8B5CF6] flex items-center justify-center text-[#080B12] shadow-inner">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#080B12] animate-pulse" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#06D6F0] to-[#8B5CF6] flex items-center justify-center text-[#0B0F14] shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0B0F14]" />
             </div>
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#00D4FF] text-[#080B12] text-[10px] font-black flex items-center justify-center animate-bounce">
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#06D6F0] text-[#0B0F14] text-[10px] font-black flex items-center justify-center">
                 {unreadCount}
               </span>
             )}
           </div>
 
           <div className="flex flex-col text-left">
-            <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-white flex items-center gap-1.5">
-              SkipQ AI <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-ping" />
+            <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-[#F1F5F9] flex items-center gap-1.5 font-mono">
+              SkipQ AI <span className="w-1.5 h-1.5 rounded-full bg-[#06D6F0]" />
             </span>
-            <span className="text-[9px] sm:text-[10px] text-[#9CA3AF] hidden xs:inline">
+            <span className="text-[9px] sm:text-[10px] text-[#94A3B8] hidden xs:inline">
               {user.role === 'staff' ? 'Operator Assistant' : 'Campus Print Guide'}
             </span>
           </div>
@@ -257,12 +253,12 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ onNavigate, curren
 
       {/* 2. Expanded Chat Assistant Panel */}
       {isOpen && (
-        <div className="fixed inset-x-2 bottom-20 top-4 sm:inset-auto sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50 w-auto sm:w-[420px] sm:h-[620px] max-h-[calc(100vh-2rem)] flex flex-col bg-[#111827] border border-[#273244] rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] backdrop-blur-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-x-2 bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] top-3 sm:inset-auto sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50 w-auto sm:w-[420px] sm:h-[600px] max-h-[calc(100vh-2rem)] flex flex-col bg-[#121821] border border-[#273244] rounded-2xl sm:rounded-3xl shadow-2xl backdrop-blur-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
           {/* Header */}
-          <div className="p-4 sm:px-5 sm:py-3.5 bg-[#0D111B] border-b border-[#273244] flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#00D4FF] to-[#8B5CF6] flex items-center justify-center text-[#080B12] shadow-[0_0_15px_rgba(0,212,255,0.3)]">
-                <Bot className="w-5 h-5 text-[#080B12]" />
+          <div className="p-3.5 sm:px-4 sm:py-3 bg-[#0B0F14] border-b border-[#273244] flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#06D6F0] to-[#8B5CF6] flex items-center justify-center text-[#0B0F14] shadow-sm">
+                <Bot className="w-4 h-4 text-[#0B0F14]" />
               </div>
               <div>
                 <div className="flex items-center gap-2">

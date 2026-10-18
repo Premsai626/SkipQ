@@ -74,18 +74,18 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       <div className="flex flex-col sm:flex-row items-center gap-3">
         {/* Search */}
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by token (XR-1042), student name, or file..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#273244] bg-[#0D111B] text-xs text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#273244] bg-[#18212C] text-xs text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:outline-none focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30"
           />
         </div>
 
         {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0D111B] border border-[#273244] text-xs font-semibold overflow-x-auto w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#18212C] border border-[#273244] text-xs font-semibold overflow-x-auto w-full sm:w-auto">
           {[
             { id: 'ALL', label: 'All Orders' },
             { id: 'PENDING', label: 'Pending' },
@@ -98,10 +98,10 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
             <button
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors cursor-pointer font-mono ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors cursor-pointer font-mono ${
                 statusFilter === tab.id
-                  ? 'bg-[#00D4FF] text-black shadow-md font-bold'
-                  : 'text-[#9CA3AF] hover:text-[#F9FAFB]'
+                  ? 'bg-[#06D6F0] text-black font-bold shadow-xs'
+                  : 'text-[#94A3B8] hover:text-[#F1F5F9]'
               }`}
             >
               {tab.label}
@@ -111,12 +111,12 @@ export const StaffOrdersPage: React.FC<StaffOrdersPageProps> = ({ onNavigate }) 
       </div>
 
       {/* Responsive Table on Desktop, Cards on Mobile */}
-      <div className="bg-[#111827] border border-[#273244] rounded-3xl shadow-xl overflow-hidden">
+      <div className="bg-[#121821] border border-[#273244] rounded-2xl shadow-xl overflow-hidden">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#273244] bg-[#0D111B]/60 text-[11px] font-extrabold uppercase tracking-wider text-[#9CA3AF] font-mono">
+              <tr className="border-b border-[#273244] bg-[#18212C]/60 text-[11px] font-extrabold uppercase tracking-wider text-[#94A3B8] font-mono">
                 <th className="py-3.5 px-4">Token</th>
                 <th className="py-3.5 px-4">Student</th>
                 <th className="py-3.5 px-4">Files & Pages</th>

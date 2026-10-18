@@ -8,7 +8,6 @@ import {
   AlertCircle,
   Eye,
   EyeOff,
-  Package,
   X,
   Save,
 } from 'lucide-react';
@@ -176,137 +175,200 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
         </div>
       )}
 
-      {/* Catalog Table */}
-      <div className="bg-[#111827] border border-[#273244] rounded-3xl shadow-2xl overflow-hidden">
+      {/* Catalog Table on Desktop, Cards on Mobile */}
+      <div className="bg-[#121821] border border-[#273244] rounded-2xl shadow-xl overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-[#9CA3AF]/60 text-xs font-mono">
+          <div className="p-12 text-center text-[#94A3B8]/60 text-xs font-mono">
             Loading store inventory...
           </div>
         ) : items.length === 0 ? (
-          <div className="p-12 text-center text-[#9CA3AF] text-xs font-medium">
+          <div className="p-12 text-center text-[#94A3B8] text-xs font-medium">
             No items in store. Click "Add Store Item" to create the first one.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#0D111B]/60 border-b border-[#273244] text-[#9CA3AF] uppercase font-mono font-black text-[10px] tracking-wider">
-                <tr>
-                  <th className="py-3.5 px-4">Item Details</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Price</th>
-                  <th className="py-3.5 px-4">Stock</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4">Created By</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#273244]/50 font-medium">
-                {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-[#1A2232]/50 transition-colors">
-                    <td className="py-3 px-4">
-                      <p className="font-bold text-[#F9FAFB] text-xs">{item.name}</p>
-                      <p className="text-[11px] text-[#9CA3AF] line-clamp-1">{item.description}</p>
-                    </td>
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#18212C]/60 border-b border-[#273244] text-[#94A3B8] uppercase font-mono font-bold text-[10px] tracking-wider">
+                  <tr>
+                    <th className="py-3.5 px-4">Item Details</th>
+                    <th className="py-3.5 px-4">Category</th>
+                    <th className="py-3.5 px-4">Price</th>
+                    <th className="py-3.5 px-4">Stock</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-4">Created By</th>
+                    <th className="py-3.5 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#273244]/50 font-medium">
+                  {items.map((item) => (
+                    <tr key={item.id} className="hover:bg-[#18212C]/50 transition-colors">
+                      <td className="py-3 px-4">
+                        <p className="font-bold text-[#F1F5F9] text-xs">{item.name}</p>
+                        <p className="text-[11px] text-[#94A3B8] line-clamp-1">{item.description}</p>
+                      </td>
 
-                    <td className="py-3 px-4">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 font-semibold text-[10px] font-mono">
-                        {item.category}
+                      <td className="py-3 px-4">
+                        <span className="px-2.5 py-0.5 rounded-md bg-[#06D6F0]/10 text-[#06D6F0] border border-[#06D6F0]/20 font-semibold text-[10px] font-mono">
+                          {item.category}
+                        </span>
+                      </td>
+
+                      <td className="py-3 px-4 font-bold text-[#06D6F0] text-sm font-mono">
+                        ₹{item.price}
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <span
+                          className={`font-mono font-bold ${
+                            item.stock < 10 ? 'text-[#F87171]' : 'text-[#F1F5F9]/80'
+                          }`}
+                        >
+                          {item.stock} units
+                        </span>
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <button
+                          onClick={() => handleTogglePublish(item)}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold cursor-pointer transition-colors border font-mono ${
+                            item.isAvailable
+                              ? 'bg-[#34D399]/10 text-[#34D399] border-[#34D399]/20 hover:bg-[#34D399]/20'
+                              : 'bg-[#18212C] text-[#94A3B8] border-[#273244] hover:bg-[#202B3D]'
+                          }`}
+                          title="Click to toggle visibility"
+                        >
+                          {item.isAvailable ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                          <span>{item.isAvailable ? 'Published' : 'Hidden'}</span>
+                        </button>
+                      </td>
+
+                      <td className="py-3 px-4 text-[#94A3B8]/60 text-[11px] font-mono">
+                        {item.createdBy?.slice(0, 10) || 'Desk'}
+                      </td>
+
+                      <td className="py-3 px-4 text-right space-x-1.5">
+                        <button
+                          onClick={() => openEditModal(item)}
+                          className="p-1.5 rounded-lg bg-[#18212C] hover:bg-[#202B3D] text-[#94A3B8] hover:text-[#06D6F0] border border-[#273244] cursor-pointer transition-colors"
+                          title="Edit Item"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item)}
+                          className="p-1.5 rounded-lg bg-[#F87171]/10 hover:bg-[#F87171]/20 text-[#F87171] border border-[#F87171]/20 cursor-pointer transition-colors"
+                          title="Delete Item"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards View */}
+            <div className="md:hidden p-3.5 space-y-3">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-[#18212C] border border-[#273244] rounded-xl p-3.5 space-y-2.5 text-xs"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-[#06D6F0]/10 text-[#06D6F0] border border-[#06D6F0]/20 text-[10px] font-mono font-bold">
+                      {item.category}
+                    </span>
+                    <button
+                      onClick={() => handleTogglePublish(item)}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold border font-mono ${
+                        item.isAvailable
+                          ? 'bg-[#34D399]/10 text-[#34D399] border-[#34D399]/20'
+                          : 'bg-[#121821] text-[#94A3B8] border-[#273244]'
+                      }`}
+                    >
+                      {item.isAvailable ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                      <span>{item.isAvailable ? 'Published' : 'Hidden'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h4 className="font-bold text-[#F1F5F9] text-sm">{item.name}</h4>
+                    {item.description && (
+                      <p className="text-[11px] text-[#94A3B8] mt-0.5 line-clamp-2">{item.description}</p>
+                    )}
+                  </div>
+
+                  <div className="pt-2 border-t border-[#273244] flex items-center justify-between">
+                    <div>
+                      <span className="font-bold text-[#06D6F0] text-sm font-mono">₹{item.price}</span>
+                      <span className="text-[11px] text-[#94A3B8] ml-2 font-mono">
+                        ({item.stock} in stock)
                       </span>
-                    </td>
+                    </div>
 
-                    <td className="py-3 px-4 font-black text-[#00D4FF] text-sm font-mono">
-                      ₹{item.price}
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <span
-                        className={`font-mono font-bold ${
-                          item.stock < 10 ? 'text-[#FB7185]' : 'text-[#F9FAFB]/80'
-                        }`}
-                      >
-                        {item.stock} units
-                      </span>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <button
-                        onClick={() => handleTogglePublish(item)}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors border font-mono ${
-                          item.isAvailable
-                            ? 'bg-[#34D399]/10 text-[#34D399] border-[#34D399]/20 hover:bg-[#34D399]/20'
-                            : 'bg-[#1A2232] text-[#9CA3AF] border-[#273244] hover:bg-[#202B3D]'
-                        }`}
-                        title="Click to toggle visibility"
-                      >
-                        {item.isAvailable ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                        <span>{item.isAvailable ? 'Published' : 'Hidden'}</span>
-                      </button>
-                    </td>
-
-                    <td className="py-3 px-4 text-[#6B7280] text-[11px] font-mono">
-                      {item.createdBy?.slice(0, 10) || 'Desk'}
-                    </td>
-
-                    <td className="py-3 px-4 text-right space-x-2">
+                    <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => openEditModal(item)}
-                        className="p-1.5 rounded-xl bg-[#1A2232] hover:bg-[#202B3D] text-[#9CA3AF] hover:text-[#00D4FF] border border-[#273244] cursor-pointer transition-colors"
+                        className="p-1.5 rounded-lg bg-[#121821] text-[#94A3B8] hover:text-[#06D6F0] border border-[#273244]"
                         title="Edit Item"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(item)}
-                        className="p-1.5 rounded-xl bg-[#FB7185]/10 hover:bg-[#FB7185]/20 text-[#FB7185] border border-[#FB7185]/20 cursor-pointer transition-colors"
+                        className="p-1.5 rounded-lg bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/20"
                         title="Delete Item"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
       {/* Add / Edit Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="bg-[#111827] rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-[#273244] animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-4 border-b border-[#273244] mb-4">
-              <h3 className="font-black text-[#F9FAFB] text-lg">
+          <div className="bg-[#121821] rounded-2xl p-5 sm:p-6 max-w-lg w-full shadow-2xl border border-[#273244] animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#273244] mb-4">
+              <h3 className="font-bold text-[#F1F5F9] text-base sm:text-lg">
                 {editingItem ? 'Edit Store Item' : 'Add New Stationery Item'}
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-[#1A2232] hover:bg-[#202B3D] flex items-center justify-center text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
+                className="w-7 h-7 rounded-full bg-[#18212C] hover:bg-[#202B3D] flex items-center justify-center text-[#94A3B8] hover:text-[#F1F5F9] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="space-y-4 text-xs">
+            <form onSubmit={handleSave} className="space-y-3.5 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-[#9CA3AF]">Item Name *</label>
+                <label className="font-bold text-[#94A3B8]">Item Name *</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="e.g. Engineering Graph Book (60 Pgs)"
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#9CA3AF]">Category *</label>
+                  <label className="font-bold text-[#94A3B8]">Category *</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium"
                   >
                     <option value="Stationery">Stationery</option>
                     <option value="Lab Apparel">Lab Apparel</option>
@@ -318,7 +380,7 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-[#9CA3AF]">Unit Price (₹) *</label>
+                  <label className="font-bold text-[#94A3B8]">Unit Price (₹) *</label>
                   <input
                     type="number"
                     step="0.5"
@@ -326,35 +388,35 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     required
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium font-mono"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#9CA3AF]">Initial Stock (Units) *</label>
+                  <label className="font-bold text-[#94A3B8]">Initial Stock (Units) *</label>
                   <input
                     type="number"
                     min="0"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                     required
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium font-mono"
+                    className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-[#9CA3AF]">Availability</label>
+                  <label className="font-bold text-[#94A3B8]">Availability</label>
                   <div className="flex items-center gap-2 pt-2">
                     <input
                       type="checkbox"
                       id="isAvailCheck"
                       checked={isAvailable}
                       onChange={(e) => setIsAvailable(e.target.checked)}
-                      className="w-4 h-4 accent-[#00D4FF] rounded"
+                      className="w-4 h-4 accent-[#06D6F0] rounded"
                     />
-                    <label htmlFor="isAvailCheck" className="text-[#F9FAFB]/80 font-semibold cursor-pointer">
+                    <label htmlFor="isAvailCheck" className="text-[#F1F5F9]/80 font-semibold cursor-pointer">
                       Published to Store
                     </label>
                   </div>
@@ -362,24 +424,24 @@ export const StaffStorePage: React.FC<StaffStorePageProps> = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#9CA3AF]">Description</label>
+                <label className="font-bold text-[#94A3B8]">Description</label>
                 <textarea
                   rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Specification, paper GSM, compliance notes..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#9CA3AF]">Product Image URL (Optional)</label>
+                <label className="font-bold text-[#94A3B8]">Product Image URL (Optional)</label>
                 <input
                   type="url"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="https://example.com/item.png"
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium"
                 />
               </div>
 

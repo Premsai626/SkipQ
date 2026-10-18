@@ -145,29 +145,29 @@ export const OrderTrackingPage: React.FC<OrderTrackingPageProps> = ({
       </div>
 
       {/* Main Tracking Hero Card */}
-      <div className="bg-[#111827] rounded-3xl p-6 sm:p-8 border border-[#273244] shadow-2xl space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#273244]">
+      <div className="bg-[#121821] rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-[#273244] shadow-xl space-y-5 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[#273244]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="text-[11px] font-black uppercase tracking-wider text-[#00D4FF] flex items-center gap-1 font-mono">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#06D6F0] flex items-center gap-1 font-mono">
                 <Sparkles className="w-3.5 h-3.5" /> LIVE QUEUE TRACKER
               </span>
-              <Badge status={order.status} size="md" />
+              <Badge status={order.status} size="sm" />
             </div>
-            <h1 className="font-mono text-3xl sm:text-4xl font-black text-[#F9FAFB] tracking-tight mt-1">
+            <h1 className="font-mono text-2xl sm:text-4xl font-black text-[#F1F5F9] tracking-tight mt-1">
               Token {order.token}
             </h1>
-            <p className="text-xs text-[#9CA3AF] mt-0.5">
+            <p className="text-xs text-[#94A3B8] mt-0.5">
               Created {formatDate(order.createdAt)} • {order.documents.length} document{order.documents.length !== 1 ? 's' : ''}
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="p-3.5 rounded-2xl bg-[#00D4FF]/10 border border-[#00D4FF]/30 text-center min-w-[130px] shadow-lg">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#00D4FF] block font-mono">
+            <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-[#06D6F0]/10 border border-[#06D6F0]/25 text-center min-w-[110px] sm:min-w-[130px] shadow-sm">
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#06D6F0] block font-mono">
                 Estimated Wait
               </span>
-              <span className="text-2xl font-black text-[#F9FAFB] font-mono">
+              <span className="text-xl sm:text-2xl font-black text-[#F1F5F9] font-mono">
                 {order.status === 'READY_FOR_PICKUP' ? 'Ready Now!' : `~${order.estimatedMinutes}m`}
               </span>
             </div>
@@ -176,60 +176,60 @@ export const OrderTrackingPage: React.FC<OrderTrackingPageProps> = ({
 
         {/* Rejection / Cancellation Banner */}
         {order.status === 'REJECTED' && (
-          <div className="p-4 rounded-2xl bg-[#FB7185]/10 border border-[#FB7185]/30 text-xs text-[#FB7185] space-y-1">
-            <p className="font-bold flex items-center gap-1.5 text-[#FB7185]">
-              <AlertOctagon className="w-4 h-4 text-[#FB7185]" />
+          <div className="p-3.5 rounded-xl bg-[#F87171]/10 border border-[#F87171]/30 text-xs text-[#F87171] space-y-1">
+            <p className="font-bold flex items-center gap-1.5 text-[#F87171]">
+              <AlertOctagon className="w-4 h-4 text-[#F87171]" />
               This order was declined by Xerox staff
             </p>
-            <p className="text-[#FB7185]/80">Reason: "{order.rejectionReason || 'Staff declined'}"</p>
+            <p className="text-[#F87171]/80">Reason: "{order.rejectionReason || 'Staff declined'}"</p>
           </div>
         )}
 
         {/* 6-Stage Timeline Stepper */}
         {order.status !== 'REJECTED' && order.status !== 'CANCELLED' && (
-          <div className="py-2">
-            <h3 className="text-xs font-bold text-[#9CA3AF] uppercase tracking-wider mb-6 flex items-center gap-2 font-mono">
+          <div className="py-1">
+            <h3 className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider mb-4 flex items-center gap-2 font-mono">
               <span>Live Fulfillment Progress</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#06D6F0] animate-pulse" />
             </h3>
 
             <div className="relative">
               {/* Timeline connecting line */}
               <div className="hidden sm:block absolute left-0 top-4 right-0 h-0.5 bg-[#273244] -z-0" />
               <div
-                className="hidden sm:block absolute left-0 top-4 h-0.5 bg-[#00D4FF] -z-0 transition-all duration-500 shadow-sm shadow-[#00D4FF]/50"
+                className="hidden sm:block absolute left-0 top-4 h-0.5 bg-[#06D6F0] -z-0 transition-all duration-500 shadow-sm shadow-[#06D6F0]/50"
                 style={{
                   width: `${(Math.max(0, currentStageIndex) / (timelineStages.length - 1)) * 100}%`,
                 }}
               />
 
-              <div className="grid grid-cols-2 sm:grid-cols-6 gap-4 relative z-10">
+              <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5 sm:gap-4 relative z-10">
                 {timelineStages.map((stage, idx) => {
                   const isDone = currentStageIndex > idx;
                   const isCurrent = currentStageIndex === idx;
 
                   return (
-                    <div key={stage.status} className="flex flex-col items-center text-center">
+                    <div key={stage.status} className="flex flex-col items-center text-center p-2 rounded-xl bg-[#18212C]/40 sm:bg-transparent">
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
                           isDone
-                            ? 'bg-[#00D4FF] text-black shadow-md shadow-[#00D4FF]/30 font-black'
+                            ? 'bg-[#06D6F0] text-[#0B0F14] shadow-sm font-black'
                             : isCurrent
-                            ? 'bg-black text-[#00D4FF] border-2 border-[#00D4FF] ring-4 ring-[#00D4FF]/20 animate-pulse font-black'
-                            : 'bg-[#0D111B] text-[#9CA3AF]/40 border border-[#273244]'
+                            ? 'bg-[#0B0F14] text-[#06D6F0] border-2 border-[#06D6F0] ring-2 sm:ring-4 ring-[#06D6F0]/20 font-black'
+                            : 'bg-[#18212C] text-[#94A3B8]/50 border border-[#273244]'
                         }`}
                       >
-                        {isDone ? <CheckCircle2 className="w-4 h-4 stroke-[3]" /> : idx + 1}
+                        {isDone ? <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" /> : idx + 1}
                       </div>
 
                       <p
-                        className={`text-xs font-bold mt-2 ${
-                          isCurrent ? 'text-[#00D4FF]' : isDone ? 'text-[#F9FAFB]' : 'text-[#9CA3AF]/60'
+                        className={`text-xs font-bold mt-1.5 ${
+                          isCurrent ? 'text-[#06D6F0]' : isDone ? 'text-[#F1F5F9]' : 'text-[#94A3B8]/60'
                         }`}
                       >
                         {stage.label}
                       </p>
-                      <p className="text-[10px] text-[#9CA3AF]/50 mt-0.5 hidden sm:block">
+                      <p className="text-[10px] text-[#94A3B8]/60 mt-0.5 hidden sm:block">
                         {stage.desc}
                       </p>
                     </div>
@@ -241,47 +241,47 @@ export const OrderTrackingPage: React.FC<OrderTrackingPageProps> = ({
         )}
 
         {/* Counter Pickup Instructions & OTP Card */}
-        <div className="p-5 rounded-3xl bg-[#0D111B] border border-[#273244] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-[#00D4FF] text-black flex items-center justify-center shadow-lg shadow-[#00D4FF]/20 shrink-0 font-black">
-              <MapPin className="w-6 h-6" />
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#18212C] border border-[#273244] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#06D6F0] text-[#0B0F14] flex items-center justify-center shadow-md shrink-0 font-black">
+              <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-wider font-mono">
+              <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider font-mono">
                 Collection Desk
               </p>
-              <h4 className="text-base font-bold text-[#F9FAFB]">{order.pickupCounter}</h4>
-              <p className="text-xs text-[#9CA3AF]">
+              <h4 className="text-sm sm:text-base font-bold text-[#F1F5F9]">{order.pickupCounter}</h4>
+              <p className="text-xs text-[#94A3B8]">
                 Ground Floor Foyer • Show your 4-digit pickup OTP
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 bg-[#080B12] p-3 rounded-2xl border border-[#273244] shadow-inner">
-            <div className="text-right">
-              <span className="text-[10px] font-black text-[#00D4FF] uppercase tracking-wider block font-mono">
+          <div className="flex items-center justify-between w-full sm:w-auto gap-3 bg-[#0B0F14] p-2.5 sm:p-3 rounded-xl border border-[#273244] shadow-inner">
+            <div className="text-left sm:text-right">
+              <span className="text-[9px] sm:text-[10px] font-bold text-[#06D6F0] uppercase tracking-wider block font-mono">
                 Verification OTP
               </span>
-              <span className="font-mono text-2xl font-black text-[#F9FAFB] tracking-wider">
+              <span className="font-mono text-xl sm:text-2xl font-black text-[#F1F5F9] tracking-wider">
                 {order.otpCode}
               </span>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-[#1A2232] border border-[#273244] flex items-center justify-center text-[#00D4FF]">
-              <QrCode className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#18212C] border border-[#273244] flex items-center justify-center text-[#06D6F0] shrink-0">
+              <QrCode className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Grid: Queue Visualizer & Order Specs */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
         {/* Queue Visualizer Component */}
         <div className="lg:col-span-7">
           <QueueVisualizer currentOrder={order} allOrders={orders} />
         </div>
 
         {/* Order Details & Receipt Specs */}
-        <div className="lg:col-span-5 bg-[#111827] rounded-3xl p-6 border border-[#273244] space-y-4 shadow-xl">
+        <div className="lg:col-span-5 bg-[#121821] rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-[#273244] space-y-4 shadow-xl">
           <h3 className="text-sm font-bold text-[#F9FAFB] pb-2 border-b border-[#273244]">
             Order Specifications
           </h3>

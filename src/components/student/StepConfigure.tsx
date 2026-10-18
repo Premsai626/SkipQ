@@ -48,51 +48,51 @@ export const StepConfigure: React.FC<StepConfigureProps> = ({
 
       {/* 1. Service Type */}
       <div className="space-y-3">
-        <label className="text-xs font-black uppercase tracking-wider text-[#00D4FF] font-mono">
+        <label className="text-xs font-bold uppercase tracking-wider text-[#06D6F0] font-mono">
           1. Service Type
         </label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           <button
             type="button"
             onClick={() => updateField('service', 'PRINT')}
-            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 cursor-pointer ${
+            className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-left transition-all flex items-start gap-3 cursor-pointer ${
               config.service === 'PRINT'
-                ? 'border-[#00D4FF] bg-[#00D4FF]/10 ring-2 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/10'
-                : 'border-[#273244] bg-[#0D111B] hover:border-[#00D4FF]/30'
+                ? 'border-[#06D6F0] bg-[#06D6F0]/10 ring-2 ring-[#06D6F0]/20 shadow-md'
+                : 'border-[#273244] bg-[#121821] hover:border-[#06D6F0]/30'
             }`}
           >
             <div
-              className={`p-2.5 rounded-xl ${
-                config.service === 'PRINT' ? 'bg-[#00D4FF] text-black font-black' : 'bg-[#1A2232] text-[#9CA3AF]'
+              className={`p-2 sm:p-2.5 rounded-xl shrink-0 ${
+                config.service === 'PRINT' ? 'bg-[#06D6F0] text-[#0B0F14] font-black' : 'bg-[#18212C] text-[#94A3B8]'
               }`}
             >
               <Printer className="w-5 h-5" />
             </div>
-            <div>
-              <p className="text-sm font-bold text-[#F9FAFB]">Laser Print</p>
-              <p className="text-xs text-[#9CA3AF] mt-0.5">High-definition digital print from file</p>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-[#F1F5F9]">Laser Print</p>
+              <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">High-definition digital print from file</p>
             </div>
           </button>
 
           <button
             type="button"
             onClick={() => updateField('service', 'XEROX')}
-            className={`p-4 rounded-2xl border text-left transition-all flex items-start gap-3.5 cursor-pointer ${
+            className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-left transition-all flex items-start gap-3 cursor-pointer ${
               config.service === 'XEROX'
-                ? 'border-[#00D4FF] bg-[#00D4FF]/10 ring-2 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/10'
-                : 'border-[#273244] bg-[#0D111B] hover:border-[#00D4FF]/30'
+                ? 'border-[#06D6F0] bg-[#06D6F0]/10 ring-2 ring-[#06D6F0]/20 shadow-md'
+                : 'border-[#273244] bg-[#121821] hover:border-[#06D6F0]/30'
             }`}
           >
             <div
-              className={`p-2.5 rounded-xl ${
-                config.service === 'XEROX' ? 'bg-[#00D4FF] text-black font-black' : 'bg-[#1A2232] text-[#9CA3AF]'
+              className={`p-2 sm:p-2.5 rounded-xl shrink-0 ${
+                config.service === 'XEROX' ? 'bg-[#06D6F0] text-[#0B0F14] font-black' : 'bg-[#18212C] text-[#94A3B8]'
               }`}
             >
               <Copy className="w-5 h-5" />
             </div>
-            <div>
-              <p className="text-sm font-bold text-[#F9FAFB]">Standard Xerox</p>
-              <p className="text-xs text-[#9CA3AF] mt-0.5">Fast economical photocopy reproduction</p>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-[#F1F5F9]">Standard Xerox</p>
+              <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">Fast economical photocopy reproduction</p>
             </div>
           </button>
         </div>

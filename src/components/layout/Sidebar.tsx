@@ -55,31 +55,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
   const navItems = role === 'staff' ? staffNavItems : studentNavItems;
 
   return (
-    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between border-r border-[#273244] bg-[#0D111B]/80 backdrop-blur-2xl p-4 min-h-[calc(100vh-4rem)] relative z-10">
+    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between border-r border-[#273244] bg-[#121821]/80 backdrop-blur-2xl p-4 min-h-[calc(100vh-4rem)] relative z-10">
       <div className="space-y-6">
         {/* Role identification banner */}
         <div
           className={`p-3.5 rounded-2xl border flex items-center justify-between ${
             role === 'staff'
-              ? 'bg-gradient-to-r from-[#8B5CF6]/15 to-[#00D4FF]/5 border-[#273244] text-[#F9FAFB] shadow-lg'
-              : 'bg-gradient-to-r from-[#00D4FF]/10 to-[#8B5CF6]/5 border-[#273244] text-[#F9FAFB] shadow-lg'
+              ? 'bg-[#18212C] border-[#273244] text-[#F1F5F9] shadow-sm'
+              : 'bg-[#18212C] border-[#273244] text-[#F1F5F9] shadow-sm'
           }`}
         >
           <div className="flex items-center gap-3">
             <div
-              className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold shadow-inner ${
+              className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
                 role === 'staff'
                   ? 'bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/30'
-                  : 'bg-[#00D4FF] text-black shadow-md shadow-[#00D4FF]/25'
+                  : 'bg-[#06D6F0] text-[#0B0F14] shadow-sm font-black'
               }`}
             >
               {role === 'staff' ? <ShieldCheck className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
             </div>
             <div>
-              <p className="text-xs font-black tracking-tight leading-tight text-[#F9FAFB]">
+              <p className="text-xs font-bold tracking-tight leading-tight text-[#F1F5F9]">
                 {role === 'staff' ? 'STAFF OPERATOR' : 'STUDENT PORTAL'}
               </p>
-              <p className="text-[10px] text-[#9CA3AF] leading-tight">
+              <p className="text-[10px] text-[#94A3B8] leading-tight">
                 {role === 'staff' ? 'Station #1 • Main Desk' : 'Verified Campus ID'}
               </p>
             </div>
@@ -102,10 +102,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 <button
                   key={item.label}
                   onClick={() => onNavigate(item.path)}
-                  className="w-full mt-2 mb-3 flex items-center justify-between px-4 py-3.5 rounded-2xl bg-[#00D4FF] text-black font-black text-sm shadow-xl shadow-[#00D4FF]/20 hover:bg-[#00b8e6] active:scale-[0.98] transition-all duration-200 cursor-pointer select-none group"
+                  className="w-full mt-2 mb-3 flex items-center justify-between px-4 py-3 rounded-xl bg-[#06D6F0] text-[#0B0F14] font-bold text-sm shadow-md hover:bg-[#00b8e6] active:scale-[0.98] transition-all duration-200 cursor-pointer select-none group"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Printer className="w-5 h-5 transition-transform group-hover:scale-110" />
+                    <Printer className="w-5 h-5 transition-transform group-hover:scale-105" />
                     <span>Print / Xerox</span>
                   </div>
                   <span className="text-[9px] bg-black/15 text-black border border-black/10 px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold">
@@ -121,27 +121,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 onClick={() => onNavigate(item.path)}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-xs transition-all duration-150 cursor-pointer select-none text-left ${
                   isActive
-                    ? 'bg-[#1A2232] text-[#00D4FF] font-black border border-[#00D4FF]/30 shadow-md backdrop-blur-xl'
-                    : 'text-[#9CA3AF] hover:text-[#F9FAFB] hover:bg-[#202B3D] border border-transparent'
+                    ? 'bg-[#18212C] text-[#06D6F0] font-bold border border-[#06D6F0]/30 shadow-sm'
+                    : 'text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-[#18212C]/60 border border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
-                      isActive ? 'text-[#00D4FF]' : 'text-[#6B7280]'
+                      isActive ? 'text-[#06D6F0]' : 'text-[#6B7280]'
                     }`}
                   />
                   <span>{item.label}</span>
                 </div>
 
                 {item.count !== undefined && item.count > 0 && (
-                  <span className="px-2 py-0.5 text-[10px] font-black rounded-full bg-[#FB7185] text-white shadow-sm shadow-[#FB7185]/30">
+                  <span className="px-2 py-0.5 text-[10px] font-black rounded-full bg-[#F87171] text-white shadow-sm">
                     {item.count}
                   </span>
                 )}
 
                 {item.badge && (
-                  <span className="px-2 py-0.5 text-[9px] font-black rounded-full bg-[#00D4FF]/15 border border-[#00D4FF]/30 text-[#00D4FF] uppercase tracking-wider">
+                  <span className="px-2 py-0.5 text-[9px] font-bold rounded-full bg-[#06D6F0]/15 border border-[#06D6F0]/30 text-[#06D6F0] uppercase tracking-wider font-mono">
                     {item.badge}
                   </span>
                 )}

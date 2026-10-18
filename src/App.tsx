@@ -182,8 +182,8 @@ const AppContent: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col bg-[#080B12] text-[#F9FAFB] selection:bg-[#00D4FF]/25 selection:text-[#00D4FF] ${
-        showAppShell ? 'pb-28 sm:pb-24 md:pb-0' : ''
+      className={`min-h-screen flex flex-col bg-[#0B0F14] text-[#F1F5F9] selection:bg-[#06D6F0]/25 selection:text-[#06D6F0] overflow-x-hidden ${
+        showAppShell ? 'pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-8' : ''
       }`}
     >
       {/* Top Navbar: Only render for authenticated app shell */}
@@ -191,18 +191,18 @@ const AppContent: React.FC = () => {
 
       {/* Main Layout Body */}
       {!showAppShell ? (
-        <main className="flex-1 w-full bg-[#080B12]">{renderPage()}</main>
+        <main className="flex-1 w-full bg-[#0B0F14]">{renderPage()}</main>
       ) : (
-        <div className="flex-1 flex max-w-7xl w-full mx-auto relative">
+        <div className="flex-1 flex max-w-7xl w-full mx-auto relative min-w-0">
           {/* Background Ambient Glow */}
-          <div className="dashboard-aurora absolute left-1/2 top-20 h-[500px] w-[700px] -translate-x-1/2 blur-[120px] pointer-events-none z-0 opacity-70" />
-          <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none opacity-30" />
+          <div className="dashboard-aurora absolute left-1/2 top-20 h-[500px] w-[700px] -translate-x-1/2 blur-[120px] pointer-events-none z-0 opacity-40" />
+          <div className="footer-bg-grid absolute inset-0 z-0 pointer-events-none opacity-20" />
 
           {/* Desktop Sidebar */}
           <Sidebar currentPath={currentPath} onNavigate={handleNavigate} />
 
           {/* Page Content Container */}
-          <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 relative z-10">{renderPage()}</main>
+          <main className="flex-1 min-w-0 p-3.5 sm:p-6 lg:p-8 relative z-10 max-w-full">{renderPage()}</main>
         </div>
       )}
 

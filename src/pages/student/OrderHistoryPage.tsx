@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Search,
-  Filter,
   ExternalLink,
   Download,
 } from 'lucide-react';
@@ -102,37 +101,37 @@ export const OrderHistoryPage: React.FC<OrderHistoryPageProps> = ({ onNavigate }
             return (
               <div
                 key={order.id}
-                className="bg-[#111827] border border-[#273244] rounded-3xl p-5 shadow-xl hover:border-[#00D4FF]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="bg-[#121821] border border-[#273244] rounded-2xl p-4 sm:p-5 shadow-sm hover:border-[#06D6F0]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
               >
-                <div className="flex items-start sm:items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 flex items-center justify-center font-mono font-black text-sm shrink-0">
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#06D6F0]/10 text-[#06D6F0] border border-[#06D6F0]/20 flex items-center justify-center font-mono font-bold text-xs sm:text-sm shrink-0">
                     XR
                   </div>
 
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-base font-extrabold text-[#F9FAFB]">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-base font-extrabold text-[#F1F5F9]">
                         {order.token}
                       </span>
                       <Badge status={order.status} size="sm" />
                     </div>
 
-                    <p className="text-xs text-[#9CA3AF]">
+                    <p className="text-xs text-[#94A3B8] break-words line-clamp-2">
                       {order.documents[0]?.name || 'Document'} {order.documents.length > 1 ? `+ ${order.documents.length - 1} more` : ''} • {totalPages} pages • {order.config.color === 'COLOR' ? 'Color' : 'B&W'} • {order.config.copies} sets
                     </p>
 
-                    <div className="flex items-center gap-3 text-[11px] text-[#6B7280]">
+                    <div className="flex items-center gap-2 text-[11px] text-[#6B7280]">
                       <span>{formatDate(order.createdAt)}</span>
                       <span>•</span>
-                      <span>{order.pickupCounter}</span>
+                      <span className="truncate">{order.pickupCounter}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-3 sm:pt-0 border-t sm:border-0 border-[#273244]">
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 pt-2.5 sm:pt-0 border-t sm:border-0 border-[#273244]">
                   <div className="text-left sm:text-right">
-                    <span className="text-[10px] uppercase font-bold text-[#9CA3AF] block font-mono">Total</span>
-                    <span className="font-extrabold text-base text-[#00D4FF] font-mono">
+                    <span className="text-[10px] uppercase font-bold text-[#94A3B8] block font-mono">Total</span>
+                    <span className="font-extrabold text-base text-[#06D6F0] font-mono">
                       {formatCurrency(order.pricing.total)}
                     </span>
                   </div>

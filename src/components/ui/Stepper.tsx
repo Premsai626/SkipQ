@@ -38,28 +38,28 @@ export const Stepper: React.FC<StepperProps> = ({
           return (
             <div
               key={step.id}
-              className="flex flex-col items-center relative z-10 select-none"
+              className="flex flex-col items-center relative z-10 select-none min-w-0"
             >
               <button
                 type="button"
                 onClick={() => isClickable && onStepClick(step.id)}
                 disabled={!isClickable}
-                className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200 ${
+                className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200 ${
                   isCompleted
-                    ? 'bg-[#00D4FF] text-black shadow-md shadow-[#00D4FF]/30 font-black cursor-pointer'
+                    ? 'bg-[#06D6F0] text-[#0B0F14] shadow-sm font-black cursor-pointer'
                     : isCurrent
-                    ? 'bg-[#080B12] text-[#00D4FF] border-2 border-[#00D4FF] ring-4 ring-[#00D4FF]/20 shadow-lg shadow-[#00D4FF]/20 font-black'
-                    : 'bg-[#111827] text-[#6B7280] border border-[#273244] cursor-not-allowed'
+                    ? 'bg-[#0B0F14] text-[#06D6F0] border-2 border-[#06D6F0] ring-2 sm:ring-4 ring-[#06D6F0]/20 shadow-md font-black'
+                    : 'bg-[#18212C] text-[#6B7280] border border-[#273244] cursor-not-allowed'
                 }`}
               >
-                {isCompleted ? <Check className="w-4 h-4 stroke-[3]" /> : step.id}
+                {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
               </button>
               <span
-                className={`text-xs mt-1.5 font-medium whitespace-nowrap transition-colors ${
+                className={`text-[9px] sm:text-xs mt-1 font-medium transition-colors text-center max-w-[54px] sm:max-w-none truncate sm:whitespace-nowrap ${
                   isCurrent
-                    ? 'text-[#00D4FF] font-bold'
+                    ? 'text-[#06D6F0] font-bold'
                     : isCompleted
-                    ? 'text-[#F9FAFB]'
+                    ? 'text-[#F1F5F9]'
                     : 'text-[#6B7280]'
                 }`}
               >

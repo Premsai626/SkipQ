@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Clock,
-  Sparkles,
   ArrowRight,
   Package,
 } from 'lucide-react';
@@ -154,15 +153,15 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
         </div>
 
         {/* Search bar */}
-        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
-          <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-[#9CA3AF] absolute left-3 top-1/2 -translate-y-1/2" />
+        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search store items..."
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-[#273244] bg-[#0D111B] text-[#F9FAFB] placeholder:text-[#9CA3AF]/40 focus:border-[#00D4FF] focus:ring-2 focus:ring-[#00D4FF]/20 outline-hidden font-medium"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-[#273244] bg-[#18212C] text-[#F1F5F9] placeholder:text-[#94A3B8]/40 focus:border-[#06D6F0] focus:ring-1 focus:ring-[#06D6F0]/30 outline-hidden font-medium"
             />
           </div>
           <Button type="submit" size="sm" variant="secondary">
@@ -172,15 +171,15 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
       </div>
 
       {orderSuccess && (
-        <div className="p-4 rounded-2xl bg-[#34D399]/10 border border-[#34D399]/20 text-[#34D399] text-xs flex items-center gap-3 animate-in fade-in duration-200">
+        <div className="p-3.5 sm:p-4 rounded-xl bg-[#34D399]/10 border border-[#34D399]/20 text-[#34D399] text-xs flex items-center gap-3 animate-in fade-in duration-200">
           <CheckCircle2 className="w-5 h-5 shrink-0 text-[#34D399]" />
           <span className="font-bold font-mono">{orderSuccess}</span>
         </div>
       )}
 
       {errorMessage && (
-        <div className="p-4 rounded-2xl bg-[#FB7185]/10 border border-[#FB7185]/20 text-[#FB7185] text-xs flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 shrink-0 text-[#FB7185]" />
+        <div className="p-3.5 sm:p-4 rounded-xl bg-[#F87171]/10 border border-[#F87171]/20 text-[#F87171] text-xs flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 shrink-0 text-[#F87171]" />
           <span>{errorMessage}</span>
         </div>
       )}
@@ -191,10 +190,10 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer select-none font-mono ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer select-none font-mono ${
               selectedCategory === cat
-                ? 'bg-[#00D4FF] text-black shadow-lg shadow-[#00D4FF]/20 font-black'
-                : 'bg-[#0D111B] border border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232] hover:text-[#F9FAFB]'
+                ? 'bg-[#06D6F0] text-black font-bold shadow-sm'
+                : 'bg-[#18212C] border border-[#273244] text-[#94A3B8] hover:bg-[#121821] hover:text-[#F1F5F9]'
             }`}
           >
             {cat === 'ALL' ? 'All Essentials' : cat}
@@ -203,44 +202,44 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
       </div>
 
       {/* Main Grid: Catalog + Cart Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Products Grid */}
         <div className="lg:col-span-2">
           {loading ? (
-            <div className="py-16 text-center text-[#9CA3AF]/60 font-medium text-xs font-mono">
+            <div className="py-16 text-center text-[#94A3B8]/60 font-medium text-xs font-mono">
               Loading campus stationery catalog...
             </div>
           ) : items.length === 0 ? (
-            <div className="py-16 text-center bg-[#111827] border border-[#273244] rounded-3xl p-8">
-              <Package className="w-12 h-12 text-[#9CA3AF]/30 mx-auto mb-3" />
-              <p className="font-bold text-[#F9FAFB] text-sm">No items found</p>
-              <p className="text-[#9CA3AF] text-xs mt-1">Try selecting a different category or clearing search.</p>
+            <div className="py-16 text-center bg-[#121821] border border-[#273244] rounded-2xl p-6 sm:p-8">
+              <Package className="w-12 h-12 text-[#94A3B8]/30 mx-auto mb-3" />
+              <p className="font-bold text-[#F1F5F9] text-sm">No items found</p>
+              <p className="text-[#94A3B8] text-xs mt-1">Try selecting a different category or clearing search.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#111827] border border-[#273244] rounded-3xl p-5 shadow-2xl hover:border-[#00D4FF]/40 transition-all flex flex-col justify-between"
+                  className="bg-[#121821] border border-[#273244] rounded-2xl p-4 sm:p-5 hover:border-[#06D6F0]/40 transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/20 uppercase tracking-wider font-mono">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#06D6F0]/10 text-[#06D6F0] border border-[#06D6F0]/20 uppercase tracking-wider font-mono">
                         {item.category}
                       </span>
-                      <span className="text-[11px] font-mono font-medium text-[#9CA3AF]">
+                      <span className="text-[11px] font-mono font-medium text-[#94A3B8]">
                         Stock: {item.stock}
                       </span>
                     </div>
 
-                    <h3 className="font-bold text-[#F9FAFB] text-sm leading-snug">{item.name}</h3>
-                    <p className="text-[#9CA3AF] text-xs mt-1 line-clamp-2">{item.description}</p>
+                    <h3 className="font-bold text-[#F1F5F9] text-sm leading-snug">{item.name}</h3>
+                    <p className="text-[#94A3B8] text-xs mt-1 line-clamp-2">{item.description}</p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 mt-4 border-t border-[#273244]">
+                  <div className="flex items-center justify-between pt-3.5 mt-3.5 border-t border-[#273244]">
                     <div>
-                      <span className="text-[10px] text-[#9CA3AF] block uppercase font-mono font-bold">Price</span>
-                      <span className="font-black text-[#00D4FF] text-lg font-mono">₹{item.price}</span>
+                      <span className="text-[10px] text-[#94A3B8] block uppercase font-mono font-medium">Price</span>
+                      <span className="font-bold text-[#06D6F0] text-base font-mono">₹{item.price}</span>
                     </div>
 
                     <Button
@@ -260,16 +259,16 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
 
         {/* Order Summary / Cart */}
         <div className="lg:col-span-1">
-          <div className="bg-[#111827] border border-[#273244] rounded-3xl p-5 shadow-2xl sticky top-20 space-y-4">
+          <div className="bg-[#121821] border border-[#273244] rounded-2xl p-4 sm:p-5 sticky top-20 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#273244]">
-              <h3 className="font-black text-[#F9FAFB] text-sm flex items-center gap-2">
-                <ShoppingBag className="w-4 h-4 text-[#00D4FF]" />
+              <h3 className="font-bold text-[#F1F5F9] text-sm flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4 text-[#06D6F0]" />
                 <span>Stationery Tray ({cart.reduce((s, c) => s + c.quantity, 0)})</span>
               </h3>
               {cart.length > 0 && (
                 <button
                   onClick={() => setCart([])}
-                  className="text-[11px] text-[#9CA3AF] hover:text-[#FB7185] transition-colors font-semibold cursor-pointer"
+                  className="text-[11px] text-[#94A3B8] hover:text-[#F87171] transition-colors font-medium cursor-pointer"
                 >
                   Clear All
                 </button>
@@ -277,7 +276,7 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
             </div>
 
             {cart.length === 0 ? (
-              <div className="py-8 text-center text-[#9CA3AF]/60 text-xs font-medium">
+              <div className="py-8 text-center text-[#94A3B8]/60 text-xs font-medium">
                 Your tray is empty. Add stationery items from the catalog.
               </div>
             ) : (
@@ -286,30 +285,30 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
                   {cart.map(({ item, quantity }) => (
                     <div
                       key={item.id}
-                      className="p-3 rounded-2xl bg-[#0D111B] border border-[#273244] flex items-center justify-between text-xs"
+                      className="p-3 rounded-xl bg-[#18212C] border border-[#273244] flex items-center justify-between text-xs"
                     >
                       <div className="min-w-0 flex-1 mr-2">
-                        <p className="font-bold text-[#F9FAFB] truncate">{item.name}</p>
-                        <p className="text-[#9CA3AF] text-[11px] font-mono">₹{item.price} × {quantity}</p>
+                        <p className="font-bold text-[#F1F5F9] truncate">{item.name}</p>
+                        <p className="text-[#94A3B8] text-[11px] font-mono">₹{item.price} × {quantity}</p>
                       </div>
 
                       <div className="flex items-center gap-1.5 shrink-0">
                         <button
                           onClick={() => updateCartQuantity(item.id, -1)}
-                          className="w-6 h-6 rounded-lg bg-[#1A2232] border border-[#273244] flex items-center justify-center text-[#9CA3AF] hover:text-[#F9FAFB] hover:border-[#00D4FF]/40 cursor-pointer transition-colors"
+                          className="w-6 h-6 rounded-lg bg-[#121821] border border-[#273244] flex items-center justify-center text-[#94A3B8] hover:text-[#F1F5F9] hover:border-[#06D6F0]/40 cursor-pointer transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="font-bold font-mono text-[#F9FAFB] w-5 text-center">{quantity}</span>
+                        <span className="font-bold font-mono text-[#F1F5F9] w-5 text-center">{quantity}</span>
                         <button
                           onClick={() => updateCartQuantity(item.id, 1)}
-                          className="w-6 h-6 rounded-lg bg-[#1A2232] border border-[#273244] flex items-center justify-center text-[#9CA3AF] hover:text-[#F9FAFB] hover:border-[#00D4FF]/40 cursor-pointer transition-colors"
+                          className="w-6 h-6 rounded-lg bg-[#121821] border border-[#273244] flex items-center justify-center text-[#94A3B8] hover:text-[#F1F5F9] hover:border-[#06D6F0]/40 cursor-pointer transition-colors"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="w-6 h-6 rounded-lg bg-[#FB7185]/10 text-[#FB7185] border border-[#FB7185]/20 hover:bg-[#FB7185]/20 flex items-center justify-center ml-1 cursor-pointer transition-colors"
+                          className="w-6 h-6 rounded-lg bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/20 hover:bg-[#F87171]/20 flex items-center justify-center ml-1 cursor-pointer transition-colors"
                         >
                           <Trash2 className="w-3 h-3" />
                         </button>
@@ -320,7 +319,7 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
 
                 {/* Payment Selection */}
                 <div className="space-y-1.5 pt-2 border-t border-[#273244]">
-                  <label className="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-wider font-mono">
+                  <label className="text-[11px] font-bold text-[#94A3B8] uppercase tracking-wider font-mono">
                     Payment Method
                   </label>
                   <div className="grid grid-cols-3 gap-1.5">
@@ -331,8 +330,8 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
                         onClick={() => setPaymentMethod(method)}
                         className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer font-mono ${
                           paymentMethod === method
-                            ? 'bg-[#00D4FF] text-black font-black shadow-md shadow-[#00D4FF]/20'
-                            : 'bg-[#0D111B] border border-[#273244] text-[#9CA3AF] hover:bg-[#1A2232]'
+                            ? 'bg-[#06D6F0] text-black font-bold shadow-sm'
+                            : 'bg-[#18212C] border border-[#273244] text-[#94A3B8] hover:bg-[#121821]'
                         }`}
                       >
                         {method}
@@ -344,12 +343,12 @@ export const StudentStorePage: React.FC<StudentStorePageProps> = ({ onNavigate }
                 {/* Subtotal & Placement */}
                 <div className="pt-3 border-t border-[#273244] space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#9CA3AF] font-medium">Pickup Counter</span>
-                    <span className="font-bold text-[#F9FAFB]">Counter #1 (Stationery Desk)</span>
+                    <span className="text-[#94A3B8] font-medium">Pickup Counter</span>
+                    <span className="font-bold text-[#F1F5F9]">Counter #1 (Stationery Desk)</span>
                   </div>
                   <div className="flex items-center justify-between text-sm pt-1">
-                    <span className="font-bold text-[#9CA3AF]">Total Payable</span>
-                    <span className="font-black text-[#00D4FF] text-lg font-mono">₹{cartTotal}</span>
+                    <span className="font-bold text-[#94A3B8]">Total Payable</span>
+                    <span className="font-bold text-[#06D6F0] text-base font-mono">₹{cartTotal}</span>
                   </div>
 
                   <Button
