@@ -24,6 +24,8 @@ services:
         value: gemini-3.5-flash
       - key: JWT_SECRET
         generateValue: true
+      - key: ALLOW_VERCEL_PREVIEWS
+        value: "true"
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY

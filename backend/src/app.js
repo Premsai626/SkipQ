@@ -32,11 +32,13 @@ app.use(
       // Allow requests with no origin (such as mobile apps, curl, server-to-server)
       if (!origin) return callback(null, true);
       const cleanOrigin = origin.replace(/\/+$/, '');
+      const lowerOrigin = cleanOrigin.toLowerCase();
       if (
         config.allowedOrigins.includes(cleanOrigin) ||
+        config.allowedOrigins.includes(lowerOrigin) ||
         cleanOrigin.startsWith('http://localhost:') ||
         cleanOrigin.startsWith('http://127.0.0.1:') ||
-        (process.env.ALLOW_VERCEL_PREVIEWS === 'true' && /^https:\/\/[a-z0-9-]+(\.vercel\.app)$/.test(cleanOrigin))
+        (process.env.ALLOW_VERCEL_PREVIEWS === 'true' && /^https:\/\/[a-z0-9-.]+\.vercel\.app$/.test(lowerOrigin))
       ) {
         return callback(null, true);
       }
