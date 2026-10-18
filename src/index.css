@@ -165,3 +165,17 @@
 .live-indicator-dot {
   animation: livePulse 2s infinite;
 }
+
+/* Mobile-optimized typography shadow: 2 clean layers on mobile, full multi-depth on desktop */
+.hero-skipq-shadow {
+  text-shadow: 2px 2px 0 #0D111B, 4px 4px 0 #0D111B;
+}
+
+@media (min-width: 768px) {
+  .hero-skipq-shadow {
+    text-shadow: 1px 1px 0 #0D111B, 2px 2px 0 #0D111B, 3px 3px 0 #0D111B, 4px 4px 0 #0D111B,
+                 5px 5px 0 #0D111B, 6px 6px 0 #0D111B, 7px 7px 0 #0D111B, 8px 8px 0 #0D111B,
+                 9px 9px 0 #0D111B, 10px 10px 0 #0D111B, 11px 11px 0 #0D111B, 12px 12px 0 #0D111B,
+                 13px 13px 0 #0D111B, 14px 14px 0 #0D111B, 15px 15px 0 #0D111B, 16px 16px 0 #0D111B;
+  }
+}

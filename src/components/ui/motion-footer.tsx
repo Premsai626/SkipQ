@@ -149,6 +149,7 @@ const MagneticButton = React.forwardRef<HTMLElement, MagneticButtonProps>(
 
     useEffect(() => {
       if (typeof window === "undefined") return;
+      if (window.matchMedia("(pointer: coarse)").matches) return;
       const element = localRef.current;
       if (!element) return;
 
@@ -265,7 +266,15 @@ export function CinematicFooter({
     if (typeof window === "undefined") return;
     if (!wrapperRef.current) return;
 
-    // React strict mode compatible GSAP context cleanup
+    // Mobile optimization: eliminate touch scrub lag by applying clean static layout
+    if (window.innerWidth < 768) {
+      if (giantTextRef.current) gsap.set(giantTextRef.current, { y: 0, scale: 1, opacity: 1 });
+      if (headingRef.current) gsap.set(headingRef.current, { y: 0, opacity: 1 });
+      if (linksRef.current) gsap.set(linksRef.current, { y: 0, opacity: 1 });
+      return;
+    }
+
+    // React strict mode compatible GSAP context cleanup for desktop
     const ctx = gsap.context(() => {
       // Background Parallax
       gsap.fromTo(
@@ -280,7 +289,7 @@ export function CinematicFooter({
             trigger: wrapperRef.current,
             start: "top 90%",
             end: "bottom bottom",
-            scrub: true,
+            scrub: 1,
           },
         }
       );
@@ -298,7 +307,7 @@ export function CinematicFooter({
             trigger: wrapperRef.current,
             start: "top 80%",
             end: "top 25%",
-            scrub: true,
+            scrub: 1,
           },
         }
       );

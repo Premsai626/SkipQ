@@ -220,124 +220,129 @@ export const Component: React.FC<HeroComponentProps> = ({ onNavigate, onOpenAuth
 
       {/* Dynamic Animated Visual Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        {/* Mobile: Ultra-lightweight static ambient glow with 0% JS/GPU rasterization load */}
+        <div className="md:hidden absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(0,212,255,0.12),transparent_50%),radial-gradient(ellipse_at_80%_60%,rgba(139,92,246,0.10),transparent_50%)] pointer-events-none transform-gpu" />
 
-        {/* Ambient Glowing Gradient Orbs */}
-        <motion.div
-          animate={{
-            x: [0, 50, -30, 0],
-            y: [0, -40, 30, 0],
-            scale: [1, 1.25, 0.95, 1],
-            opacity: [0.35, 0.55, 0.35]
-          }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-10%] left-[15%] w-[420px] h-[420px] rounded-full bg-gradient-to-br from-[#00D4FF]/20 to-[#8B5CF6]/15 blur-[100px]"
-        />
+        {/* Desktop: Rich motion ambient and decorative background */}
+        <div className="hidden md:block">
+          {/* Ambient Glowing Gradient Orbs */}
+          <motion.div
+            animate={{
+              x: [0, 50, -30, 0],
+              y: [0, -40, 30, 0],
+              scale: [1, 1.25, 0.95, 1],
+              opacity: [0.35, 0.55, 0.35]
+            }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[-10%] left-[15%] w-[420px] h-[420px] rounded-full bg-gradient-to-br from-[#00D4FF]/20 to-[#8B5CF6]/15 blur-[100px] transform-gpu"
+          />
 
-        <motion.div
-          animate={{
-            x: [0, -60, 40, 0],
-            y: [0, 50, -40, 0],
-            scale: [1, 1.3, 0.9, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[25%] right-[5%] w-[480px] h-[480px] rounded-full bg-gradient-to-bl from-[#8B5CF6]/25 via-[#00D4FF]/15 to-transparent blur-[110px]"
-        />
+          <motion.div
+            animate={{
+              x: [0, -60, 40, 0],
+              y: [0, 50, -40, 0],
+              scale: [1, 1.3, 0.9, 1],
+              opacity: [0.3, 0.5, 0.3]
+            }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute top-[25%] right-[5%] w-[480px] h-[480px] rounded-full bg-gradient-to-bl from-[#8B5CF6]/25 via-[#00D4FF]/15 to-transparent blur-[110px] transform-gpu"
+          />
 
-        <motion.div
-          animate={{
-            x: [0, 40, -50, 0],
-            y: [0, -30, 50, 0],
-            scale: [0.9, 1.2, 1, 0.9],
-            opacity: [0.25, 0.45, 0.25]
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute bottom-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#00D4FF]/15 via-[#8B5CF6]/10 to-transparent blur-[120px]"
-        />
+          <motion.div
+            animate={{
+              x: [0, 40, -50, 0],
+              y: [0, -30, 50, 0],
+              scale: [0.9, 1.2, 1, 0.9],
+              opacity: [0.25, 0.45, 0.25]
+            }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+            className="absolute bottom-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#00D4FF]/15 via-[#8B5CF6]/10 to-transparent blur-[120px] transform-gpu"
+          />
 
-        {/* Animated Tech Radar Behind Upper-Right Header & Cards */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-16 right-[-5%] md:right-[5%] w-72 h-72 md:w-[420px] md:h-[420px] opacity-60"
-        >
-          <TechRadarRings />
-        </motion.div>
+          {/* Animated Tech Radar Behind Upper-Right Header & Cards */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-16 right-[-5%] md:right-[5%] w-72 h-72 md:w-[420px] md:h-[420px] opacity-60 transform-gpu"
+          >
+            <TechRadarRings />
+          </motion.div>
 
-        {/* Floating Blueprint CAD Wireframe behind left hero & #CAMPUS */}
-        <motion.div
-          animate={{
-            y: [0, -22, 0],
-            rotate: [-6, 6, -6],
-            scale: [1, 1.05, 1]
-          }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[18%] left-[2%] md:left-[8%] w-36 h-36 md:w-52 md:h-52 opacity-75"
-        >
-          <FloatingBlueprintCAD />
-        </motion.div>
+          {/* Floating Blueprint CAD Wireframe behind left hero & #CAMPUS */}
+          <motion.div
+            animate={{
+              y: [0, -22, 0],
+              rotate: [-6, 6, -6],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[18%] left-[2%] md:left-[8%] w-36 h-36 md:w-52 md:h-52 opacity-75 transform-gpu"
+          >
+            <FloatingBlueprintCAD />
+          </motion.div>
 
-        {/* Floating Animated Print Sheet behind SkipQ typography */}
-        <motion.div
-          animate={{
-            y: [0, 25, 0],
-            x: [0, -15, 0],
-            rotate: [8, -8, 8]
-          }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[38%] left-[28%] md:left-[35%] w-28 h-36 md:w-40 md:h-48 opacity-65"
-        >
-          <FloatingPrintSheet />
-        </motion.div>
+          {/* Floating Animated Print Sheet behind SkipQ typography */}
+          <motion.div
+            animate={{
+              y: [0, 25, 0],
+              x: [0, -15, 0],
+              rotate: [8, -8, 8]
+            }}
+            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute top-[38%] left-[28%] md:left-[35%] w-28 h-36 md:w-40 md:h-48 opacity-65 transform-gpu"
+          >
+            <FloatingPrintSheet />
+          </motion.div>
 
-        {/* Origami Paper Plane Gliding Path */}
-        <motion.div
-          animate={{
-            x: [-80, 400, 900],
-            y: [120, 60, -40],
-            rotate: [15, 8, -5],
-            opacity: [0, 0.85, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="absolute top-[12%] left-[10%] w-20 h-20 md:w-28 md:h-28"
-        >
-          <OrigamiPaperPlane />
-        </motion.div>
+          {/* Origami Paper Plane Gliding Path */}
+          <motion.div
+            animate={{
+              x: [-80, 400, 900],
+              y: [120, 60, -40],
+              rotate: [15, 8, -5],
+              opacity: [0, 0.85, 0]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            className="absolute top-[12%] left-[10%] w-20 h-20 md:w-28 md:h-28 transform-gpu"
+          >
+            <OrigamiPaperPlane />
+          </motion.div>
 
-        {/* Sparkle Stars Twinkling */}
-        <motion.div
-          animate={{ scale: [0.6, 1.4, 0.6], opacity: [0.3, 1, 0.3], rotate: [0, 90, 180] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[22%] right-[28%] w-6 h-6 md:w-8 md:h-8"
-        >
-          <SparkleStar />
-        </motion.div>
+          {/* Sparkle Stars Twinkling */}
+          <motion.div
+            animate={{ scale: [0.6, 1.4, 0.6], opacity: [0.3, 1, 0.3], rotate: [0, 90, 180] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[22%] right-[28%] w-6 h-6 md:w-8 md:h-8 transform-gpu"
+          >
+            <SparkleStar />
+          </motion.div>
 
-        <motion.div
-          animate={{ scale: [1.3, 0.5, 1.3], opacity: [0.9, 0.2, 0.9], rotate: [45, 135, 225] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute bottom-[40%] left-[18%] w-5 h-5 md:w-7 md:h-7"
-        >
-          <SparkleStar />
-        </motion.div>
+          <motion.div
+            animate={{ scale: [1.3, 0.5, 1.3], opacity: [0.9, 0.2, 0.9], rotate: [45, 135, 225] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute bottom-[40%] left-[18%] w-5 h-5 md:w-7 md:h-7 transform-gpu"
+          >
+            <SparkleStar />
+          </motion.div>
 
-        <motion.div
-          animate={{ scale: [0.8, 1.5, 0.8], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          className="absolute top-[60%] right-[15%] w-4 h-4 md:w-6 md:h-6"
-        >
-          <SparkleStar />
-        </motion.div>
+          <motion.div
+            animate={{ scale: [0.8, 1.5, 0.8], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+            className="absolute top-[60%] right-[15%] w-4 h-4 md:w-6 md:h-6 transform-gpu"
+          >
+            <SparkleStar />
+          </motion.div>
 
-        {/* Laser / Grid Horizontal Scan Beam */}
-        <motion.div
-          animate={{
-            y: [-100, 800],
-            opacity: [0, 0.35, 0]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00D4FF] to-transparent shadow-[0_0_15px_#00D4FF]"
-        />
+          {/* Laser / Grid Horizontal Scan Beam */}
+          <motion.div
+            animate={{
+              y: [-100, 800],
+              opacity: [0, 0.35, 0]
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00D4FF] to-transparent shadow-[0_0_15px_#00D4FF] transform-gpu"
+          />
+        </div>
 
       </div>
 
@@ -446,7 +451,7 @@ export const Component: React.FC<HeroComponentProps> = ({ onNavigate, onOpenAuth
               <motion.div
                 animate={{ y: [0, -12, 0], rotate: [-4, -1, -4] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute top-[54%] sm:top-[60%] md:top-[65%] left-[44%] sm:left-[47%] md:left-[49%] z-0 pointer-events-auto"
+                className="absolute top-[54%] sm:top-[60%] md:top-[65%] left-[44%] sm:left-[47%] md:left-[49%] z-0 pointer-events-auto transform-gpu"
               >
                 <div className="w-20 sm:w-28 md:w-36 aspect-[3/3.2] bg-[#111827]/85 hover:bg-[#1A2232] backdrop-blur-md border border-[#273244] hover:border-[#00D4FF]/40 rounded-[1.1rem] sm:rounded-[1.4rem] md:rounded-[1.75rem] p-2 sm:p-3 md:p-3.5 flex flex-col items-center justify-center shadow-[0_8px_24px_0_rgba(0,0,0,0.6)] hover:rotate-0 transition-all duration-500">
                   <div className="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 bg-[#1A2232] rounded-full flex items-center justify-center mb-1 sm:mb-2 border border-[#273244] p-1 sm:p-1.5">
@@ -460,10 +465,9 @@ export const Component: React.FC<HeroComponentProps> = ({ onNavigate, onOpenAuth
               </motion.div>
 
               <h1
-                className="relative z-10 text-[clamp(3.8rem,16vw,290px)] font-black leading-[0.82] tracking-tighter text-[#F9FAFB] m-0 p-0 uppercase"
+                className="relative z-10 text-[clamp(3.8rem,16vw,290px)] font-black leading-[0.82] tracking-tighter text-[#F9FAFB] m-0 p-0 uppercase hero-skipq-shadow"
                 style={{
                   fontFamily: '"Arial Black", Impact, sans-serif',
-                  textShadow: '1px 1px 0 #0D111B, 2px 2px 0 #0D111B, 3px 3px 0 #0D111B, 4px 4px 0 #0D111B, 5px 5px 0 #0D111B, 6px 6px 0 #0D111B, 7px 7px 0 #0D111B, 8px 8px 0 #0D111B, 9px 9px 0 #0D111B, 10px 10px 0 #0D111B, 11px 11px 0 #0D111B, 12px 12px 0 #0D111B, 13px 13px 0 #0D111B, 14px 14px 0 #0D111B, 15px 15px 0 #0D111B, 16px 16px 0 #0D111B'
                 }}
               >
                 SkipQ
@@ -479,7 +483,7 @@ export const Component: React.FC<HeroComponentProps> = ({ onNavigate, onOpenAuth
             <motion.div
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-[4%] left-[-2%] sm:left-[0%] md:left-[2%] z-30 pointer-events-auto"
+              className="absolute -bottom-[4%] left-[-2%] sm:left-[0%] md:left-[2%] z-30 pointer-events-auto transform-gpu"
             >
               <div className="w-20 sm:w-28 md:w-36 aspect-[3/3.5] bg-[#111827]/85 hover:bg-[#1A2232] backdrop-blur-md border border-[#273244] hover:border-[#00D4FF]/40 rounded-[1.1rem] sm:rounded-[1.4rem] md:rounded-[1.75rem] p-2 sm:p-3 md:p-3.5 flex flex-col items-center justify-center rotate-[-12deg] shadow-[0_8px_24px_0_rgba(0,0,0,0.6)] hover:rotate-0 transition-all duration-500">
                 <div className="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 bg-[#1A2232] rounded-full flex items-center justify-center mb-1 sm:mb-2 border border-[#273244] p-1 sm:p-1.5">
@@ -496,7 +500,7 @@ export const Component: React.FC<HeroComponentProps> = ({ onNavigate, onOpenAuth
             <motion.div
               animate={{ y: [0, -16, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute top-[4%] sm:top-[6%] md:top-[8%] right-[-2%] sm:right-[0%] md:right-[3%] z-30 pointer-events-auto"
+              className="absolute top-[4%] sm:top-[6%] md:top-[8%] right-[-2%] sm:right-[0%] md:right-[3%] z-30 pointer-events-auto transform-gpu"
             >
               <div className="w-20 sm:w-28 md:w-36 aspect-[3/3.5] bg-[#111827]/85 hover:bg-[#1A2232] backdrop-blur-md border border-[#273244] hover:border-[#00D4FF]/40 rounded-[1.1rem] sm:rounded-[1.4rem] md:rounded-[1.75rem] p-2 sm:p-3 md:p-3.5 flex flex-col items-center justify-center rotate-[12deg] shadow-[0_8px_24px_0_rgba(0,0,0,0.6)] hover:rotate-0 transition-all duration-500">
                 <div className="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 bg-[#1A2232] rounded-full flex items-center justify-center mb-1 sm:mb-2 border border-[#273244] p-1 sm:p-1.5">
