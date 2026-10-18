@@ -91,9 +91,9 @@ If you prefer setting up manually without the blueprint:
 
 | Key | Value | Notes |
 |---|---|---|
-| `VITE_API_URL` | `https://skipq-backend.onrender.com/api/v1` | **Replace with your actual Render service URL from Part 1** |
-| `VITE_SUPABASE_URL` | *Your Supabase Project URL* | Found in root `.env` |
-| `VITE_SUPABASE_ANON_KEY` | *Your Supabase Anon Key* | Found in root `.env` |
+| `VITE_API_URL` | `https://skipq-backend-pvl2.onrender.com/api/v1` | Live Render backend endpoint |
+| `VITE_SUPABASE_URL` | `https://tbhtcibeuvgpruyofrck.supabase.co` | Found in root `.env` |
+| `VITE_SUPABASE_ANON_KEY` | *(From your root `.env`)* | Found in root `.env` |
 
 6. Click **Deploy**.
 7. Vercel will build the frontend and assign a production URL (e.g. `https://skipq.vercel.app`).
