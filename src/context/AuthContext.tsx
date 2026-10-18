@@ -74,8 +74,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setAuthToken(res.token);
         setUser(res.user);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to sync Google user with backend:', err);
+      alert(`Google Profile Sync Error: ${err?.message || 'Failed to authenticate profile with server'}`);
     } finally {
       setIsLoading(false);
     }
@@ -84,6 +85,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Validate session on mount and listen for Supabase OAuth redirects / state changes
   useEffect(() => {
     const checkInitialSession = async () => {
+      // 0. Check URL query/hash for OAuth provider errors (e.g. redirect_uri_mismatch, access_denied)
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+        const oauthError = urlParams.get('error') || hashParams.get('error');
+        const oauthErrorDesc = urlParams.get('error_description') || hashParams.get('error_description');
+        if (oauthError || oauthErrorDesc) {
+          const message = decodeURIComponent(oauthErrorDesc || oauthError || 'Google authentication failed');
+          console.error('[AuthContext] OAuth error returned from provider:', oauthError, oauthErrorDesc);
+          alert(`Google Authentication Notice: ${message}`);
+          window.history.replaceState(null, '', window.location.pathname);
+          return;
+        }
+      } catch (err) {
+        console.warn('[AuthContext] Error parsing URL parameters:', err);
+      }
+
       // 1. First check if a Supabase OAuth session was just returned in the URL / storage
       try {
         const { data: { session } } = await supabase.auth.getSession();
