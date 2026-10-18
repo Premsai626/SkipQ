@@ -14,10 +14,21 @@ graph LR
     Render -->|Generative AI Requests| Gemini[Google Gemini AI API]
 ```
 
-- **Frontend**: Hosted on [Vercel](https://vercel.com) (Global Edge CDN, auto-builds on Git push).
-- **Backend API**: Hosted on [Render](https://render.com) (Node.js Web Service on port `10000` with `/health` monitor).
-- **Database & Storage**: Hosted on [Supabase](https://supabase.com) (PostgreSQL tables + `xerox-documents` storage bucket).
-- **Source Code**: Synced with [GitHub: Premsai626/SkipQ](https://github.com/Premsai626/SkipQ).
+- **Frontend URL**: [https://skip-q-theta.vercel.app](https://skip-q-theta.vercel.app) (Vercel Global Edge CDN)
+- **Backend API**: [https://skipq-backend-pvl2.onrender.com](https://skipq-backend-pvl2.onrender.com) (Render Web Service)
+- **Database & Storage**: [https://tbhtcibeuvgpruyofrck.supabase.co](https://tbhtcibeuvgpruyofrck.supabase.co) (Supabase PostgreSQL + Storage)
+- **Source Code**: [https://github.com/Premsai626/SkipQ](https://github.com/Premsai626/SkipQ) (Branch `main`)
+
+---
+
+## 🟢 Live Production Endpoints
+
+| Component | Status | Production URL |
+|---|---|---|
+| **Frontend Application** | 🟢 **ACTIVE** | [https://skip-q-theta.vercel.app](https://skip-q-theta.vercel.app) |
+| **Backend REST API** | 🟢 **ACTIVE** | [https://skipq-backend-pvl2.onrender.com](https://skipq-backend-pvl2.onrender.com) |
+| **API Health Check** | 🟢 **200 OK** | [https://skipq-backend-pvl2.onrender.com/health](https://skipq-backend-pvl2.onrender.com/health) |
+| **Supabase Diagnostic** | 🟢 **CONNECTED** | [https://skipq-backend-pvl2.onrender.com/api/v1/supabase/status](https://skipq-backend-pvl2.onrender.com/api/v1/supabase/status) |
 
 ---
 
@@ -106,9 +117,9 @@ If you prefer setting up manually without the blueprint:
 2. Go to your `skipq-backend` service -> **Environment**.
 3. Update `FRONTEND_URL` to match your Vercel URL:
    ```env
-   FRONTEND_URL=https://skipq.vercel.app
+   FRONTEND_URL=https://skip-q-theta.vercel.app
    ```
-   *(Note: Because `ALLOW_VERCEL_PREVIEWS=true` is enabled, Vercel preview URLs will also be permitted automatically).*
+   *(Note: Because `ALLOW_VERCEL_PREVIEWS=true` is enabled, all Vercel domains and previews are permitted automatically by CORS).*
 4. Click **Save Changes** (Render will redeploy with the updated origin).
 
 ---
